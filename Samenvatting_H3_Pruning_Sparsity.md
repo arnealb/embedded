@@ -38,7 +38,7 @@ Dit is het derde college. Pruning en sparsity zijn — samen met quantization (L
 
 ## 1.1 "Today's AI is too BIG"
 
-![Today's AI is too BIG](samenvatting_img_h3/slide-07.png)
+<img src="samenvatting_img_h3/slide-07.png" alt="Today's AI is too BIG" width="82.5%">
 
 De bubble chart zet drie zaken tegen elkaar:
 - **x-as:** MACs (Billion) = rekenwerk (Multiply-Accumulate operaties)
@@ -51,7 +51,7 @@ De bubble chart zet drie zaken tegen elkaar:
 
 ## 1.2 Efficiënte Deep Learning is essentieel — "bridge the gap"
 
-![Model size vs GPU memory](samenvatting_img_h3/slide-08.png)
+<img src="samenvatting_img_h3/slide-08.png" alt="Model size vs GPU memory" width="82.5%">
 
 De **modelgrootte (rode lijn)** groeit veel sneller dan het **GPU-geheugen (groene lijn)**:
 - Transformer (0.05B) → BERT (0.34B) → GPT-2 (1.5B) → GPT-3 (175B) → MT-NLG (530B)
@@ -61,7 +61,7 @@ De modellen groeien exponentieel, het geheugen lineair → er ontstaat een **gat
 
 ## 1.3 MLPerf — Closed vs Open Division
 
-![MLPerf closed vs open](samenvatting_img_h3/slide-09.png)
+<img src="samenvatting_img_h3/slide-09.png" alt="MLPerf closed vs open" width="82.5%">
 
 MLPerf is dé benchmark-"olympische spelen" voor AI-hardware. Er zijn twee divisies:
 - **Closed Division:** je mag het model *niet* aanpassen → eerlijke hardware-vergelijking (1029 samples/sec).
@@ -69,7 +69,7 @@ MLPerf is dé benchmark-"olympische spelen" voor AI-hardware. Er zijn twee divis
 
 → **4.5× speedup** terwijl 99% van de accuracy behouden blijft.
 
-![MLPerf key techniques](samenvatting_img_h3/slide-10.png)
+<img src="samenvatting_img_h3/slide-10.png" alt="MLPerf key techniques" width="82.5%">
 
 De optimalisatieketen die dat oplevert (op BERT-Large):
 - Quantization alleen (QAT) → 1×, 607 MB
@@ -80,7 +80,7 @@ De optimalisatieketen die dat oplevert (op BERT-Large):
 
 ## 1.4 Geheugen is duur (energie!)
 
-![Memory is expensive](samenvatting_img_h3/slide-11.png)
+<img src="samenvatting_img_h3/slide-11.png" alt="Memory is expensive" width="82.5%">
 
 Dit is een van de belangrijkste slides van het vak: **data verplaatsen kost veel meer energie dan rekenen.**
 -> data verplaatsen kost veel mee renergie dan ermee rekenen
@@ -128,7 +128,7 @@ Dit zijn de cijfers/feiten die je écht moet onthouden:
 
 ## 2.1 Pruning gebeurt ook in het menselijk brein
 
-![Pruning in human brain](samenvatting_img_h3/slide-14.png)
+<img src="samenvatting_img_h3/slide-14.png" alt="Pruning in human brain" width="82.5%">
 
 Biologische analogie voor het aantal synapsen per neuron:
 - Newborn: ~2 500
@@ -142,7 +142,7 @@ Het brein bouwt eerst véél verbindingen op en **snoeit** dan de overbodige weg
 
 ## 2.2 Wat is Neural Network Pruning?
 
-![NN pruning synapses vs neurons](samenvatting_img_h3/slide-15.png)
+<img src="samenvatting_img_h3/slide-15.png" alt="NN pruning synapses vs neurons" width="82.5%">
 
 Pruning = het netwerk kleiner maken door **synapsen** (gewichten) en **neuronen** te verwijderen. Twee niveaus:
 
@@ -158,7 +158,7 @@ De klassieke 3-stappen-pijplijn: **Train Connectivity → Prune Connections → 
 
 **Stap 1 — Train Connectivity:**
 
-![Train connectivity weight histogram](samenvatting_img_h3/slide-16.png)
+<img src="samenvatting_img_h3/slide-16.png" alt="Train connectivity weight histogram" width="82.5%">
 
 Eerst train je het netwerk gewoon volledig. Kijk dan naar de **gewichtsverdeling** (histogram): de meeste gewichten liggen dicht bij 0 (klein), slechts een paar zijn groot.
 
@@ -170,7 +170,7 @@ Eerst train je het netwerk gewoon volledig. Kijk dan naar de **gewichtsverdeling
 
 **Iteratief is het beste:**
 
-![Iterative pruning + finetuning](samenvatting_img_h3/slide-19.png)
+<img src="samenvatting_img_h3/slide-19.png" alt="Iterative pruning + finetuning" width="82.5%">
 
 De grafiek (accuracy loss vs pruning ratio) toont drie curves:
 - **Pruning alleen** (paars, gestreept): accuracy stort al snel in.
@@ -179,7 +179,7 @@ De grafiek (accuracy loss vs pruning ratio) toont drie curves:
 
 ## 2.4 Parameter-reductie ≠ MAC-reductie
 
-![Pruning results table](samenvatting_img_h3/slide-20.png)
+<img src="samenvatting_img_h3/slide-20.png" alt="Pruning results table" width="82.5%">
 
 | Netwerk | Params voor | Params na | #Param reductie | MAC reductie |
 |---|---|---|---|---|
@@ -203,7 +203,7 @@ Tussendoor leert de prof je expliciet de formules. Dit is examenstof-achtig reke
 
 ## 3.1 Eenvoudig (enkel dense lagen)
 
-![MAC simple NN](samenvatting_img_h3/slide-21.png)
+<img src="samenvatting_img_h3/slide-21.png" alt="MAC simple NN" width="82.5%">
 
 Netwerk: Input 128×128 → 512 → 256 → Softmax 10.
 
@@ -216,7 +216,7 @@ Netwerk: Input 128×128 → 512 → 256 → Softmax 10.
 
 ## 3.2 Met een convolutielaag erbij
 
-![MAC conv question](samenvatting_img_h3/slide-22.png)
+<img src="samenvatting_img_h3/slide-22.png" alt="MAC conv question" width="82.5%">
 
 
 Netwerk: Input 128×128×1 → Conv (64 filters, 3×3, stride 1, padding 0) → 512 → 256 → Softmax 10.
@@ -225,7 +225,7 @@ Netwerk: Input 128×128×1 → Conv (64 filters, 3×3, stride 1, padding 0) → 
 
 **MAC's per laag** (slide 23):
 
-![MAC calculation](samenvatting_img_h3/slide-23.png)
+<img src="samenvatting_img_h3/slide-23.png" alt="MAC calculation" width="82.5%">
 
 - **Conv-laag:**
   - Output-dimensie via `(W − K + 2P)/S + 1` = (128 − 3 + 0)/1 + 1 = **126** → output 126×126×64
@@ -238,11 +238,11 @@ Netwerk: Input 128×128×1 → Conv (64 filters, 3×3, stride 1, padding 0) → 
 - **TOTAAL** = 9 144 576 + 520 224 768 + 131 072 + 2 560
 
 <!-- ![oplossing](samenvating_img_h3/slide-023.png) -->
-![opl](samenvatting_img_h3/slide-023.png)
+<img src="samenvatting_img_h3/slide-023.png" alt="opl" width="82.5%">
 
 **Parameters per laag** (slide 24):
 
-![Params calculation](samenvatting_img_h3/slide-24.png)
+<img src="samenvatting_img_h3/slide-24.png" alt="Params calculation" width="82.5%">
 
 - **Conv-laag:** `(FilterW × FilterH × InChannels + 1) × #Filters` = ((3×3×1) + 1) × 64 = **640** (de +1 is de bias per filter)
 - **Flattening:** **0**
@@ -259,17 +259,17 @@ Netwerk: Input 128×128×1 → Conv (64 filters, 3×3, stride 1, padding 0) → 
 
 ## 4.1 Aantal publicaties explodeert
 
-![Publications graph](samenvatting_img_h3/slide-25.png)
+<img src="samenvatting_img_h3/slide-25.png" alt="Publications graph" width="82.5%">
 
 Van *Optimal Brain Damage* (LeCun, 1989) over *Deep Compression* / *EIE* (Han, 2015–2016) tot >3000 publicaties per jaar in 2022. Pruning is een zeer actief onderzoeksdomein.
 
 ## 4.2 Hardware-ondersteuning voor sparsity
 
-![NVIDIA 2:4 sparsity](samenvatting_img_h3/slide-26.png)
+<img src="samenvatting_img_h3/slide-26.png" alt="NVIDIA 2:4 sparsity" width="82.5%">
 
 **NVIDIA** ondersteunt **2:4 sparsity** in de A100 (Ampere) tensor cores → tot **2× peak performance**, ~1.5× gemeten BERT-speedup. Custom accelerators zoals **EIE**, **ESE**, **SpArch** en **SpAtten** (Han et al.) zijn speciaal ontworpen voor sparse netwerken.
 
-![Xilinx prune + finetune](samenvatting_img_h3/slide-27.png)
+<img src="samenvatting_img_h3/slide-27.png" alt="Xilinx prune + finetune" width="82.5%">
 
 **AMD/Xilinx Vitis AI Optimizer** doet automatisch `Prune → Finetune` op een dense FP32-netwerk → een kleiner FP32-netwerk. Reduceert modelcomplexiteit **5× tot 50×** met minimale accuracy-impact.
 
@@ -279,7 +279,7 @@ Van *Optimal Brain Damage* (LeCun, 1989) over *Deep Compression* / *EIE* (Han, 2
 
 ## 5.1 Het uitgangspunt
 
-![Full weight matrix](samenvatting_img_h3/slide-29.png)
+<img src="samenvatting_img_h3/slide-29.png" alt="Full weight matrix" width="82.5%">
 
 Beschouw een eenvoudige 2D-gewichtsmatrix (alles "preserved", rood).
 
@@ -287,7 +287,7 @@ Beschouw een eenvoudige 2D-gewichtsmatrix (alles "preserved", rood).
 
 ## 5.2 Fine-grained / Unstructured
 
-![Fine-grained unstructured](samenvatting_img_h3/slide-30.png)
+<img src="samenvatting_img_h3/slide-30.png" alt="Fine-grained unstructured" width="82.5%">
 
 Je mag **elk individueel gewicht** vrij wegknippen (wit = pruned).
 - ➕ Heel flexibel (grote keuzevrijheid welke gewichten weg) → hoge compressie.
@@ -297,7 +297,7 @@ Je mag **elk individueel gewicht** vrij wegknippen (wit = pruned).
 
 ## 5.3 Fine-grained vs Coarse-grained
 
-![Fine vs coarse](samenvatting_img_h3/slide-31.png)
+<img src="samenvatting_img_h3/slide-31.png" alt="Fine vs coarse" width="82.5%">
 
 - **Fine-grained / Unstructured:** flexibel maar onregelmatig → moeilijk te versnellen.
 - **Coarse-grained / Structured:** prune hele rijen/kolommen → minder flexibel (een deelverzameling van de fine-grained keuzes), maar **makkelijk te versnellen** want het resultaat is gewoon een kleinere, dense matrix.
@@ -306,7 +306,7 @@ Je mag **elk individueel gewicht** vrij wegknippen (wit = pruned).
 
 ## 5.4 Het geval van convolutielagen (4 dimensies)
 
-![Conv 4 dimensions](samenvatting_img_h3/slide-32.png)
+<img src="samenvatting_img_h3/slide-32.png" alt="Conv 4 dimensions" width="82.5%">
 
 Conv-gewichten hebben **4 dimensies** `[c_o, c_i, k_h, k_w]`:
 - `c_i` = input channels
@@ -317,7 +317,7 @@ Die 4 dimensies geven extra keuzes om "in welk patroon" te prunen.
 
 ## 5.5 Het spectrum van granulariteiten
 
-![Granularity spectrum](samenvatting_img_h3/slide-34.png)
+<img src="samenvatting_img_h3/slide-34.png" alt="Granularity spectrum" width="82.5%">
 
 Van **irregular (links) → regular (rechts)**:
 
@@ -333,7 +333,7 @@ Van **irregular (links) → regular (rechts)**:
 
 ## 5.6 Fine-grained pruning — voor- en nadelen
 
-![Fine-grained pros/cons](samenvatting_img_h3/slide-35.png)
+<img src="samenvatting_img_h3/slide-35.png" alt="Fine-grained pros/cons" width="82.5%">
 
 > **📝 jouw notitie:** *individuele synapsen / neuronen verwijderen, volledig vrij.*
 
@@ -342,23 +342,23 @@ Van **irregular (links) → regular (rechts)**:
 
 ## 5.7 Pattern-based pruning: N:M sparsity
 
-![N:M sparsity dense matrix](samenvatting_img_h3/slide-40.png)
+<img src="samenvatting_img_h3/slide-40.png" alt="N:M sparsity dense matrix" width="82.5%">
 
 **N:M sparsity:** in elke groep van **M** opeenvolgende elementen worden er **N** geprund.
 
 > **📝 jouw notitie:** *in elke groep van M opeenvolgende elementen worden er N gepruned.*
 
-![2:4 sparsity compressed](samenvatting_img_h3/slide-42.png)
+<img src="samenvatting_img_h3/slide-42.png" alt="2:4 sparsity compressed" width="82.5%">
 
 Het klassieke geval is **2:4 sparsity** (50% sparsity): van elke 4 gewichten houd je er 2. Je slaat het op als **non-zero values + 2-bit indices** (de compressed matrix), wat NVIDIA's A100 in hardware versnelt (~2×).
 
-![2:4 accuracy table](samenvatting_img_h3/slide-43.png)
+<img src="samenvatting_img_h3/slide-43.png" alt="2:4 accuracy table" width="82.5%">
 
 En het behoudt de accuracy over veel taken: ResNet-50, ResNeXt, Xception, SSD, MaskRCNN, FairSeq, BERT — Dense FP16 vs Sparse FP16 blijven nagenoeg gelijk (bv. BERT-Large F1 91.9 → 91.9).
 
 ## 5.8 Channel pruning
 
-![Channel pruning vs uniform shrink](samenvatting_img_h3/slide-46.png)
+<img src="samenvatting_img_h3/slide-46.png" alt="Channel pruning vs uniform shrink" width="82.5%">
 
 Bij **channel pruning** verwijder je hele channels → een netwerk met minder channels.
 - ➕ **Directe speedup** (echt kleiner netwerk, werkt op elke GPU).
@@ -368,7 +368,7 @@ Bij **channel pruning** verwijder je hele channels → een netwerk met minder ch
 
 **Uniform shrink vs Channel prune:** in plaats van elke laag even hard te krimpen (uniform, sparsity 0.3 overal), is het beter om **per laag een andere sparsity** te kiezen (bv. 0.5 / 0.3 / 0.7 / 0.2 / 0.3). Dat geeft een betere accuracy-latency trade-off:
 
-![Channel pruning AMC graph](samenvatting_img_h3/slide-47.png)
+<img src="samenvatting_img_h3/slide-47.png" alt="Channel pruning AMC graph" width="82.5%">
 
 De grafiek (ImageNet accuracy vs latency) toont dat **Pruning (AMC, rood)** boven **Uniform Scaling (zwart)** ligt: bij dezelfde latency hogere accuracy. → leidt naar de vraag "hoe vind je die per-laag ratios?" (Deel 7).
 
@@ -378,7 +378,7 @@ De grafiek (ImageNet accuracy vs latency) toont dat **Pruning (AMC, rood)** bove
 
 ## 6.1 Het basisprincipe
 
-![Selection of synapses to prune](samenvatting_img_h3/slide-49.png)
+<img src="samenvatting_img_h3/slide-49.png" alt="Selection of synapses to prune" width="82.5%">
 
 > Hoe **minder belangrijk** de verwijderde parameter is, hoe **beter** de prestatie van het geprunde netwerk blijft.
 
@@ -390,19 +390,19 @@ Voorbeeld: neuron `y = ReLU(10·x₀ − 8·x₁ + 0.1·x₂)`, dus W = [10, −
 
 **Element-wise (L1):** `Importance = |W|`
 
-![Magnitude L1 element-wise](samenvatting_img_h3/slide-50.png)
+<img src="samenvatting_img_h3/slide-50.png" alt="Magnitude L1 element-wise" width="82.5%">
 
 Per gewicht neem je de absolute waarde; de kleinste worden 0. Voorbeeld [3,−2,1,−5] → importances [3,2,1,5] → de kleinste (2 en 1) worden gepruned.
 
 **Row-wise (L1):** `Importance = Σ_{i∈S} |w_i|`
 
-![Magnitude L1 row-wise](samenvatting_img_h3/slide-51.png)
+<img src="samenvatting_img_h3/slide-51.png" alt="Magnitude L1 row-wise" width="82.5%">
 
 Hier prune je hele **rijen** (structured): per rij de som van absolute waarden. Rij [3,−2] → 5, rij [1,−5] → 6 → de zwakste rij (5) gaat eruit.
 
 **Row-wise (L2):** `Importance = √(Σ_{i∈S} |w_i|²)`
 
-![Magnitude L2 row-wise](samenvatting_img_h3/slide-53.png)
+<img src="samenvatting_img_h3/slide-53.png" alt="Magnitude L2 row-wise" width="82.5%">
 
 Zelfde idee maar met de L2-norm: rij [3,−2] → √13, rij [1,−5] → √26 → kleinste (√13) eruit.
 
@@ -410,7 +410,7 @@ Zelfde idee maar met de L2-norm: rij [3,−2] → √13, rij [1,−5] → √26 
 
 ## 6.3 Scaling-based pruning (voor filter/channel pruning)
 
-![Scaling-based pruning](samenvatting_img_h3/slide-54.png)
+<img src="samenvatting_img_h3/slide-54.png" alt="Scaling-based pruning" width="82.5%">
 
 > **📝 jouw notitie:** *betere aanpak voor channel/filter pruning in conv layers.*
 
@@ -418,19 +418,19 @@ Zelfde idee maar met de L2-norm: rij [3,−2] → √13, rij [1,−5] → √26 
 
 De schaalfactoren γ zijn **trainbare parameters** (komen bijvoorbeeld gratis uit de Batch Normalization-laag).
 
-![Scaling-based pruned](samenvatting_img_h3/slide-55.png)
+<img src="samenvatting_img_h3/slide-55.png" alt="Scaling-based pruned" width="82.5%">
 
 **Criterion:** de filters/output-channels met een **kleine γ** worden gepruned (bv. Filter 1 met γ=0.10 en Filter 2 met γ=0.29 eruit; Filter 0 γ=1.17 en Filter 3 γ=0.82 blijven). *(Network Slimming, Liu et al., ICCV 2017.)*
 
 ## 6.4 Selectie van neuronen
 
-![Selection of neurons to prune](samenvatting_img_h3/slide-56.png)
+<img src="samenvatting_img_h3/slide-56.png" alt="Selection of neurons to prune" width="82.5%">
 
 Neuron pruning = **coarse-grained** weight pruning: je verwijdert een hele rij in de gewichtsmatrix (linear layer) of een heel channel (conv layer).
 
 ## 6.5 Percentage-of-Zero-Based Pruning (APoZ)
 
-![Percentage of zero](samenvatting_img_h3/slide-57.png)
+<img src="samenvatting_img_h3/slide-57.png" alt="Percentage of zero" width="82.5%">
 
 > **📝 jouw notitie:** *niet meer naar gewichten kijken, maar naar de activaties = de outputs van neuronen.*
 
@@ -438,11 +438,11 @@ Neuron pruning = **coarse-grained** weight pruning: je verwijdert een hele rij i
 
 **APoZ = Average Percentage of Zeros** = de gemiddelde fractie nullen in de output-activaties van een channel (gemeten over een batch data).
 
-![APoZ smaller better](samenvatting_img_h3/slide-59.png)
+<img src="samenvatting_img_h3/slide-59.png" alt="APoZ smaller better" width="82.5%">
 
 **Criterion:** hoe **kleiner** de APoZ, hoe **belangrijker** het neuron. Het channel met de hoogste APoZ (hier Channel 2 met 14/32) wordt gepruned.
 
-![APoZ example](samenvatting_img_h3/slide-61.png)
+<img src="samenvatting_img_h3/slide-61.png" alt="APoZ example" width="82.5%">
 
 Reken-voorbeeld over Batch = 2, Channel = 3, feature maps 5×5: APoZ van channel 0 = (6+6)/(2·5·5) = 12/50, channel 1 = 15/50, channel 2 = 24/50 → channel 2 heeft de meeste nullen → prune.
 
@@ -454,7 +454,7 @@ Reken-voorbeeld over Batch = 2, Channel = 3, feature maps 5×5: APoZ van channel
 
 ## 7.1 Sensitivity analysis
 
-![Sensitivity analysis process](samenvatting_img_h3/slide-65.png)
+<img src="samenvatting_img_h3/slide-65.png" alt="Sensitivity analysis process" width="82.5%">
 
 Niet elke laag is even gevoelig voor pruning: de **eerste laag** is vaak gevoeliger, andere lagen zijn redundanter. Daarom wil je een **andere ratio per laag**.
 
@@ -464,11 +464,11 @@ Niet elke laag is even gevoelig voor pruning: de **eerste laag** is vaak gevoeli
 3. Observeer de **accuracy-degradatie ΔAccᵢ_r** voor elke ratio.
 4. Herhaal voor alle lagen.
 
-![Sensitivity curves](samenvatting_img_h3/slide-73.png)
+<img src="samenvatting_img_h3/slide-73.png" alt="Sensitivity curves" width="82.5%">
 
 Je krijgt per laag een curve (accuracy vs pruning rate). Sommige lagen blijven lang vlak (**minder gevoelig**, bv. L1), andere zakken snel (**meer gevoelig**, bv. L0). Algemeen: *hoe hoger de pruning rate, hoe meer accuracy-verlies.*
 
-![Threshold T](samenvatting_img_h3/slide-75.png)
+<img src="samenvatting_img_h3/slide-75.png" alt="Threshold T" width="82.5%">
 
 5. Kies een **degradatie-threshold T**: trek een horizontale lijn. Waar elke curve die lijn snijdt → dat is de **pruning rate voor die laag**. Een gevoelige laag krijgt zo automatisch een lagere ratio, een redundante laag een hogere.
 
@@ -480,11 +480,11 @@ Je krijgt per laag een curve (accuracy vs pruning rate). Sommige lagen blijven l
 
 ## 8.1 Pruning als een reinforcement learning-probleem
 
-![AMC RL DDPG](samenvatting_img_h3/slide-80.png)
+<img src="samenvatting_img_h3/slide-80.png" alt="AMC RL DDPG" width="82.5%">
 
 Manueel ratios kiezen steunt op menselijke expertise en trial-and-error → traag en suboptimaal. **AMC (AutoML for Model Compression, He et al., ECCV 2018)** formuleert pruning als een **reinforcement learning**-probleem dat de ratios automatisch zoekt.
 
-![AMC setup](samenvatting_img_h3/slide-81.png)
+<img src="samenvatting_img_h3/slide-81.png" alt="AMC setup" width="82.5%">
 
 De RL-setup:
 - **State:** 11 features (laag-index, channel numbers, kernel sizes, FLOPs, …)
@@ -494,11 +494,11 @@ De RL-setup:
 
 ## 8.2 Resultaten van AMC
 
-![AMC density bar chart](samenvatting_img_h3/slide-82.png)
+<img src="samenvatting_img_h3/slide-82.png" alt="AMC density bar chart" width="82.5%">
 
 Op ResNet50 vindt **AMC** (oranje) lagere densities dan de **menselijke expert** (blauw) — "smaller the better". Totaal: 29% (human) → 20% (AMC). En cruciaal: AMC ontdekt zélf dat sommige lagen (bv. Conv1) gevoeliger zijn en minder geprund moeten worden.
 
-![AMC MobileNet table](samenvatting_img_h3/slide-83.png)
+<img src="samenvatting_img_h3/slide-83.png" alt="AMC MobileNet table" width="82.5%">
 
 Op MobileNet (gemeten op Samsung Galaxy S7 Edge, TF-Lite):
 
@@ -517,7 +517,7 @@ Op MobileNet (gemeten op Samsung Galaxy S7 Edge, TF-Lite):
 
 ## 9.1 Finetuning na het prunen
 
-![Finetuning pruned NN](samenvatting_img_h3/slide-85.png)
+<img src="samenvatting_img_h3/slide-85.png" alt="Finetuning pruned NN" width="82.5%">
 
 Na het prunen daalt de accuracy (vooral bij hoge pruning ratio). **Finetuning** (= hertrainen van de overgebleven gewichten) herstelt de accuracy en laat je de pruning ratio hoger pushen.
 
@@ -525,7 +525,7 @@ Na het prunen daalt de accuracy (vooral bij hoge pruning ratio). **Finetuning** 
 
 ## 9.2 Iteratief prunen
 
-![Iterative pruning final](samenvatting_img_h3/slide-93.png)
+<img src="samenvatting_img_h3/slide-93.png" alt="Iterative pruning final" width="82.5%">
 
 Één keer prunen + finetunen = **één iteratie**. Bij **iterative pruning** verhoog je de target-sparsity **geleidelijk** (bv. 30% → 50% → 70% → …), met telkens een finetune-stap ertussen (de lus `Prune Connections ⇄ Train Weights`).
 

@@ -16,7 +16,7 @@ De voorbije colleges draaiden allemaal om hetzelfde doel — een netwerk effici�
 
 Dat is meteen de reden waarom dit college de scharnier vormt tussen de twee helften van het vak (zie course overview): KD is de laatste techniek uit **PART A — Efficient Inference**, maar het is fundamenteel een **trainings**techniek, en leidt zo naar **PART B — Efficient Training** (distributed training, on-device learning, federated learning in Lect09).
 
-![Course overview — KD is de brug tussen efficient inference en efficient training](samenvatting_img_h8/slide-03.png)
+<img src="samenvatting_img_h8/slide-03.png" alt="Course overview — KD is de brug tussen efficient inference en efficient training" width="82.5%">
 
 | Lecture | Onderwerp |
 |---|---|
@@ -45,7 +45,7 @@ Dat is meteen de reden waarom dit college de scharnier vormt tussen de twee helf
 
 ## 1.1 Het probleem: tiny hardware
 
-![Cloud AI versus Tiny AI: kloof in rekenkracht en geheugen](samenvatting_img_h8/slide-08.png)
+<img src="samenvatting_img_h8/slide-08.png" alt="Cloud AI versus Tiny AI: kloof in rekenkracht en geheugen" width="82.5%">
 
 De motivatie is dezelfde als in heel het vak, nu nog eens scherp gezet. Een **cloud-GPU (A100)** levert ~19.5 TFLOPS en heeft 80 GB geheugen; een **microcontroller (STM32, Tiny AI)** zit in de orde van MFLOPs en ~256 kB geheugen. Dat is een kloof van **vele grootteordes**. De grote modellen (ResNet, ViT-Large) passen simpelweg niet; op de edge draai je MCUNet of MobileNetV2-Tiny.
 
@@ -53,7 +53,7 @@ De centrale vraag van het college staat onderaan de slide: *"Neural network must
 
 ## 1.2 Tiny modellen zijn moeilijk te trainen
 
-![Trainingscurves: ResNet50 vs MobileNetV2-Tiny](samenvatting_img_h8/slide-09.png)
+<img src="samenvatting_img_h8/slide-09.png" alt="Trainingscurves: ResNet50 vs MobileNetV2-Tiny" width="82.5%">
 
 Hier zie je *waarom* tiny modellen extra hulp nodig hebben. Links de trainingscurve van **ResNet50** (groot): train- en validation-accuracy lopen mooi op, tot ~82 % / ~76 %. Rechts **MobileNetV2-Tiny** (klein): beide curves blijven veel lager hangen (~52 % / ~47 %), en — cruciaal — **ook de train-accuracy blijft laag**.
 
@@ -67,7 +67,7 @@ Dat is exact het punt. Bij grote modellen is overfitting het gevaar (train ≫ v
 
 ## 2.1 Het basisidee: teacher → student
 
-![Teacher- en student-netwerk met distillation loss en classification loss](samenvatting_img_h8/slide-10.png)
+<img src="samenvatting_img_h8/slide-10.png" alt="Teacher- en student-netwerk met distillation loss en classification loss" width="82.5%">
 
 De opstelling van **knowledge distillation** (Hinton et al., NeurIPS Workshops 2014):
 
@@ -83,7 +83,7 @@ Klopt precies. Dat is de hele kern: de student leert niet alleen *wat* het juist
 
 ## 2.2 De intuïtie: waarom is de teacher-output waardevoller dan het label?
 
-![Matching prediction probabilities — teacher zelfzeker, student minder](samenvatting_img_h8/slide-11.png)
+<img src="samenvatting_img_h8/slide-11.png" alt="Matching prediction probabilities — teacher zelfzeker, student minder" width="82.5%">
 
 Bekijk een foto van een kat. Het **echte label** is keihard: kat = 1, alle andere = 0. Maar de teacher geeft via de **softmax** een hele verdeling:
 
@@ -91,7 +91,7 @@ $$\text{softmax}: \quad p_i = \frac{\exp(z_i)}{\sum_j \exp(z_j)}$$
 
 In het voorbeeld: teacher-logits Cat = 5, Dog = 1 → kansen 0.982 en 0.017. De student is minder zelfzeker: logits Cat = 3, Dog = 2 → 0.731 en 0.269.
 
-![Soft probabilities dragen extra informatie](samenvatting_img_h8/slide-12.png)
+<img src="samenvatting_img_h8/slide-12.png" alt="Soft probabilities dragen extra informatie" width="82.5%">
 
 > 📝 **jouw notitie:** soft probabilities bevatten extra informatie over klasse-relaties
 
@@ -99,7 +99,7 @@ Dit is dé sleutel-intuïtie. Een hard label (kat = 1, hond = 0, auto = 0) zegt 
 
 ## 2.3 Temperatuur: de verdeling "uitsmeren"
 
-![Concept of temperature — T=1 vs T=10](samenvatting_img_h8/slide-13.png)
+<img src="samenvatting_img_h8/slide-13.png" alt="Concept of temperature — T=1 vs T=10" width="82.5%">
 
 Er is één probleem: als de teacher heel zelfzeker is (0.982 vs 0.017), staat bijna alle informatie in één getal en zijn de relaties tussen de kleine kansen nauwelijks zichtbaar. De **temperatuur T** lost dat op door de logits te delen vóór de softmax:
 
@@ -116,7 +116,7 @@ Door bij distillatie een hogere T te gebruiken worden de kleine kansen (en dus d
 
 ## 2.4 Formele definitie
 
-![Formele definitie van KD](samenvatting_img_h8/slide-14.png)
+<img src="samenvatting_img_h8/slide-14.png" alt="Formele definitie van KD" width="82.5%">
 
 Samengevat in formule-vorm: een netwerk zet logits $z_i$ om naar klassekansen met
 
@@ -144,7 +144,7 @@ Tot nu matchten we de **output-logits**. Maar een teacher bevat veel meer kennis
 
 ## 3.1 Matching output logits (de standaard)
 
-![Matching output logits met cross-entropy of L2 distillation loss](samenvatting_img_h8/slide-16.png)
+<img src="samenvatting_img_h8/slide-16.png" alt="Matching output logits met cross-entropy of L2 distillation loss" width="82.5%">
 
 De klassieke variant: laat de student-logits de teacher-logits matchen via de **distillation loss**, naast de gewone **classification loss** op het echte label.
 
@@ -159,11 +159,11 @@ De twee gangbare keuzes voor de distillation loss (met $p_t, p_s$ de teacher/stu
 
 ## 3.2 Matching intermediate weights (FitNets)
 
-![Matching intermediate weights — diagram](samenvatting_img_h8/slide-17.png)
+<img src="samenvatting_img_h8/slide-17.png" alt="Matching intermediate weights — diagram" width="82.5%">
 
 In plaats van (of naast) de output kun je een **tussenliggende laag** van de student laten lijken op een tussenlaag van de teacher. De distillation loss hangt dan in het *midden* van beide netwerken.
 
-![FitNets: hint training met een FC-laag om shapes te aligneren](samenvatting_img_h8/slide-18.png)
+<img src="samenvatting_img_h8/slide-18.png" alt="FitNets: hint training met een FC-laag om shapes te aligneren" width="82.5%">
 
 Dit is **FitNets** (Romero et al., ICLR 2015). De teacher heeft een **hint layer** ($W_{Hint}$), de student een **guided layer** ($W_{Guided}$). Je traint de student-laag zo dat hij de teacher-laag benadert.
 
@@ -173,7 +173,7 @@ Exact het praktische probleem dat FitNets oplost. Teacher en student hebben mees
 
 ## 3.3 Matching intermediate features
 
-![Matching intermediate features via Maximum Mean Discrepancy](samenvatting_img_h8/slide-19.png)
+<img src="samenvatting_img_h8/slide-19.png" alt="Matching intermediate features via Maximum Mean Discrepancy" width="82.5%">
 
 Variant op het vorige: niet de gewichten, maar de **feature maps** (de activaties) van tussenlagen op elkaar afstemmen. **Intuïtie:** als teacher en student dezelfde dingen "zien", zouden hun feature-verdelingen op elkaar moeten lijken, niet enkel hun eindoutput.
 
@@ -181,7 +181,7 @@ De gebruikte maat is **Maximum Mean Discrepancy (MMD)**: een afstandsmaat tussen
 
 ## 3.4 Matching intermediate attention maps (gradients)
 
-![Attention map gedefinieerd via de gradiënt van de loss](samenvatting_img_h8/slide-20.png)
+<img src="samenvatting_img_h8/slide-20.png" alt="Attention map gedefinieerd via de gradiënt van de loss" width="82.5%">
 
 Een rijker signaal: de **attention** van het netwerk, gedefinieerd via de **gradiënt** van de leerobjective $L$ naar een feature map $x$:
 
@@ -189,11 +189,11 @@ $$\text{attention} = \frac{\partial L}{\partial x}$$
 
 **Intuïtie:** als $\frac{\partial L}{\partial x_{i,j}}$ **groot** is, dan zou een kleine verandering op positie $(i,j)$ de output sterk beïnvloeden — het netwerk "let" daar dus sterk op. De attention map geeft visueel weer wáár in het beeld het netwerk naar kijkt (in het voorbeeld: de vorm van het dier licht op).
 
-![Performante modellen hebben gelijkaardige attention maps](samenvatting_img_h8/slide-21.png)
+<img src="samenvatting_img_h8/slide-21.png" alt="Performante modellen hebben gelijkaardige attention maps" width="82.5%">
 
 **Waarom is dit een nuttig distillatie-signaal?** Omdat sterke modellen op elkaar lijken in *waar ze naar kijken*. De attention maps van performante ImageNet-modellen (ResNet34 73 %, ResNet101 77 %) lijken sterk op elkaar, terwijl een zwak model (NIN, 62 %) heel andere maps heeft. Als je student de attention maps van een sterke teacher overneemt, duw je hem dus richting "kijken zoals een goed model". (De kolommen $F_{sum}$, $F^2_{sum}$, … zijn verschillende manieren om over de kanaal-dimensie te reduceren tot één 2D-map.)
 
-![Matching intermediate attention maps](samenvatting_img_h8/slide-22.png)
+<img src="samenvatting_img_h8/slide-22.png" alt="Matching intermediate attention maps" width="82.5%">
 
 > 📝 **jouw notitie:** student wordt getraind om attention maps van teacher te matchen -> kd loss op tussenliggende attention maps
 
@@ -201,7 +201,7 @@ Precies: een KD-loss op de tussenliggende attention maps ($\partial L / \partial
 
 ## 3.5 Matching sparsity patterns
 
-![Matching sparsity patterns na ReLU](samenvatting_img_h8/slide-23.png)
+<img src="samenvatting_img_h8/slide-23.png" alt="Matching sparsity patterns na ReLU" width="82.5%">
 
 Nóg een signaal: welke **neuronen actief zijn** na de ReLU. Een neuron is "geactiveerd" als zijn waarde > 0, weergegeven door de indicator-functie:
 
@@ -219,7 +219,7 @@ Tot hier matchten we, per input, een grootheid van student en teacher. **Relatio
 
 ### Relaties tussen lagen
 
-![Relaties tussen lagen via inner product (Gram-matrix)](samenvatting_img_h8/slide-24.png)
+<img src="samenvatting_img_h8/slide-24.png" alt="Relaties tussen lagen via inner product (Gram-matrix)" width="82.5%">
 
 Hier neem je het **inner product** tussen feature maps van verschillende lagen (een matrix van vorm $C_{in} \times C_{out}$, met reductie over de spatiale dimensies — in feite een Gram-matrix die beschrijft *hoe de lagen onderling samenhangen*). Je berekent die relatie-matrix $G$ voor zowel teacher ($G^T$) als student ($G^S$) en matcht ze met een **L2-loss** ($G_1^T \leftrightarrow G_1^S$, enz.).
 
@@ -227,13 +227,13 @@ Belangrijk detail: hier verschillen teacher (32 lagen) en student (14 lagen) enk
 
 ### Relaties tussen samples
 
-![Conventional KD vs Relational KD: punt-tot-punt vs structuur-tot-structuur](samenvatting_img_h8/slide-25.png)
+<img src="samenvatting_img_h8/slide-25.png" alt="Conventional KD vs Relational KD: punt-tot-punt vs structuur-tot-structuur" width="82.5%">
 
 Het verschil mooi in beeld:
 - **Conventional KD** = *point to point*: voor **één input** matcht de student het teacher-punt.
 - **Relational KD** = *structure to structure*: kijk naar de **onderlinge relaties** tussen de features van **meerdere inputs** en match die structuur.
 
-![Relational KD — pairwise afstandsvector ψ](samenvatting_img_h8/slide-26.png)
+<img src="samenvatting_img_h8/slide-26.png" alt="Relational KD — pairwise afstandsvector ψ" width="82.5%">
 
 Concreet: voor $n$ samples bereken je de vector van alle **paarsgewijze afstanden** tussen de feature-vectoren:
 
@@ -247,7 +247,7 @@ een vector van lengte $n(n-1)/2$. Je berekent $\psi$ voor teacher én student en
 
 ## 4.1 Het nadeel van een vaste grote teacher
 
-![Standaard KD: teacher is groot én fixed](samenvatting_img_h8/slide-28.png)
+<img src="samenvatting_img_h8/slide-28.png" alt="Standaard KD: teacher is groot én fixed" width="82.5%">
 
 In alle vorige varianten was de teacher **groot en vast** (large, fixed). De discussievraag op de slide: *"What is the disadvantage of fixed large teachers? Does it have to be the case that we need a fixed large teacher in KD?"*
 
@@ -255,7 +255,7 @@ In alle vorige varianten was de teacher **groot en vast** (large, fixed). De dis
 
 ## 4.2 Self-distillation: Born-Again Networks
 
-![Born-Again Networks: iteratief hertrainen van hetzelfde netwerk](samenvatting_img_h8/slide-29.png)
+<img src="samenvatting_img_h8/slide-29.png" alt="Born-Again Networks: iteratief hertrainen van hetzelfde netwerk" width="82.5%">
 
 Bij **self-distillation** is er geen apart groot model: het netwerk distilleert in zichzelf.
 
@@ -268,13 +268,13 @@ Bij **self-distillation** is er geen apart groot model: het netwerk distilleert 
 - **Architectuur:** $T = S_1 = S_2 = \dots = S_k$ (allemaal hetzelfde net).
 - **Accuracy:** $T < S_1 < S_2 < \dots < S_k$ — elke generatie wordt een tikje beter, puur door zichzelf als teacher te gebruiken.
 
-![Born-Again Networks: ensemble van generaties](samenvatting_img_h8/slide-30.png)
+<img src="samenvatting_img_h8/slide-30.png" alt="Born-Again Networks: ensemble van generaties" width="82.5%">
 
 En, zoals je noteerde: je kan de generaties ook **ensemblen** ($T, S_1, \dots, S_k$ samen) voor nog betere prestaties.
 
 ## 4.3 Online distillation: Deep Mutual Learning
 
-![Deep Mutual Learning: twee netwerken leren tegelijk van elkaar](samenvatting_img_h8/slide-31.png)
+<img src="samenvatting_img_h8/slide-31.png" alt="Deep Mutual Learning: twee netwerken leren tegelijk van elkaar" width="82.5%">
 
 Bij **online distillation** train je niet eerst de teacher en daarna de student, maar **alles tegelijk**.
 
@@ -290,13 +290,13 @@ $$\mathcal{L}(T) = \text{CrossEntropy}(T(I), y) + \text{KL}(T(I), S(I))$$
 
 De rollen zijn symmetrisch: er is geen "echte" teacher, beide netwerken zijn elkaars teacher én student. Geen voorgetraind model nodig, en zelfs $S = T$ (gelijke architectuur) mag.
 
-![Deep Mutual Learning: resultaten op CIFAR-10/100](samenvatting_img_h8/slide-32.png)
+<img src="samenvatting_img_h8/slide-32.png" alt="Deep Mutual Learning: resultaten op CIFAR-10/100" width="82.5%">
 
 De resultatentabel toont het mooie: **deep mutual learning verbetert beide netwerken** (zowel "net 1" als "net 2") tegenover onafhankelijk trainen — ook als beide dezelfde architectuur hebben. Twee modellen die samen leren, doen het beter dan elk apart.
 
 ## 4.4 Combinatie: Be Your Own Teacher
 
-![Be Your Own Teacher: deep supervision + distillation binnen één netwerk](samenvatting_img_h8/slide-33.png)
+<img src="samenvatting_img_h8/slide-33.png" alt="Be Your Own Teacher: deep supervision + distillation binnen één netwerk" width="82.5%">
 
 **Be Your Own Teacher** (Zhang et al., ICCV 2019) combineert self- en online distillation *binnen één netwerk*. Je hangt aan elke ResBlock een eigen tussen-classifier (met bottleneck + FC + softmax), en de **diepere lagen distilleren de ondiepere**. Er zijn drie loss-bronnen per tussen-classifier:
 1. cross-entropy loss van de labels,
@@ -305,7 +305,7 @@ De resultatentabel toont het mooie: **deep mutual learning verbetert beide netwe
 
 > **Intuïtie:** voorspellingen in latere stadia zijn betrouwbaarder, dus gebruikt men die om de voorspellingen van de vroegere stadia te superviseren. *(geaccentueerd op de slide)*
 
-![Be Your Own Teacher: resultaten op CIFAR100](samenvatting_img_h8/slide-34.png)
+<img src="samenvatting_img_h8/slide-34.png" alt="Be Your Own Teacher: resultaten op CIFAR100" width="82.5%">
 
 Resultaten op CIFAR100: consistente verbetering t.o.v. de baseline voor alle netwerken. Bonus: de tussen-classifiers (1/4, 2/4, 3/4 van het netwerk) kunnen soms al de baseline evenaren → je kan **vroeger stoppen met rekenen** (early exit) en zo de **inference-efficiëntie** verhogen.
 
@@ -319,65 +319,65 @@ De klassieke trucs om generalisatie te verbeteren, bestrijden allemaal **overfit
 
 **Data augmentation** — varieer de trainingsdata kunstmatig:
 
-![Data augmentation](samenvatting_img_h8/slide-36.png)
+<img src="samenvatting_img_h8/slide-36.png" alt="Data augmentation" width="82.5%">
 
 - **Cutout** — knip een blok uit de afbeelding weg (DeVries et al., 2017).
 
-![Cutout](samenvatting_img_h8/slide-37.png)
+<img src="samenvatting_img_h8/slide-37.png" alt="Cutout" width="82.5%">
 
 - **Mixup** — meng twee afbeeldingen (en hun labels) lineair, bv. λ = 0.5 → label [0.5, 0.5] (Zhang et al., ICLR 2018).
 
-![Mixup](samenvatting_img_h8/slide-38.png)
+<img src="samenvatting_img_h8/slide-38.png" alt="Mixup" width="82.5%">
 
 - **AutoAugment** — laat een algoritme de beste augmentatie-policies leren (Cubuk et al., CVPR 2019).
 
-![AutoAugment](samenvatting_img_h8/slide-39.png)
+<img src="samenvatting_img_h8/slide-39.png" alt="AutoAugment" width="82.5%">
 
 **Dropout** — zet tijdens training willekeurig neuronen uit, zodat het netwerk niet op enkele neuronen leunt:
 
-![Dropout](samenvatting_img_h8/slide-40.png)
+<img src="samenvatting_img_h8/slide-40.png" alt="Dropout" width="82.5%">
 
 - **SpatialDropout** — drop hele feature-kanalen i.p.v. losse neuronen (Tompson et al., CVPR 2015).
 
-![SpatialDropout](samenvatting_img_h8/slide-41.png)
+<img src="samenvatting_img_h8/slide-41.png" alt="SpatialDropout" width="82.5%">
 
 - **DropBlock** — drop aaneengesloten *blokken* in de feature map (Ghiasi et al., NeurIPS 2018).
 
-![DropBlock](samenvatting_img_h8/slide-42.png)
+<img src="samenvatting_img_h8/slide-42.png" alt="DropBlock" width="82.5%">
 
 ## 5.2 Het probleem: regularisatie schaadt tiny modellen
 
-![Dropout/data augmentation verbetert grote netwerken](samenvatting_img_h8/slide-43.png)
+<img src="samenvatting_img_h8/slide-43.png" alt="Dropout/data augmentation verbetert grote netwerken" width="82.5%">
 
 Voor een **groot** model (ResNet50, 4.1G MACs) werken al deze trucs prima: Mixup, AutoAugment en DropBlock liggen **boven** de baseline op ImageNet.
 
-![Dropout/data augmentation schaadt tiny netwerken](samenvatting_img_h8/slide-44.png)
+<img src="samenvatting_img_h8/slide-44.png" alt="Dropout/data augmentation schaadt tiny netwerken" width="82.5%">
 
 Maar voor een **tiny** model (MobileNetV2-Tiny, 23.5M MACs) gebeurt het omgekeerde: Mixup, AutoAugment en DropBlock liggen **onder** de baseline. Regularisatie **schaadt** hier.
 
-![Tiny netwerk mist capaciteit](samenvatting_img_h8/slide-45.png)
+<img src="samenvatting_img_h8/slide-45.png" alt="Tiny netwerk mist capaciteit" width="82.5%">
 
 **Waarom?** Een tiny netwerk **mist capaciteit** — het underfit al (zie DEEL 1). Het probleem is *niet* overfitting, dus technieken die de taak nóg moeilijker maken (data augmentation) of het netwerk nóg minder zeker maken (dropout) duwen het verder de verkeerde richting uit. Tiny modellen hebben het **omgekeerde** nodig: méér signaal, niet minder.
 
 ## 5.3 De oplossing: Network Augmentation (NetAug)
 
-![Network Augmentation: augmenteer het model, niet de data](samenvatting_img_h8/slide-46.png)
+<img src="samenvatting_img_h8/slide-46.png" alt="Network Augmentation: augmenteer het model, niet de data" width="82.5%">
 
 **Network Augmentation** (Cai et al., ICLR 2022) draait het idee om: in plaats van de **data** te augmenteren (om overfitting te bestrijden), augmenteer je het **model** (om underfitting te bestrijden). Het idee: geef het tiny model tijdens training **extra supervisie** door het tijdelijk in te bedden in een groter netwerk. Onderaan zie je dat NetAug (rode balk) als enige *boven* de baseline uitkomt voor MobileNetV2-Tiny.
 
 ### Hoe NetAug traint
 
-![NetAug: base supervision](samenvatting_img_h8/slide-47.png)
+<img src="samenvatting_img_h8/slide-47.png" alt="NetAug: base supervision" width="82.5%">
 
 Start met het tiny model met gewichten $W_{base}$. De gewone loss is de **base supervision**:
 
 $$L_{aug} = L(W_{base})$$
 
-![NetAug: bouw een augmented model](samenvatting_img_h8/slide-48.png)
+<img src="samenvatting_img_h8/slide-48.png" alt="NetAug: bouw een augmented model" width="82.5%">
 
 Nu bouw je rond dat tiny model een **augmented (breder) model**: het tiny model is een **subset** van een groter netwerk met extra gewichten $W_{aug}$. De kerngedachte: de tiny gewichten $W_{base}$ worden **gedeeld** — ze zitten zowel in het tiny model als ingebed in het brede model.
 
-![NetAug: training step 1 — base + auxiliary supervision](samenvatting_img_h8/slide-49.png)
+<img src="samenvatting_img_h8/slide-49.png" alt="NetAug: training step 1 — base + auxiliary supervision" width="82.5%">
 
 De totale loss krijgt er een **auxiliary supervision** term bij, berekend via het augmented model:
 
@@ -389,23 +389,23 @@ Bij elke trainingsstap sample je een ander breder sub-netwerk (Step 1, 2, 3, …
 
 ### NetAug: resultaten
 
-![NetAug: learning curve voor tiny model](samenvatting_img_h8/slide-52.png)
+<img src="samenvatting_img_h8/slide-52.png" alt="NetAug: learning curve voor tiny model" width="82.5%">
 
 Voor een tiny netwerk (MobileNetV2-Tiny) verbetert NetAug **zowel de train- als de validation-accuracy** (+1.3 % / +1.6 %) — bevestiging dat het underfitting aanpakt (de train-accuracy gaat *omhoog*, het tegenovergestelde van regularisatie).
 
-![NetAug: learning curve tiny vs groot model](samenvatting_img_h8/slide-53.png)
+<img src="samenvatting_img_h8/slide-53.png" alt="NetAug: learning curve tiny vs groot model" width="82.5%">
 
 Voor een **groot** netwerk (ResNet50) verbetert NetAug de train-accuracy wel, maar **schaadt** het de val-accuracy (−0.3 %). Logisch: een groot model heeft geen extra capaciteit nodig en gaat dan juist overfitten. **NetAug is dus specifiek een techniek voor tiny modellen.**
 
-![NetAug: orthogonaal aan KD](samenvatting_img_h8/slide-54.png)
+<img src="samenvatting_img_h8/slide-54.png" alt="NetAug: orthogonaal aan KD" width="82.5%">
 
 NetAug is **orthogonaal aan KD**: ze verbeteren onafhankelijk van elkaar, en **NetAug + KD samen** geeft het beste resultaat over MobileNetV2-Tiny, MobileNetV2, MobileNetV3 en ProxylessNAS. Je kan beide tegelijk inzetten.
 
-![NetAug: transfer learning](samenvatting_img_h8/slide-55.png)
+<img src="samenvatting_img_h8/slide-55.png" alt="NetAug: transfer learning" width="82.5%">
 
 NetAug geeft ook **betere transfer learning** dan KD en dan simpelweg 4× langer trainen (Food101, Flowers102, Cars, Pets, Pascal VOC), ook al zijn de pure ImageNet-scores vergelijkbaar.
 
-![NetAug: transfer naar object detection](samenvatting_img_h8/slide-56.png)
+<img src="samenvatting_img_h8/slide-56.png" alt="NetAug: transfer naar object detection" width="82.5%">
 
 En het transfereert naar **object detection** (YoloV3 + MobileNetV2): bij gelijke accuracy bespaart NetAug **−41 % MACs** (Pascal VOC) en **−38 % MACs** (COCO) — een fors efficiëntievoordeel op de edge.
 

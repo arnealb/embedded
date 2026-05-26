@@ -41,7 +41,7 @@ Dit is het vierde college. **Quantization** is — samen met pruning (Lect03) �
 
 ## 1.1 Low Bit Operations are Cheaper
 
-![Low bit operations are cheaper](samenvatting_img_h4/slide-06.png)
+<img src="samenvatting_img_h4/slide-06.png" alt="Low bit operations are cheaper" width="82.5%">
 
 De kernboodschap die het hele vak motiveert: **minder bits → minder energie.** De tabel geeft de ruwe energiekost (in pJ, 45nm bij 0.9V) van basisbewerkingen:
 
@@ -66,7 +66,7 @@ De kernboodschap die het hele vak motiveert: **minder bits → minder energie.**
 
 ## 1.2 Integer
 
-![Integer representaties](samenvatting_img_h4/slide-09.png)
+<img src="samenvatting_img_h4/slide-09.png" alt="Integer representaties" width="82.5%">
 
 Drie manieren om gehele getallen in `n` bits voor te stellen:
 
@@ -78,7 +78,7 @@ Drie manieren om gehele getallen in `n` bits voor te stellen:
 
 ## 1.3 Fixed-Point Number
 
-![Fixed-point number](samenvatting_img_h4/slide-10.png)
+<img src="samenvatting_img_h4/slide-10.png" alt="Fixed-point number" width="82.5%">
 
 Een **fixed-point**-getal splitst de bits in een **integer-deel** en een **fractie-deel**, met een vaste (denkbeeldige) komma ertussen. Twee manieren om naar hetzelfde bitpatroon te kijken:
 
@@ -91,7 +91,7 @@ Een **fixed-point**-getal splitst de bits in een **integer-deel** en een **fract
 
 Het belangrijkste formaat voor neurale netwerken (vóór quantization). Een 32-bit IEEE 754 float bestaat uit **3 velden**:
 
-![Floating-point 32-bit IEEE 754](samenvatting_img_h4/slide-11.png)
+<img src="samenvatting_img_h4/slide-11.png" alt="Floating-point 32-bit IEEE 754" width="82.5%">
 
 - **1 sign bit** (teken)
 - **8 exponent bits**
@@ -109,7 +109,7 @@ De **127** is de *exponent bias* (`= 2⁸⁻¹ − 1`): zo kan de 8-bit exponent
 
 ### Subnormale getallen (Exponent = 0)
 
-![Normal vs subnormal](samenvatting_img_h4/slide-13.png)
+<img src="samenvatting_img_h4/slide-13.png" alt="Normal vs subnormal" width="82.5%">
 
 Bij **Exponent = 0** zou de gewone formule `(1 + Fraction) × 2^(0−127)` gelden, **maar** IEEE 754 *forceert* hier een andere formule zodat ook hele kleine getallen (en 0 zelf) representeerbaar zijn:
 
@@ -119,15 +119,15 @@ Merk op: de **impliciete 1 verdwijnt** (het wordt `Fraction` i.p.v. `1 + Fractio
 
 - **Kleinste positieve subnormale waarde:** fraction = `00…01` → `2⁻²³ × 2⁻¹²⁶ = 2⁻¹⁴⁹`.
 
-![Smallest subnormal](samenvatting_img_h4/slide-15.png)
+<img src="samenvatting_img_h4/slide-15.png" alt="Smallest subnormal" width="82.5%">
 
 - **Grootste subnormale waarde:** fraction = `11…1` → `(1 − 2⁻²³) × 2⁻¹²⁶` (via meetkundige reeks `2⁻²³ + 2⁻²² + … + 2⁻¹ = 1 − 2⁻²³`).
 
-![Largest subnormal](samenvatting_img_h4/slide-17.png)
+<img src="samenvatting_img_h4/slide-17.png" alt="Largest subnormal" width="82.5%">
 
 ### Speciale waarden (Exponent = 255)
 
-![Special values inf NaN](samenvatting_img_h4/slide-18.png)
+<img src="samenvatting_img_h4/slide-18.png" alt="Special values inf NaN" width="82.5%">
 
 Bij **Exponent = FF (255)**:
 - Fraction = 0 → **±∞** (positief of negatief oneindig, afhankelijk van de tekenbit).
@@ -137,7 +137,7 @@ Bij **Exponent = FF (255)**:
 
 ### Samenvattende tabel + getallenas
 
-![Exponent table and number line](samenvatting_img_h4/slide-19.png)
+<img src="samenvatting_img_h4/slide-19.png" alt="Exponent table and number line" width="82.5%">
 
 | Exponent | Fraction = 0 | Fraction ≠ 0 | Vergelijking |
 |---|---|---|---|
@@ -149,7 +149,7 @@ De getallenas toont: **subnormal values** liggen dicht bij 0 (van `2⁻¹⁴⁹`
 
 ### Floating-point formaten: FP32 / FP16 / BF16
 
-![FP32 FP16 BF16](samenvatting_img_h4/slide-20.png)
+<img src="samenvatting_img_h4/slide-20.png" alt="FP32 FP16 BF16" width="82.5%">
 
 De vuistregel staat bovenaan: **Exponent Width → Range; Fraction Width → Precision.**
 
@@ -163,7 +163,7 @@ De vuistregel staat bovenaan: **Exponent Width → Range; Fraction Width → Pre
 
 ### FP8 (Nvidia)
 
-![FP8 E4M3 E5M2](samenvatting_img_h4/slide-23.png)
+<img src="samenvatting_img_h4/slide-23.png" alt="FP8 E4M3 E5M2" width="82.5%">
 
 Voor extreme efficiëntie bestaan er **8-bit floats** in twee smaken:
 
@@ -176,7 +176,7 @@ Voor extreme efficiëntie bestaan er **8-bit floats** in twee smaken:
 
 **Vraag (slide):** Wat is het volgende **IEEE FP16**-getal in decimaal? `1 10001 1100000000` (bias = 15).
 
-![FP16 voorbeeld](samenvatting_img_h4/slide-21.png)
+<img src="samenvatting_img_h4/slide-21.png" alt="FP16 voorbeeld" width="82.5%">
 
 - **Sign:** 1 → negatief (−)
 - **Exponent:** `10001₂ = 17`, minus bias 15 → `17 − 15 = 2`
@@ -187,7 +187,7 @@ Voor extreme efficiëntie bestaan er **8-bit floats** in twee smaken:
 
 **Vraag (slide):** Wat is decimaal **2.5** in **Brain Float (BF16)**? (bias = 127)
 
-![BF16 voorbeeld](samenvatting_img_h4/slide-22.png)
+<img src="samenvatting_img_h4/slide-22.png" alt="BF16 voorbeeld" width="82.5%">
 
 - `2.5 = 1.25 × 2¹`
 - **Sign:** + → 0
@@ -201,7 +201,7 @@ Voor extreme efficiëntie bestaan er **8-bit floats** in twee smaken:
 
 ## 2.1 What is Quantization?
 
-![What is quantization](samenvatting_img_h4/slide-25.png)
+<img src="samenvatting_img_h4/slide-25.png" alt="What is quantization" width="82.5%">
 
 > **Quantization is the process of constraining an input from a continuous (or otherwise large) set of values to a discrete set.**
 
@@ -211,7 +211,7 @@ Het verschil tussen een input-waarde en zijn gequantizeerde waarde heet de **qua
 
 ## 2.2 Uniform vs non-uniform quantization
 
-![Uniform vs non-uniform](samenvatting_img_h4/slide-26.png)
+<img src="samenvatting_img_h4/slide-26.png" alt="Uniform vs non-uniform" width="82.5%">
 
 De input→output-stappenfunctie kan op twee manieren:
 - **Uniform:** alle quantization-stappen zijn **even breed** (gelijke afstand tussen niveaus). Eenvoudig, hardware-vriendelijk.
@@ -219,7 +219,7 @@ De input→output-stappenfunctie kan op twee manieren:
 
 ## 2.3 Neural Network Quantization: het overzicht
 
-![NN quantization agenda](samenvatting_img_h4/slide-28.png)
+<img src="samenvatting_img_h4/slide-28.png" alt="NN quantization agenda" width="82.5%">
 
 Er zijn vier "niveaus" van quantization, oplopend in agressiviteit. De onderste tabel toont wat er met **storage** (opslag) en **computation** (rekenen) gebeurt:
 
@@ -234,7 +234,7 @@ Er zijn vier "niveaus" van quantization, oplopend in agressiviteit. De onderste 
 
 ## 2.4 Weight Quantization — de basisidee
 
-![Weight quantization](samenvatting_img_h4/slide-30.png)
+<img src="samenvatting_img_h4/slide-30.png" alt="Weight quantization" width="82.5%">
 
 Vertrek van een matrix met **32-bit float**-gewichten. Het idee van quantization: gewichten die dicht bij elkaar liggen (`2.09, 2.12, 1.92, 1.87`) **samenvatten tot één waarde** (bv. `2.0`). In plaats van elk gewicht apart op te slaan, sla je een klein aantal representatieve waarden op + voor elk gewicht een verwijzing.
 
@@ -279,13 +279,13 @@ Als je **enkel weights** quantizeert, moet je elke int8-weight nog steeds terug 
 
 *(Deep Compression, Han et al., ICLR 2016.)*
 
-![K-means weight quantization basis](samenvatting_img_h4/slide-32.png)
+<img src="samenvatting_img_h4/slide-32.png" alt="K-means weight quantization basis" width="82.5%">
 
 **Idee:** clusterer alle gewichten met **K-means** in een klein aantal groepen. Elk cluster krijgt één **centroid** (gemiddelde waarde). Je slaat dan op:
 1. een **cluster index** per gewicht (klein integer, bv. 2-bit),
 2. een **codebook** = de lijst centroids (in float).
 
-![K-means cluster index codebook storage](samenvatting_img_h4/slide-33.png)
+<img src="samenvatting_img_h4/slide-33.png" alt="K-means cluster index codebook storage" width="82.5%">
 
 **Hoe het werkt (zie foto):**
 - Links de originele 4×4 float-matrix → clusteren → **cluster index** (2-bit ints, waarden 0–3) + **codebook** (4 centroids: `-1.00, 0.00, 1.50, 2.00`).
@@ -298,7 +298,7 @@ Als je **enkel weights** quantizeert, moet je elke int8-weight nog steeds terug 
 
 ### Fine-tuning van gequantizeerde gewichten
 
-![K-means fine-tuning](samenvatting_img_h4/slide-34.png)
+<img src="samenvatting_img_h4/slide-34.png" alt="K-means fine-tuning" width="82.5%">
 
 Na het clusteren kan je de **centroids bijregelen** met gradient descent (`W_new = W_old − η·G`). De truc: de gradiënten worden **per cluster gegroepeerd en opgeteld (reduce)**, en die som past de centroid aan (× learning rate).
 
@@ -308,21 +308,21 @@ Na het clusteren kan je de **centroids bijregelen** met gradient descent (`W_new
 
 Drie histogrammen vertellen het verhaal:
 
-![Before quantization](samenvatting_img_h4/slide-38.png)
+<img src="samenvatting_img_h4/slide-38.png" alt="Before quantization" width="82.5%">
 
 > **📝 jouw notitie:** *Een histogram van gewichtswaarden vóór quantization. De verdeling is continu en bell-shaped (normaalverdeling) — duizenden unieke waarden, netjes gespreid over een bereik van ca. −0.10 tot +0.10.*
 
-![After quantization](samenvatting_img_h4/slide-39.png)
+<img src="samenvatting_img_h4/slide-39.png" alt="After quantization" width="82.5%">
 
 > **📝 jouw notitie:** *Hetzelfde histogram maar na K-means quantization. De continue verdeling is vervangen door discrete pieken — alle gewichten zijn nu samengeclusterd op een klein aantal centroid-waarden. De pieken zitten op de posities van de K centroids.*
 
-![After quantization and retraining](samenvatting_img_h4/slide-40.png)
+<img src="samenvatting_img_h4/slide-40.png" alt="After quantization and retraining" width="82.5%">
 
 > **📝 jouw notitie:** *Hetzelfde histogram maar na fine-tuning. De pieken zijn wat verschoven (centroids zijn geüpdatet) maar de structuur blijft discreet. De pieken zijn nu iets optimaler geplaatst t.o.v. de loss function.*
 
 ### Accuracy vs compression rate (AlexNet, ImageNet)
 
-![Accuracy vs compression all three](samenvatting_img_h4/slide-37.png)
+<img src="samenvatting_img_h4/slide-37.png" alt="Accuracy vs compression all three" width="82.5%">
 
 De grafiek (accuracy loss vs model size ratio na compressie) vergelijkt drie curves:
 - **Quantization Only** (geel): accuracy zakt onder ~8% model-grootte.
@@ -333,7 +333,7 @@ De grafiek (accuracy loss vs model size ratio na compressie) vergelijkt drie cur
 
 ## 3.2 How Many Bits do We Need?
 
-![How many bits](samenvatting_img_h4/slide-41.png)
+<img src="samenvatting_img_h4/slide-41.png" alt="How many bits" width="82.5%">
 
 Hoeveel bits per gewicht heb je echt nodig vóór de accuracy instort? Antwoord verschilt per laagtype:
 - **Conv-lagen:** ~**4 bits** zijn nodig (gevoeliger).
@@ -343,7 +343,7 @@ Daarboven (5–8 bits) wint accuracy bijna niets meer; daaronder stort ze in.
 
 ## 3.3 Huffman Coding
 
-![Huffman coding](samenvatting_img_h4/slide-42.png)
+<img src="samenvatting_img_h4/slide-42.png" alt="Huffman coding" width="82.5%">
 
 Een extra (lossless) compressiestap bovenop quantization:
 - **Frequente** gewichten → **minder** bits.
@@ -353,7 +353,7 @@ Het gewicht-histogram is niet uniform (sommige indexen komen veel vaker voor), d
 
 ## 3.4 Summary of Deep Compression
 
-![Summary of deep compression](samenvatting_img_h4/slide-43.png)
+<img src="samenvatting_img_h4/slide-43.png" alt="Summary of deep compression" width="82.5%">
 
 De volledige Deep Compression-pijplijn, drie stappen die **elk de accuracy behouden**:
 
@@ -365,7 +365,7 @@ De volledige Deep Compression-pijplijn, drie stappen die **elk de accuracy behou
 
 ## 3.5 Deep Compression Results
 
-![Deep compression results](samenvatting_img_h4/slide-44.png)
+<img src="samenvatting_img_h4/slide-44.png" alt="Deep compression results" width="82.5%">
 
 | Netwerk | Origineel | Gecomprimeerd | Ratio | Acc voor → na |
 |---|---|---|---|---|
@@ -382,11 +382,11 @@ De volledige Deep Compression-pijplijn, drie stappen die **elk de accuracy behou
 
 Vanaf hier het tweede type — en het belangrijkste voor echte int-hardware. In het overzicht: **integer weights én integer arithmetic**.
 
-![NN quantization linear agenda](samenvatting_img_h4/slide-45.png)
+<img src="samenvatting_img_h4/slide-45.png" alt="NN quantization linear agenda" width="82.5%">
 
 ### De affine mapping
 
-![What is linear quantization affine](samenvatting_img_h4/slide-48.png)
+<img src="samenvatting_img_h4/slide-48.png" alt="What is linear quantization affine" width="82.5%">
 
 **Linear quantization = een affine mapping van integers naar reële getallen:**
 
@@ -404,13 +404,13 @@ Voorbeeld op de slide: `(q − (−1)) × 1.07` mapt de 2-bit ints `{-2,-1,0,1}`
 
 > **📝 jouw notitie (over de gewichtsdeling):** *2.09 / 1.07 = 1.95 → 1; −0.98 / 1.07 = −0.916 → −1; 1.48 / 1.07 = 1.383 → "for some reason naar 0?"* (afronden + clampen naar het beschikbare 2-bit bereik kan verrassend uitvallen — vandaar de quantization error).
 
-![Linear quantization floating integer](samenvatting_img_h4/slide-49.png)
+<img src="samenvatting_img_h4/slide-49.png" alt="Linear quantization floating integer" width="82.5%">
 
 De slide kleurt de formule volgens datatype: **r** = floating-point, **q** en **Z** = integer, **S** = floating-point. `q` en `Z` zijn de twee **quantization parameters**. Een belangrijk doel: de reële waarde **r = 0 moet exact representeerbaar** zijn door een quantized integer (vandaar het zero point).
 
 ### De scale S berekenen
 
-![Scale formula](samenvatting_img_h4/slide-51.png)
+<img src="samenvatting_img_h4/slide-51.png" alt="Scale formula" width="82.5%">
 
 Trek `r_min = S(q_min − Z)` af van `r_max = S(q_max − Z)` → het zero point Z valt weg:
 
@@ -418,7 +418,7 @@ $$S = \frac{r_{max} - r_{min}}{q_{max} - q_{min}}$$
 
 > **📝 jouw notitie:** *het zero point heeft geen invloed op de breedte van het bereik, enkel op waar 0 ligt.* En: *S is de afstand tussen twee opeenvolgende quantized integerwaarden in floating-point schaal.*
 
-![Scale berekening 1.07](samenvatting_img_h4/slide-52.png)
+<img src="samenvatting_img_h4/slide-52.png" alt="Scale berekening 1.07" width="82.5%">
 
 **Voorbeeld:** met `r_max = 2.12`, `r_min = −1.08` en 2-bit ints (`q_max = 1`, `q_min = −2`):
 
@@ -426,13 +426,13 @@ $$S = \frac{2.12 - (-1.08)}{1 - (-2)} = \frac{3.20}{3} = 1.07$$
 
 ### Het zero point Z berekenen
 
-![Zero point formula](samenvatting_img_h4/slide-53.png)
+<img src="samenvatting_img_h4/slide-53.png" alt="Zero point formula" width="82.5%">
 
 Uit `r_min = S(q_min − Z)` los je Z op, en je **rondt af** (want Z moet een integer zijn):
 
 $$Z = \text{round}\left(q_{min} - \frac{r_{min}}{S}\right)$$
 
-![Zero point berekening](samenvatting_img_h4/slide-54.png)
+<img src="samenvatting_img_h4/slide-54.png" alt="Zero point berekening" width="82.5%">
 
 **Voorbeeld:** `Z = round(−2 − (−1.08 / 1.07)) = round(−2 + 1.009) = round(−0.99) = −1`.
 
@@ -440,7 +440,7 @@ $$Z = \text{round}\left(q_{min} - \frac{r_{min}}{S}\right)$$
 
 ### Volledig uitgewerkt voorbeeld
 
-![Example 7x7](samenvatting_img_h4/slide-55.png)
+<img src="samenvatting_img_h4/slide-55.png" alt="Example 7x7" width="82.5%">
 
 **Opgave:** weight-matrix 7×7, bit width = 3, vind Z en S.
 
@@ -452,7 +452,7 @@ $$Z = \text{round}\left(q_{min} - \frac{r_{min}}{S}\right)$$
 
 ### INT8 Linear Quantization — resultaten
 
-![INT8 results](samenvatting_img_h4/slide-56.png)
+<img src="samenvatting_img_h4/slide-56.png" alt="INT8 results" width="82.5%">
 
 *(Jacob et al., CVPR 2018 — "Integer-Arithmetic-Only Inference".)*
 
@@ -469,7 +469,7 @@ De grafiek (latency vs top-1 accuracy op Snapdragon 835) toont dat **int8 (blauw
 
 ## 4.1 Wat is PTQ?
 
-![Post training quantization](samenvatting_img_h4/slide-58.png)
+<img src="samenvatting_img_h4/slide-58.png" alt="Post training quantization" width="82.5%">
 
 **PTQ** verkleint een model door de **numerieke precisie te verlagen ná het trainen.** Het model behoudt zijn **originele structuur en parameters**, enkel de numerieke representatie verandert (om efficiënter te draaien). De pijplijn: `Pre-trained model + Calibration data → Calibration → Quantization → Quantized model`.
 
@@ -484,14 +484,14 @@ De grafiek (latency vs top-1 accuracy op Snapdragon 835) toont dat **int8 (blauw
 
 ## 4.2 Quantization Granularity: per-tensor vs per-channel
 
-![Quantization granularity](samenvatting_img_h4/slide-59.png)
+<img src="samenvatting_img_h4/slide-59.png" alt="Quantization granularity" width="82.5%">
 
 - **Per-Tensor Quantization:** één scale S (en zero point) voor de **hele tensor**.
 - **Per-Channel Quantization:** een **aparte** scale per **channel/rij**.
 
 ## 4.3 Symmetric Linear Quantization on Weights
 
-![Symmetric linear quantization](samenvatting_img_h4/slide-60.png)
+<img src="samenvatting_img_h4/slide-60.png" alt="Symmetric linear quantization" width="82.5%">
 
 Bij **symmetrische** quantization is `Z = 0`, dus `r = S·q`, met `S = |r|_max / q_max`.
 
@@ -506,13 +506,13 @@ De boxplot (gewicht-range per output-channel van MobileNetV2) toont waarom **per
 
 **Per-tensor (ter vergelijking):** één `|r|_max = 2.12` voor de hele matrix.
 
-![Per-channel per-tensor](samenvatting_img_h4/slide-62.png)
+<img src="samenvatting_img_h4/slide-62.png" alt="Per-channel per-tensor" width="82.5%">
 
 > **📝 jouw notitie:** *S = |r|_max / q_max; q_max = 2^(N−1) − 1; N = aantal bits van de signed integers, hier 2 → q_max = 1, dus S = 2.12 / 1 = 2.12.*
 
 **Per-channel:** elke rij krijgt zijn eigen `|r|_max` en dus eigen scale:
 
-![Per-channel scales](samenvatting_img_h4/slide-63.png)
+<img src="samenvatting_img_h4/slide-63.png" alt="Per-channel scales" width="82.5%">
 
 - Rij 0: `|r|_max = 2.09` → S₀ = 2.09
 - Rij 1: `|r|_max = 2.12` → S₁ = 2.12
@@ -521,7 +521,7 @@ De boxplot (gewicht-range per output-channel van MobileNetV2) toont waarom **per
 
 **Het resultaat — per-channel is nauwkeuriger:**
 
-![Per-channel vs per-tensor error](samenvatting_img_h4/slide-64.png)
+<img src="samenvatting_img_h4/slide-64.png" alt="Per-channel vs per-tensor error" width="82.5%">
 
 De reconstructie-fout (Frobenius-norm `‖W − S·q‖`):
 - **Per-Channel:** `2.08`
@@ -539,7 +539,7 @@ De reconstructie-fout (Frobenius-norm `‖W − S·q‖`):
 
 ## 5.1 Wat is QAT?
 
-![Quantization aware training](samenvatting_img_h4/slide-67.png)
+<img src="samenvatting_img_h4/slide-67.png" alt="Quantization aware training" width="82.5%">
 
 - **PTQ houdt geen rekening met de impact** van de verlaagde precisie op het modelgedrag — het quantizeert "blind" ná het trainen.
 - **QAT** past quantization toe op een **pre-trained model** en doet dan **retraining / fine-tuning met de trainingsdata**, zodat het netwerk leert omgaan met de quantization error.
@@ -550,7 +550,7 @@ De reconstructie-fout (Frobenius-norm `‖W − S·q‖`):
 
 ## 5.2 QAT kan starten van een PTQ-model
 
-![QAT from PTQ](samenvatting_img_h4/slide-68.png)
+<img src="samenvatting_img_h4/slide-68.png" alt="QAT from PTQ" width="82.5%">
 
 QAT hoeft niet per se van een full-precision model te vertrekken — het kan ook starten van een reeds **PTQ-gequantizeerd model**. De pijplijn: eerst PTQ (Quantize → Calibrate → PTQ model), dan QAT (Finetune met training data → QAT model).
 
@@ -558,7 +558,7 @@ QAT hoeft niet per se van een full-precision model te vertrekken — het kan ook
 
 ## 5.3 QAT vs PTQ
 
-![QAT vs PTQ table](samenvatting_img_h4/slide-69.png)
+<img src="samenvatting_img_h4/slide-69.png" alt="QAT vs PTQ table" width="82.5%">
 
 > **📝 jouw notitie:** *PTQ: snel maar mogelijk minder accuraat. QAT: trager maar betere accuracy.*
 
@@ -570,7 +570,7 @@ QAT hoeft niet per se van een full-precision model te vertrekken — het kan ook
 | **Training Time** | trager (gesimuleerde quantization in forward pass) | sneller (post hoc) |
 | **Deployment Readiness** | best voor modellen gevoelig aan quantization-fouten | snelste manier om te optimaliseren |
 
-![QAT vs PTQ NVIDIA TAO](samenvatting_img_h4/slide-70.png)
+<img src="samenvatting_img_h4/slide-70.png" alt="QAT vs PTQ NVIDIA TAO" width="82.5%">
 
 **Concrete cijfers (NVIDIA TAO, PeopleNet):**
 - INT8 verdubbelt ongeveer de **inference-snelheid** t.o.v. FP16 (ResNet18: 762 → 1517 FPS).
@@ -591,7 +591,7 @@ Tot slot toont de prof eigen onderzoek van de vakgroep, waar deze technieken (qu
 
 ## 6.1 Known Interference Cancellation
 
-![Known interference cancellation](samenvatting_img_h4/slide-72.png)
+<img src="samenvatting_img_h4/slide-72.png" alt="Known interference cancellation" width="82.5%">
 
 - Deelgenomen aan de **MIT RF Challenge 2023** → **top-5** team.
 - Verschillende signaalmengsels (EMI, Com2, Com3, Com5G).
@@ -600,14 +600,14 @@ Tot slot toont de prof eigen onderzoek van de vakgroep, waar deze technieken (qu
 
 ## 6.2 Blind Interference Cancellation
 
-![Blind interference cancellation](samenvatting_img_h4/slide-73.png)
+<img src="samenvatting_img_h4/slide-73.png" alt="Blind interference cancellation" width="82.5%">
 
 - Een **U-Net** met **Fast Fourier Convolution (FFC)**-blokken en een **LSTM** in de bottleneck.
 - **26.5% MSE-verbetering** t.o.v. de leidende benchmark (een diepe U-Net), én **minder MACs** en modeloperaties.
 
 ## 6.3 Optimization Interference Cancellation
 
-![Optimization interference cancellation](samenvatting_img_h4/slide-74.png)
+<img src="samenvatting_img_h4/slide-74.png" alt="Optimization interference cancellation" width="82.5%">
 
 Hier komen **alle compressie-technieken van het vak** samen om het model **edge-ready** te maken:
 - U-Net CNN's aangepast met **quantization** en **depthwise separable convolutions**.
@@ -618,7 +618,7 @@ Hier komen **alle compressie-technieken van het vak** samen om het model **edge-
 
 ## 6.4 AI wireless foundation model
 
-![AI wireless foundation model](samenvatting_img_h4/slide-75.png)
+<img src="samenvatting_img_h4/slide-75.png" alt="AI wireless foundation model" width="82.5%">
 
 De toekomstvisie: van **task-specific AI** (Fase I) over **transfer learning** (Fase II) naar een **task-agnostic wireless foundation model** (Fase III) dat met self-supervised pre-training op veel verschillende downstream-taken inzetbaar is (technology recognition, NLOS-detectie, environment sensing, human activity).
 

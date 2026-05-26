@@ -28,7 +28,7 @@ Het college doorloopt elf onderdelen, in deze volgorde:
 
 Elk embedded systeem bestaat uit drie bouwblokken in een keten:
 
-![Sense, process, actuate](samenvatting_img_h2/slide-008.png)
+<img src="samenvatting_img_h2/slide-008.png" alt="Sense, process, actuate" width="82.5%">
 
 - **sense (input)** — analoog: sensoren meten de fysische wereld (geluid, beeld, beweging…).
 - **process** — digitaal: de microcontroller verwerkt de gemeten data.
@@ -40,13 +40,13 @@ De gestippelde terugkoppeling ("phenomenon") betekent dat de actuatie de fysisch
 
 Een gewoon consumentenproduct is eigenlijk een embedded systeem. De Echo Dot uit elkaar gehaald:
 
-![Echo Dot teardown](samenvatting_img_h2/slide-013.png)
+<img src="samenvatting_img_h2/slide-013.png" alt="Echo Dot teardown" width="82.5%">
 
 De drie elementen zijn fysiek terug te vinden: de **microfoons** (sense), de **processor-chip** op de PCB (process) en de **luidspreker** (actuate).
 
 ## Echt vs. ontwikkelaars-embedded systeem
 
-![Real vs developer embedded system](samenvatting_img_h2/slide-017.png)
+<img src="samenvatting_img_h2/slide-017.png" alt="Real vs developer embedded system" width="82.5%">
 
 - **Real embedded system** — een op maat ontworpen PCB (bv. de ronde Echo-print met MediaTek 7658CSN: Wi-Fi + ARM Cortex-R4). Geoptimaliseerd voor één product.
 - **Developer embedded system** — een ontwikkelbord zoals de Arduino Nano 33 BLE Sense, waarmee je leert en prototypet. Dit gebruik je in de labs.
@@ -55,7 +55,7 @@ De drie elementen zijn fysiek terug te vinden: de **microfoons** (sense), de **p
 
 Het ontwikkelbord van dit vak heeft sensoren én rekenkracht op één klein bordje:
 
-![Arduino Nano 33 BLE Sense componenten](samenvatting_img_h2/slide-021.png)
+<img src="samenvatting_img_h2/slide-021.png" alt="Arduino Nano 33 BLE Sense componenten" width="82.5%">
 
 - **Processor + Bluetooth** (u-blox NINA-B306 module, nRF52840)
 - **Microphone** — geluid
@@ -65,11 +65,11 @@ Het ontwikkelbord van dit vak heeft sensoren én rekenkracht op één klein bord
 
 ## Vier veelgebruikte embedded boards
 
-![Vier embedded boards](samenvatting_img_h2/slide-025.png)
+<img src="samenvatting_img_h2/slide-025.png" alt="Vier embedded boards" width="82.5%">
 
 In dit vak komen vier representatieve borden voor. De volledige vergelijking:
 
-![Computing Hardware vergelijkingstabel](samenvatting_img_h2/slide-028.png)
+<img src="samenvatting_img_h2/slide-028.png" alt="Computing Hardware vergelijkingstabel" width="82.5%">
 
 | Board | MCU / ASIC | Clock | Memory | Sensors | Radio |
 |---|---|---|---|---|---|
@@ -88,7 +88,7 @@ Belangrijk: dit zijn allemaal 32-bit chips, maar met **kB tot enkele MB geheugen
 
 ARM verdeelt zijn Cortex-cores in drie families, geplaatst volgens **vermogen** (Power, verticaal) en **pipeline-complexiteit** (horizontaal):
 
-![ARM Cortex Processor Profiles](samenvatting_img_h2/slide-030.png)
+<img src="samenvatting_img_h2/slide-030.png" alt="ARM Cortex Processor Profiles" width="82.5%">
 
 - **Cortex-A** (Applications) — krachtigst, voor smartphones/laptops (A5, A9). Draaien een volledige OS.
 - **Cortex-R** (Real-time) — voor real-time toepassingen (R4, R5, R7).
@@ -98,7 +98,7 @@ ARM verdeelt zijn Cortex-cores in drie families, geplaatst volgens **vermogen** 
 
 De Cortex-M-cores zijn een **genest** systeem: elke duurdere core kan alles van de goedkopere, plus extra:
 
-![ARM Cortex-M ISA nesting](samenvatting_img_h2/slide-035.png)
+<img src="samenvatting_img_h2/slide-035.png" alt="ARM Cortex-M ISA nesting" width="82.5%">
 
 - **Cortex-M0+/M0** — I/O control tasks + general data processing (basis).
 - **Cortex-M3** — voegt advanced data processing + bit field manipulations toe.
@@ -114,7 +114,7 @@ De Cortex-M-cores zijn een **genest** systeem: elke duurdere core kan alles van 
 
 Software draait altijd bovenop hardware, en is intern gelaagd:
 
-![Software lagen: Applications, Libraries, OS](samenvatting_img_h2/slide-039.png)
+<img src="samenvatting_img_h2/slide-039.png" alt="Software lagen: Applications, Libraries, OS" width="82.5%">
 
 - **Operating System** (onderaan) — beheert de hardware.
 - **Libraries** — herbruikbare functies.
@@ -122,7 +122,7 @@ Software draait altijd bovenop hardware, en is intern gelaagd:
 
 ## Operating systems: desktop/mobile vs. embedded
 
-![Embedded OS: FreeRTOS en mbed OS](samenvatting_img_h2/slide-044.png)
+<img src="samenvatting_img_h2/slide-044.png" alt="Embedded OS: FreeRTOS en mbed OS" width="82.5%">
 
 Naast desktop-OS'en (Windows, macOS, Linux) en mobiele OS'en (iOS, Android) bestaan er **embedded OS'en** voor microcontrollers, zoals **FreeRTOS** en **ARM mbed OS**. Die zijn veel lichter en real-time gericht.
 
@@ -130,7 +130,7 @@ Naast desktop-OS'en (Windows, macOS, Linux) en mobiele OS'en (iOS, Android) best
 
 Op het Arduino-bord stapelen de softwarelagen zo (van onder naar boven): mbed OS → Arduino → TF Micro Application, bovenop de hardware. De rechterkant toont de interne structuur van mbed OS:
 
-![mbed OS bare metal detail](samenvatting_img_h2/slide-051.png)
+<img src="samenvatting_img_h2/slide-051.png" alt="mbed OS bare metal detail" width="82.5%">
 
 > **📝 jouw notities op de drie lagen:**
 > - **mbed OS** → *levert embedded OS met drivers / timing / I/O en hardware-abstractie.* Intern: Application Code → **Mbed OS API** → Mbed OS Bare Metal (Digital Interfaces Drivers, Analog+Digital I/O, Wait & Time APIs, Timers) → **Drivers HAL** → **MCU SDK** → **CMSIS-Core (HW Abstraction Layer)** → HW Interfaces → ARM Cortex-M CPU & Peripherals.
@@ -161,7 +161,7 @@ Op een microcontroller heb je geen Linux/Windows. Je hebt **geen luxe** zoals au
 
 Op een MCU is geheugen het kritische budget. De totale RAM (hier 128 KB) wordt opgedeeld in lagen:
 
-![Memory Usage stacked bar](samenvatting_img_h2/slide-055.png)
+<img src="samenvatting_img_h2/slide-055.png" alt="Memory Usage stacked bar" width="82.5%">
 
 De stapel (van onder naar boven): **Application Code → LiteRT/TFLite Micro runtime → Model → Working Memory → Audio Buffer.**
 
@@ -181,11 +181,11 @@ buffer -> grootste blok -> input data meer geheugen dan het model zelf
 
 Het embedded OS bevat veel modules die je niet altijd nodig hebt:
 
-![Removing modules](samenvatting_img_h2/slide-058.png)
+<img src="samenvatting_img_h2/slide-058.png" alt="Removing modules" width="82.5%">
 
 De `features/frameworks`-module bevat bijvoorbeeld **veel onnodige test-tools die in elke binary worden meegebouwd** (1K RAM + 8K Flash). Door zulke modules te **elimineren bespaar je** flash en RAM. Het effect op mbed OS 5: van 57K → 49K flash en 13K → 12K RAM.
 
-![mbed OS 5 gereduceerd](samenvatting_img_h2/slide-060.png)
+<img src="samenvatting_img_h2/slide-060.png" alt="mbed OS 5 gereduceerd" width="82.5%">
 
 ---
 
@@ -193,13 +193,13 @@ De `features/frameworks`-module bevat bijvoorbeeld **veel onnodige test-tools di
 
 ## Voorbeeld: handgeschreven cijferherkenning
 
-![Handwriting digit recognition input/output](samenvatting_img_h2/slide-067.png)
+<img src="samenvatting_img_h2/slide-067.png" alt="Handwriting digit recognition input/output" width="82.5%">
 
 Een 16×16-pixelbeeld (= **256 inputs** x₁…x₂₅₆) gaat in een "machine" en eruit komen **10 outputs**, elk een waarde tussen 0 en 1: de **confidence** per cijfer. De hoogste (hier 0.7 bij "is 2") wint. De machine is dus een functie **f: R²⁵⁶ → R¹⁰**, en in deep learning is die functie f een **neuraal netwerk**.
 
 ## Bouwsteen: het neuron
 
-![Elements of neural network: neuron](samenvatting_img_h2/slide-069.png)
+<img src="samenvatting_img_h2/slide-069.png" alt="Elements of neural network: neuron" width="82.5%">
 
 Eén neuron: neem inputs a₁…a_K, vermenigvuldig met **gewichten** w₁…w_K, tel op met een **bias** b:
 
@@ -211,13 +211,13 @@ en stuur z door een **activatiefunctie** σ(z) → output a.
 
 ## Het volledige netwerk
 
-![Neural Network layers](samenvatting_img_h2/slide-070.png)
+<img src="samenvatting_img_h2/slide-070.png" alt="Neural Network layers" width="82.5%">
 
 Neuronen worden in **lagen** gestapeld: Input Layer → Hidden Layers (Layer 1, 2, … L) → Output Layer. Elk bolletje is een neuron.
 
 ## Concreet rekenvoorbeeld + activatiefuncties
 
-![Example of neural network + activation functions](samenvatting_img_h2/slide-071.png)
+<img src="samenvatting_img_h2/slide-071.png" alt="Example of neural network + activation functions" width="82.5%">
 
 Met inputs [1, −1], gewichten en biases reken je per neuron z uit en pas je de **sigmoid** toe: σ(z) = 1 / (1 + e^(−z)). Bv. z = 4 → σ(4) = 0.98.
 
@@ -227,7 +227,7 @@ Verschillende parameters → verschillende functie. Bv. f([1,−1]) = [0.62, 0.8
 
 ## Matrixvorm
 
-![Neural network matrix form](samenvatting_img_h2/slide-075.png)
+<img src="samenvatting_img_h2/slide-075.png" alt="Neural network matrix form" width="82.5%">
 
 Het hele netwerk is één geneste functie:
 
@@ -237,7 +237,7 @@ Omdat dit puur matrixvermenigvuldigingen zijn, kun je **parallel computing** (GP
 
 ## Softmax als output-laag
 
-![Softmax](samenvatting_img_h2/slide-078.png)
+<img src="samenvatting_img_h2/slide-078.png" alt="Softmax" width="82.5%">
 
 Een gewone output kan elke waarde zijn en is moeilijk te interpreteren. De **softmax-laag** zet de outputs z om naar **kansen**: yᵢ = e^(zᵢ) / Σⱼ e^(zⱼ).
 
@@ -247,7 +247,7 @@ Eigenschappen: elke **0 < yᵢ < 1** en **Σ yᵢ = 1**. Voorbeeld: z = [3, 1, �
 
 Hoe vind je de juiste parameters θ = {W¹, b¹, …, W^L, b^L}? Door de **fout** te minimaliseren.
 
-![Total cost + backpropagation + gradient descent](samenvatting_img_h2/slide-082.png)
+<img src="samenvatting_img_h2/slide-082.png" alt="Total cost + backpropagation + gradient descent" width="82.5%">
 
 - Per voorbeeld is er een **cost** L(θ): het verschil tussen output en target (Euclidische afstand of cross-entropy).
 - De **total cost** sommeert over alle trainingsdata: **C(θ) = Σ L^r(θ)** — "hoe slecht presteren de parameters θ op deze taak".
@@ -261,7 +261,7 @@ Let op het verschil **local minimum** vs **global minimum**: gradient descent ka
 
 ## De AI van vandaag is te groot
 
-![Today's AI is too Big — GPT-3](samenvatting_img_h2/slide-084.png)
+<img src="samenvatting_img_h2/slide-084.png" alt="Today's AI is too Big — GPT-3" width="82.5%">
 
 NLP-modellen groeien exponentieel: Transformer (0.05B) → BERT (0.34B) → GPT-2 (1.5B) → GPT-3 (**170B parameters**). Cijfers:
 
@@ -272,7 +272,7 @@ Daarom is er nood aan nieuwe algoritmes en hardware voor **TinyML** en **Green A
 
 ## Cloud → Mobile → Tiny
 
-![Cloud → Mobile → Tiny](samenvatting_img_h2/slide-088.png)
+<img src="samenvatting_img_h2/slide-088.png" alt="Cloud → Mobile → Tiny" width="82.5%">
 
 De evolutie van waar AI draait:
 
@@ -282,7 +282,7 @@ De evolutie van waar AI draait:
 
 ## Waarom TinyML? Miljarden IoT-toestellen
 
-![Squeezing deep learning into IoT devices](samenvatting_img_h2/slide-092.png)
+<img src="samenvatting_img_h2/slide-092.png" alt="Squeezing deep learning into IoT devices" width="82.5%">
 
 - **Ubiquitous** — miljarden IoT-toestellen wereldwijd, gebaseerd op microcontrollers (groeicurve naar ~50 miljard units).
 - **Low-cost** ($0.1 – $10) — ook mensen met laag inkomen krijgen toegang → **democratisering van AI**.
@@ -295,7 +295,7 @@ De evolutie van waar AI draait:
 
 ## Geheugen is te klein voor DNN's
 
-![TinyML is Challenging — memory table](samenvatting_img_h2/slide-094.png)
+<img src="samenvatting_img_h2/slide-094.png" alt="TinyML is Challenging — memory table" width="82.5%">
 
 > **📝 jouw notitie:** *DNN = deep neural network.*
 
@@ -304,13 +304,13 @@ De evolutie van waar AI draait:
 | **Memory (Activation)** | 32 GB | 4 GB | **320 kB** |
 | **Storage (Weights)** | ~TB/PB | 256 GB | **1 MB** |
 
-![13.000× / 100.000× kleiner](samenvatting_img_h2/slide-095.png)
+<img src="samenvatting_img_h2/slide-095.png" alt="13.000× / 100.000× kleiner" width="82.5%">
 
 Het activatiegeheugen van Tiny AI is **13.000× kleiner** dan mobile en **100.000× kleiner** dan cloud. Daarom: **je moet zowel de weights als de activations verkleinen** om DNN's op een MCU te laten passen.
 
 ## TinyML-constraints verschillen van Mobile AI
 
-![Latency / Energy / Memory constraint](samenvatting_img_h2/slide-097.png)
+<img src="samenvatting_img_h2/slide-097.png" alt="Latency / Energy / Memory constraint" width="82.5%">
 
 Mobile AI heeft een **latency-** en **energy-constraint**. TinyML heeft die óók, maar daar bovenop een harde **memory-constraint** (gemarkeerd) — dit maakt TinyML wezenlijk moeilijker dan mobiele AI.
 
@@ -318,7 +318,7 @@ Mobile AI heeft een **latency-** en **energy-constraint**. TinyML heeft die óó
 
 Een typische CNN: Input → (Convolution + ReLU → Pooling)×meermaals → Flatten → Fully Connected → Softmax → output (bv. Horse/Zebra/Dog).
 
-![Running CNNs on Microcontrollers — CNN diagram](samenvatting_img_h2/slide-099.png)
+<img src="samenvatting_img_h2/slide-099.png" alt="Running CNNs on Microcontrollers — CNN diagram" width="82.5%">
 
 De kernoperatie is de **convolutie**: een **input activation** wordt met een **kernel** (filter) geconvolueerd (`*`) tot een **output activation**.
 
@@ -326,27 +326,27 @@ De kernoperatie is de **convolutie**: een **input activation** wordt met een **k
 
 **Flash-gebruik (= modelgrootte):**
 
-![Running CNNs — Flash usage](samenvatting_img_h2/slide-102.png)
+<img src="samenvatting_img_h2/slide-102.png" alt="Running CNNs — Flash usage" width="82.5%">
 
 > **📝 jouw notitie:** *flash = grootte van het model (weights) in niet-vluchtig systeem. De gewichten van het netwerk worden opgeslagen in flash. Flash moet dus het hele model bevatten. Statisch → ligt vast in het geheugen. Bv. 1MB flash beschikbaar → model is 900kB → past.*
 Flash is **statisch**: het moet het volledige model bevatten.
 
 **SRAM-gebruik (= werkgeheugen):**
 
-![Running CNNs — SRAM usage](samenvatting_img_h2/slide-103.png)
+<img src="samenvatting_img_h2/slide-103.png" alt="Running CNNs — SRAM usage" width="82.5%">
 
 > **📝 jouw notitie:** *SRAM = werkgeheugen tijdens inferentie. Data bijhouden terwijl het model draait: input + output activations (de feature map die binnenkomt + de nieuwe feature map die berekend wordt). Geen gewichten → die staan in flash. Kijk naar het **max** dat op 1 moment nodig is → niet de som van alle lagen.*
 SRAM is **dynamisch** en verschilt per laag = Input activation + Output activation. We geven om de **peak SRAM**. Gewichten tellen hier niet mee (worden gedeeltelijk uit flash gehaald).
 
 ## Cloud/Mobile-CNN's passen niet
 
-![Peak SRAM usage too big](samenvatting_img_h2/slide-104.png)
+<img src="samenvatting_img_h2/slide-104.png" alt="Peak SRAM usage too big" width="82.5%">
 
 Tegenover de **320 kB-constraint** (de rode stippellijn): ResNet-50 gebruikt 23× te veel, MobileNetV2 22×, en zelfs MobileNetV2 (int8) nog 5× te veel peak SRAM.
 
 ## We moeten niet alleen het model, maar ook de activaties verkleinen
 
-![MCUNet vs MobileNetV2](samenvatting_img_h2/slide-106.png)
+<img src="samenvatting_img_h2/slide-106.png" alt="MCUNet vs MobileNetV2" width="82.5%">
 
 MobileNetV2 verkleint alleen de **model size**, niet de **peak activation size**. **MCUNet** verkleint béide (6.1× minder parameters, 3.4× minder peak activation t.o.v. ResNet-18) bij ~70% ImageNet top-1.
 
@@ -358,13 +358,13 @@ MobileNetV2 verkleint alleen de **model size**, niet de **peak activation size**
 
 ## Tiny Image Classification
 
-![ImageNet-level classification op MCU (int4)](samenvatting_img_h2/slide-109.png)
+<img src="samenvatting_img_h2/slide-109.png" alt="ImageNet-level classification op MCU (int4)" width="82.5%">
 
 Met technieken zoals MCUNet en **int4-quantization** haal je ImageNet-niveau beeldherkenning op een MCU. MCUNet is het eerste dat **>70% ImageNet-accuracy op commerciële MCU's** behaalt (70.7% op STM32H743), +17% t.o.v. MobileNetV2+CMSIS-NN.
 
 ## Visual Wake Words (VWW)
 
-![Visual Wake Words pipeline](samenvatting_img_h2/slide-110.png)
+<img src="samenvatting_img_h2/slide-110.png" alt="Visual Wake Words pipeline" width="82.5%">
 
 > **📝 jouw notitie:** *VWW = visual wake words: detecteert of er een persoon in beeld is → heel licht model.*
 
@@ -372,7 +372,7 @@ VWW is de visuele tegenhanger van "Hey Siri"/"OK Google": een **klein, energiezu
 
 ## Audio Deep Learning — Keyword Spotting
 
-![Case Study: Keyword Spotting pipeline](samenvatting_img_h2/slide-113.png)
+<img src="samenvatting_img_h2/slide-113.png" alt="Case Study: Keyword Spotting pipeline" width="82.5%">
 
 Pijplijn: ruw spraaksignaal → **feature extraction** → neuraal netwerk → kansen per klasse ("Yes" 0.91, "No" 0.02, …).
 
@@ -382,7 +382,7 @@ Concreet: overlappende frames van lengte *l* met stride *s* → tijdsdomeinsigna
 
 ## Anomaly Detection
 
-![Anomaly Detection domains](samenvatting_img_h2/slide-114.png)
+<img src="samenvatting_img_h2/slide-114.png" alt="Anomaly Detection domains" width="82.5%">
 
 Toepassingen in vele domeinen: video surveillance, health care, fraude/aanvallen voorkomen. (Voorbeelddatasets: MVTec voor industriële defecten, surveillancevideo's voor abnormaal gedrag.)
 
@@ -390,7 +390,7 @@ Toepassingen in vele domeinen: video surveillance, health care, fraude/aanvallen
 
 Een **autoencoder** is een NN dat zijn eigen **input voorspelt** (ideaal: x' = x), via Encoder → Code vector → Decoder.
 
-![Detect Anomaly with Autoencoders — training/inference](samenvatting_img_h2/slide-116.png)
+<img src="samenvatting_img_h2/slide-116.png" alt="Detect Anomaly with Autoencoders — training/inference" width="82.5%">
 
 - **Training:** minimaliseer de **reconstruction error** op normale data.
 - **Inference:** voer live data in; **als (error > threshold) → anomaly input** (het netwerk kan abnormale data slecht reconstrueren).
@@ -398,7 +398,7 @@ Een **autoencoder** is een NN dat zijn eigen **input voorspelt** (ideaal: x' = x
 
 ### Voorbeeld: ventilator-anomaliedetectie
 
-![Fan Anomaly Detection met Arduino Nano](samenvatting_img_h2/slide-118.png)
+<img src="samenvatting_img_h2/slide-118.png" alt="Fan Anomaly Detection met Arduino Nano" width="82.5%">
 
 Detecteer een defecte ventilator met de Arduino Nano 33 BLE Sense (SRAM 256KB, Flash 1MB, Cortex-M4 @ 64MHz). Gangbare aanpakken: **K-means, Autoencoders, GMMs** (Gaussian Mixture Models).
 
@@ -410,17 +410,17 @@ Detecteer een defecte ventilator met de Arduino Nano 33 BLE Sense (SRAM 256KB, F
 
 De volledige ML-keten rust op **AI Infrastructure**, opgebouwd uit vier lagen: **Data Engineering → Model Engineering → Model Deployment → Product Analytics.** De inputkant zijn sensoren:
 
-![Sensoren → TinyML applications → AI Infrastructure](samenvatting_img_h2/slide-122.png)
+<img src="samenvatting_img_h2/slide-122.png" alt="Sensoren → TinyML applications → AI Infrastructure" width="82.5%">
 
 Sensortypes: **Acoustic** (Ultrasonic, Microphones, Geophones, Vibrometers), **Image** (Thermal, Image), **Motion** (Gyroscope, Radar, Accelerometer).
 
-![Sensoren stromen naar TinyML applications](samenvatting_img_h2/slide-126.png)
+<img src="samenvatting_img_h2/slide-126.png" alt="Sensoren stromen naar TinyML applications" width="82.5%">
 
 ## Welke tool waar? TensorFlow vs LiteRT vs LiteRT Micro
 
 De ML-workflow heeft 8 stappen, en verschillende frameworks dekken verschillende stappen:
 
-![ML workflow met TensorFlow / LiteRT / LiteRT Micro](samenvatting_img_h2/slide-131.png)
+<img src="samenvatting_img_h2/slide-131.png" alt="ML workflow met TensorFlow / LiteRT / LiteRT Micro" width="82.5%">
 
 - **TensorFlow:** Collect Data → Preprocess → Design → **Train**.
 - **LiteRT:** Evaluate/Optimize → Convert → Deploy.
@@ -432,13 +432,13 @@ De ML-workflow heeft 8 stappen, en verschillende frameworks dekken verschillende
 
 Rond de centrale "ML Code" zit veel meer infrastructuur dan enkel het model:
 
-![ML Code omringd door infrastructuur](samenvatting_img_h2/slide-141.png)
+<img src="samenvatting_img_h2/slide-141.png" alt="ML Code omringd door infrastructuur" width="82.5%">
 
 Data Collection, Data Preprocessing, Data Verification, Feature Engineering, Configuration, Automation, Debugging, Optimization, Model Analysis, Process Management, Resource Management, Serving Infrastructure, Monitoring, Metadata Management… — de eigenlijke ML-code is maar een klein onderdeel van een productiesysteem.
 
 ### Data Engineering (de 7 stappen)
 
-![Data Engineering stappen](samenvatting_img_h2/slide-154.png)
+<img src="samenvatting_img_h2/slide-154.png" alt="Data Engineering stappen" width="82.5%">
 
 1. Defining data **requirements**
 2. **Collecting** data
@@ -450,7 +450,7 @@ Data Collection, Data Preprocessing, Data Verification, Feature Engineering, Con
 
 ### Model Engineering (de stappen)
 
-![Model Engineering stappen](samenvatting_img_h2/slide-160.png)
+<img src="samenvatting_img_h2/slide-160.png" alt="Model Engineering stappen" width="82.5%">
 
 1. **Training** ML models
 2. Improving training **speed**
@@ -461,7 +461,7 @@ Data Collection, Data Preprocessing, Data Verification, Feature Engineering, Con
 
 ### Model Deployment (de stappen)
 
-![Model Deployment stappen](samenvatting_img_h2/slide-166.png)
+<img src="samenvatting_img_h2/slide-166.png" alt="Model Deployment stappen" width="82.5%">
 
 1. Model **conversion**
 2. **Performance** optimization
@@ -472,7 +472,7 @@ Data Collection, Data Preprocessing, Data Verification, Feature Engineering, Con
 
 ### Product Analysis (de stappen)
 
-![Product Analysis stappen](samenvatting_img_h2/slide-170.png)
+<img src="samenvatting_img_h2/slide-170.png" alt="Product Analysis stappen" width="82.5%">
 
 1. **Dashboards**
 2. Field data **evaluation**
@@ -485,7 +485,7 @@ Data Collection, Data Preprocessing, Data Verification, Feature Engineering, Con
 
 De volledige levenscyclus is een **lus** (geen rechte lijn):
 
-![Life cycle of ML](samenvatting_img_h2/slide-181.png)
+<img src="samenvatting_img_h2/slide-181.png" alt="Life cycle of ML" width="82.5%">
 
 **Data Collection** → Data Ingestion → Data Analysis/Curation → Data Labelling → Data Validation → Data Preparation → **Model Training** → Model Evaluation → ML System Validation → **ML System Deployment** → (online performance/data feeds terug naar Data Collection).
 
@@ -508,13 +508,13 @@ Twee terugkoppellussen bovenaan: **DATA FIXES** (problemen in de data corrigeren
 
 ## De frameworks in de workflow
 
-![ML Framework overzicht](samenvatting_img_h2/slide-183.png)
+<img src="samenvatting_img_h2/slide-183.png" alt="ML Framework overzicht" width="82.5%">
 
 Zelfde plaatje als §8: **TensorFlow** (data → training), **LiteRT** (evaluate → deploy), **LiteRT Micro** (inference op MCU).
 
 ## Wat hebben ze gemeen?
 
-![What do they have in common](samenvatting_img_h2/slide-185.png)
+<img src="samenvatting_img_h2/slide-185.png" alt="What do they have in common" width="82.5%">
 
 - Allemaal geoptimaliseerd voor de **resource-constraints** van embedded toestellen (geheugen, compute).
 - Allemaal **importeren modellen** uit een apart trainings-framework.
@@ -530,7 +530,7 @@ Zelfde plaatje als §8: **TensorFlow** (data → training), **LiteRT** (evaluate
 
 ## De volledige pijplijn: van TF-model tot MCU
 
-![TF → .tflite → C-array → MCU pipeline](samenvatting_img_h2/slide-194.png)
+<img src="samenvatting_img_h2/slide-194.png" alt="TF → .tflite → C-array → MCU pipeline" width="82.5%">
 
 > **📝 jouw notitie:** *TF model → .tflite → C-array → MCU.*
 
@@ -539,13 +539,13 @@ De stappen:
 2. **Conversion** → een **`.tflite`**-bestand (LiteRT-formaat).
 3. **Array modeling** → het `.tflite`-model wordt omgezet naar een **C-array** en op de **MCU** (Arduino) geplaatst.
 
-![Volledige pijplijn met inference & real-time data](samenvatting_img_h2/slide-195.png)
+<img src="samenvatting_img_h2/slide-195.png" alt="Volledige pijplijn met inference & real-time data" width="82.5%">
 
 Op het toestel doet de MCU **inference/learning** op **real-time data**.
 
 ## Vergelijkingstabel — Model
 
-![Comparison table — Model properties](samenvatting_img_h2/slide-201.png)
+<img src="samenvatting_img_h2/slide-201.png" alt="Comparison table — Model properties" width="82.5%">
 
 | | TensorFlow | LiteRT | LiteRT Micro |
 |---|---|---|---|
@@ -558,7 +558,7 @@ Naarmate je naar TinyML beweegt: minder operatoren ondersteund, maar veel effici
 
 ## Vergelijkingstabel — Software
 
-![Comparison table — Software](samenvatting_img_h2/slide-204.png)
+<img src="samenvatting_img_h2/slide-204.png" alt="Comparison table — Software" width="82.5%">
 
 | | TensorFlow | LiteRT | LiteRT Micro |
 |---|---|---|---|
@@ -570,7 +570,7 @@ LiteRT Micro draait **bare metal** (geen OS nodig) — essentieel voor de kleins
 
 ## Vergelijkingstabel — Hardware
 
-![Comparison table — Hardware](samenvatting_img_h2/slide-207.png)
+<img src="samenvatting_img_h2/slide-207.png" alt="Comparison table — Hardware" width="82.5%">
 
 | | TensorFlow | LiteRT | LiteRT Micro |
 |---|---|---|---|
@@ -690,7 +690,7 @@ TensorFlow heeft een **base binary ~3MB+** en **footprint ~5MB**, ondersteunt ~1
 
 <details><summary>Antwoord</summary>
 
-![Computing Hardware vergelijkingstabel](samenvatting_img_h2/slide-028.png)
+<img src="samenvatting_img_h2/slide-028.png" alt="Computing Hardware vergelijkingstabel" width="82.5%">
 
 - **MCU** — general-purpose microcontroller (CPU + geheugen + I/O op één chip).
 - **DSP** — Digital Signal Processor, geoptimaliseerd voor signaalverwerking (de **Himax WE-I Plus** gebruikt een DSP i.p.v. een MCU).
@@ -703,7 +703,7 @@ Alle vier de borden (Himax, **Arduino Nano 33 BLE Sense**, SparkFun Edge 2, Espr
 
 <details><summary>Antwoord</summary>
 
-![ARM Cortex Processor Profiles](samenvatting_img_h2/slide-030.png)
+<img src="samenvatting_img_h2/slide-030.png" alt="ARM Cortex Processor Profiles" width="82.5%">
 
 - **Cortex-A (Applications)** — krachtigst, draait een volledig OS; smartphones/laptops.
 - **Cortex-R (Real-time)** — real-time toepassingen.
@@ -716,7 +716,7 @@ Ze worden geplaatst volgens **vermogen** (verticaal) en **pipeline-complexiteit*
 
 <details><summary>Antwoord</summary>
 
-![Softwarestack op de Nano 33 BLE Sense](samenvatting_img_h2/slide-051.png)
+<img src="samenvatting_img_h2/slide-051.png" alt="Softwarestack op de Nano 33 BLE Sense" width="82.5%">
 
 De lagen staan op de foto (onder = hardware, boven = applicatie). Kort wat elke laag doet:
 - **mbed OS** — embedded OS: drivers, timing, I/O en hardware-abstractie (intern via CMSIS-Core / Drivers HAL / MCU SDK). De **Mbed OS API** geeft gestandaardiseerde functies zodat je app niet rechtstreeks met registers praat.
@@ -730,7 +730,7 @@ Waarom zoveel lagen: er zitten **meerdere abstractielagen** tussen ML-code en ha
 
 <details><summary>Antwoord</summary>
 
-![Geheugengebruik — stacked bar](samenvatting_img_h2/slide-055.png)
+<img src="samenvatting_img_h2/slide-055.png" alt="Geheugengebruik — stacked bar" width="82.5%">
 
 De blokken staan op de foto (Application Code, runtime, Model, Working Memory, Audio Buffer). Het **model is maar één deel** van het geheugen; de **audio buffer (inputdata)** is vaak het **grootste blok** — méér dan het model zelf. Resource aware = **optimaliseren op meerdere niveaus** (minder compute / minder geheugen / quantization) en je ML-systeem ontwerpen **rond de geheugenlimieten**, niet rond maximale accuracy.
 </details>
@@ -746,7 +746,7 @@ Door **onnodige modules te verwijderen** uit de OS-build. Een embedded OS bevat 
 
 <details><summary>Antwoord</summary>
 
-![Neuron + activatiefuncties](samenvatting_img_h2/slide-071.png)
+<img src="samenvatting_img_h2/slide-071.png" alt="Neuron + activatiefuncties" width="82.5%">
 
 Een neuron neemt inputs a₁…a_K, vermenigvuldigt ze met **gewichten** w₁…w_K en telt een **bias** b op: **z = Σ aᵢwᵢ + b** (= een **MAC**-operatie). Daarna gaat z door een **activatiefunctie** σ(z) → output a. De activatie voegt **niet-lineariteit** toe — zonder zou het hele netwerk samenvallen tot één lineaire functie. Gangbare functies: **sigmoid** (1/(1+e⁻ᶻ)), **tanh**, **ReLU** (max(0,z), de standaard in moderne netten), softplus, unit step, sign, (piece-wise) linear.
 </details>
@@ -755,7 +755,7 @@ Een neuron neemt inputs a₁…a_K, vermenigvuldigt ze met **gewichten** w₁…
 
 <details><summary>Antwoord</summary>
 
-![Softmax](samenvatting_img_h2/slide-078.png)
+<img src="samenvatting_img_h2/slide-078.png" alt="Softmax" width="82.5%">
 
 Matrixvorm: **y = f(x) = σ(Wᴸ … σ(W²σ(W¹x + b¹) + b²) … + bᴸ)** — puur matrixvermenigvuldigingen, dus versnelbaar met **parallel computing** (GPU/DSP, opnieuw MAC's). De **softmax** zet de output-scores z om naar **kansen**: yᵢ = e^(zᵢ)/Σⱼe^(zⱼ). Eigenschappen: elke **0 < yᵢ < 1** en **Σ yᵢ = 1** → een echte waarschijnlijkheidsverdeling over de klassen. Bv. z=[3,1,−3] → y≈[0.88, 0.12, ≈0].
 </details>
@@ -774,7 +774,7 @@ Je zoekt **θ\*** die C(θ) **minimaliseert** via **gradient descent** (stapsgew
 
 <details><summary>Antwoord</summary>
 
-![Today's AI is too Big — GPT-3](samenvatting_img_h2/slide-084.png)
+<img src="samenvatting_img_h2/slide-084.png" alt="Today's AI is too Big — GPT-3" width="82.5%">
 
 NLP-modellen groeien exponentieel: Transformer (0.05B) → BERT (0.34B) → GPT-2 (1.5B) → **GPT-3 (175B parameters)**. GPT-3: **355 GPU-jaren** training, kost **~$4.6M**. AlphaGo: 1920 CPU's + 280 GPU's, ~$3000 elektriciteit per spel. → nood aan nieuwe algoritmes/hardware voor **TinyML & Green AI**: lage energie, lage latency, lage kost, betere privacy.
 </details>
@@ -802,7 +802,7 @@ Mobile AI heeft een **latency-** en **energy-constraint**. TinyML heeft die óó
 
 <details><summary>Antwoord</summary>
 
-![Peak SRAM usage too big](samenvatting_img_h2/slide-104.png)
+<img src="samenvatting_img_h2/slide-104.png" alt="Peak SRAM usage too big" width="82.5%">
 
 De kernoperatie is de **convolutie**: een **input activation** wordt met een **kernel (filter)** geconvolueerd (`*`) → **output activation**. Een typische CNN: Input → (Conv + ReLU → Pooling)× → Flatten → Fully Connected → Softmax. Ze passen niet omdat de **peak SRAM** de **320 kB-constraint** ver overschrijdt: **ResNet-50 23×**, **MobileNetV2 22×**, en zelfs **MobileNetV2 (int8) nog 5×** te groot.
 </details>
@@ -827,7 +827,7 @@ De **peak activation (SRAM)** is vaak het bindende knelpunt, niet de modelgroott
 
 <details><summary>Antwoord</summary>
 
-![ML workflow met TensorFlow / LiteRT / LiteRT Micro](samenvatting_img_h2/slide-131.png)
+<img src="samenvatting_img_h2/slide-131.png" alt="ML workflow met TensorFlow / LiteRT / LiteRT Micro" width="82.5%">
 
 De foto toont welk framework welke stappen dekt: **TensorFlow** doet alles t.e.m. trainen, **LiteRT** het evalueren/optimaliseren/converteren/deployen, en **LiteRT Micro** enkel de inferentie → **de MCU is dus enkel bij de inferentiestap betrokken.**
 
@@ -838,7 +838,7 @@ De **eigenlijke ML-code is maar een klein onderdeel**: eromheen zit veel infrast
 
 <details><summary>Antwoord</summary>
 
-![Life cycle of ML](samenvatting_img_h2/slide-181.png)
+<img src="samenvatting_img_h2/slide-181.png" alt="Life cycle of ML" width="82.5%">
 
 Het is een **lus, geen rechte lijn**: na deployment voeden de **online performance / data feeds** terug naar Data Collection → het systeem verbetert continu. De volledige keten van stappen staat op de foto hierboven.
 
@@ -861,7 +861,7 @@ Het is een **lus, geen rechte lijn**: na deployment voeden de **online performan
 
 <details><summary>Antwoord</summary>
 
-![Comparison table — Model properties](samenvatting_img_h2/slide-201.png)
+<img src="samenvatting_img_h2/slide-201.png" alt="Comparison table — Model properties" width="82.5%">
 
 - **#Ops:** ~1400 / ~130 / **~50**.
 - **Needs an OS:** Yes / Yes / **No** (LiteRT Micro draait **bare metal**).

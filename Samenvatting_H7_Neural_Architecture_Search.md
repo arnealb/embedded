@@ -44,7 +44,7 @@ De logica van de opbouw: eerst herhalen *waaruit* een netwerk bestaat (DEEL 2) e
 
 ## 1.1 Case study: Interference cancellation
 
-![Case study interference cancellation](samenvatting_img_h7/slide-007.png)
+<img src="samenvatting_img_h7/slide-007.png" alt="Case study interference cancellation" width="82.5%">
 
 Dit is de brug vanuit Lect04. **Het probleem:** in een draadloze omgeving overlappen radiosignalen elkaar — je gewenste signaal wordt verstoord door interferentie van andere zenders. De taak is **signaalscheiding / interferentie-onderdrukking + demodulatie**: uit een mengsel het zuivere signaal terugwinnen en het terug omzetten naar bits. De input is een **RF-signalendataset**.
 
@@ -76,7 +76,7 @@ En de `(Dw)`/`(Q)`-suffixen zijn precies de technieken uit de vorige hoofdstukke
 
 ## 1.2 Trade-off tussen efficiency en accuracy
 
-![Trade-off efficiency en accuracy](samenvatting_img_h7/slide-009.png)
+<img src="samenvatting_img_h7/slide-009.png" alt="Trade-off efficiency en accuracy" width="82.5%">
 
 Embedded ML is altijd een **vierhoek van conflicterende doelen**: **Storage** ↔ **Latency** ↔ **Energy** ↔ **Accuracy**. Ze trekken aan elkaar:
 - Wil je **hogere accuracy**? Dan typisch een groter netwerk → meer storage, hogere latency, meer energie.
@@ -98,7 +98,7 @@ Voordat we architecturen kunnen vergelijken, moeten we hun **rekenkost** kunnen 
 
 ## 2.1 Fully-connected / linear layer
 
-![Linear layer MACs](samenvatting_img_h7/slide-011.png)
+<img src="samenvatting_img_h7/slide-011.png" alt="Linear layer MACs" width="82.5%">
 
 Een fully-connected laag verbindt elke input met elke output. Shapes: input `X: (n, cᵢ)`, output `Y: (n, c_o)`, weights `W: (c_o, cᵢ)`, bias `b: (c_o,)`.
 
@@ -108,7 +108,7 @@ Een fully-connected laag verbindt elke input met elke output. Shapes: input `X: 
 
 ## 2.2 Convolution layer
 
-![Convolution layer MACs](samenvatting_img_h7/slide-013.png)
+<img src="samenvatting_img_h7/slide-013.png" alt="Convolution layer MACs" width="82.5%">
 
 Bij een conv schuift een kernel over de input. Weights `W: (c_o, cᵢ, k_h, k_w)`.
 
@@ -124,7 +124,7 @@ Een conv is dus een fully-connected laag (`c_o · cᵢ`) die je (a) herhaalt ove
 
 ## 2.3 Grouped convolution layer
 
-![Grouped convolution MACs](samenvatting_img_h7/slide-016.png)
+<img src="samenvatting_img_h7/slide-016.png" alt="Grouped convolution MACs" width="82.5%">
 
 Bij een grouped conv splits je de channels in `g` groepen, en elke groep is een eigen, kleinere conv die *alleen binnen zijn eigen groep* werkt. Weights `W: (g · c_o/g, cᵢ/g, k_h, k_w)`.
 
@@ -137,7 +137,7 @@ Bij een grouped conv splits je de channels in `g` groepen, en elke groep is een 
 
 ## 2.4 Depthwise convolution layer
 
-![Depthwise convolution MACs](samenvatting_img_h7/slide-017.png)
+<img src="samenvatting_img_h7/slide-017.png" alt="Depthwise convolution MACs" width="82.5%">
 
 Dit is het **uiterste geval** van een grouped conv: `g = cᵢ = c_o`. Elke groep bevat dan precies één channel. Weights `W: (c, k_h, k_w)`.
 
@@ -149,7 +149,7 @@ Dit is het **uiterste geval** van een grouped conv: `g = cᵢ = c_o`. Elke groep
 
 ## 2.5 1×1 convolution layer
 
-![1x1 convolution MACs](samenvatting_img_h7/slide-018.png)
+<img src="samenvatting_img_h7/slide-018.png" alt="1x1 convolution MACs" width="82.5%">
 
 Een conv met een kernel van 1×1: `k_h = k_w = 1`.
 
@@ -190,7 +190,7 @@ Vóór NAS hebben mensen handmatig slimme bouwblokken ontworpen. Je moet ze kenn
 
 ## 3.1 ResNet50: bottleneck block
 
-![ResNet50 bottleneck block](samenvatting_img_h7/slide-021.png)
+<img src="samenvatting_img_h7/slide-021.png" alt="ResNet50 bottleneck block" width="82.5%">
 
 Het idee van een **bottleneck**: een 3×3 conv direct op 2048 channels draaien is peperduur (`2048 · 2048 · 9` per pixel). De truc is om eerst **goedkoop te knijpen, dan het dure werk klein te doen, en daarna terug uit te breiden**:
 
@@ -200,7 +200,7 @@ Het idee van een **bottleneck**: een 3×3 conv direct op 2048 channels draaien i
 
 Daaromheen loopt de **residual connection** (de `+` bovenaan): de input wordt bij de output opgeteld. Dat is het kernidee van ResNet — het blok hoeft alleen het *verschil* (residu) te leren, wat heel diepe netwerken traineerbaar maakt.
 
-![ResNet50 MACs som](samenvatting_img_h7/slide-025.png)
+<img src="samenvatting_img_h7/slide-025.png" alt="ResNet50 MACs som" width="82.5%">
 
 Reken de kost uit (alles × H × W, dus we laten `h_o · w_o` weg en vergelijken de rest):
 - 1×1 reduce: `2048 × 512 × 1`
@@ -210,13 +210,13 @@ Reken de kost uit (alles × H × W, dus we laten `h_o · w_o` weg en vergelijken
 
 (Tip: `2048 = 4·512`, dus `2048·512 = 512·512·4`. De som wordt `512·512·(4 + 9 + 4) = 512·512·17`.)
 
-![ResNet50 reduction factor](samenvatting_img_h7/slide-026.png)
+<img src="samenvatting_img_h7/slide-026.png" alt="ResNet50 reduction factor" width="82.5%">
 
 Vergelijk nu met de **naïeve** aanpak: één gewone 3×3 conv 2048→2048 zou `2048 · 2048 · 9 = 512·512·144` kosten. De bottleneck (`×17`) is dus een **8,5× reductie** (`144/17 ≈ 8.5`). En het mooie: de accuracy blijft behouden of stijgt zelfs licht (BoT50 doet +0.6 top-1). Conclusie: de twee 1×1 convs "kosten" wat, maar besparen veel meer door de dure 3×3 op een smal kanaal te draaien.
 
 ### Voorbeeld: reduction factor van een "bottlenext"
 
-![Voorbeeld reduction factor](samenvatting_img_h7/slide-028.png)
+<img src="samenvatting_img_h7/slide-028.png" alt="Voorbeeld reduction factor" width="82.5%">
 
 Hetzelfde recept op een 4096-d blok (4096→2048→512→512→4096):
 - Naïeve 3×3 conv 4096→4096: `4096 · 4096 · 9 = 512·512·576`.
@@ -227,13 +227,13 @@ Hoe breder de input, hoe groter de besparing van de bottleneck. Goede oefening o
 
 ## 3.2 ResNeXt: grouped convolution
 
-![ResNeXt grouped convolution](samenvatting_img_h7/slide-029.png)
+<img src="samenvatting_img_h7/slide-029.png" alt="ResNeXt grouped convolution" width="82.5%">
 
 ResNeXt neemt de ResNet-bottleneck en vervangt de **3×3 conv door een 3×3 grouped conv** (hier `group = 32`). Uit DEEL 2 weet je: een grouped conv deelt de kost door `g`. Je krijgt dus dezelfde structuur, maar het middelste (al gereduceerde) stuk wordt nóg 32× goedkoper.
 
 > 📝 **jouw notitie:** dit verlaagt de kost omdat **elke groep maar een deel van de channels ziet**.
 
-![ResNeXt multi-path equivalent](samenvatting_img_h7/slide-030.png)
+<img src="samenvatting_img_h7/slide-030.png" alt="ResNeXt multi-path equivalent" width="82.5%">
 
 **Belangrijk inzicht:** een grouped conv is wiskundig **equivalent aan een multi-path block**. In plaats van "1 brede conv met 32 groepen" kun je het tekenen als 32 parallelle, smalle paden (256→4→4→256) die op het einde worden **opgeteld**. Dit aantal parallelle paden noemt ResNeXt de **cardinality** — een extra "knop" naast diepte en breedte om de capaciteit te regelen, en goedkoper dan gewoon breder maken.
 
@@ -241,7 +241,7 @@ ResNeXt neemt de ResNet-bottleneck en vervangt de **3×3 conv door een 3×3 grou
 
 ## 3.3 MobileNet: depthwise-separable block
 
-![MobileNet depthwise-separable](samenvatting_img_h7/slide-034.png)
+<img src="samenvatting_img_h7/slide-034.png" alt="MobileNet depthwise-separable" width="82.5%">
 
 Hier wordt de "ontkoppel ruimte en channels"-truc uit §2.6 expliciet toegepast. MobileNet vervangt één gewone conv door **twee goedkope stappen**:
 
@@ -254,7 +254,7 @@ Hier wordt de "ontkoppel ruimte en channels"-truc uit §2.6 expliciet toegepast.
 
 ## 3.4 MobileNetV2: inverted bottleneck block
 
-![MobileNetV2 inverted bottleneck](samenvatting_img_h7/slide-035.png)
+<img src="samenvatting_img_h7/slide-035.png" alt="MobileNetV2 inverted bottleneck" width="82.5%">
 
 Probleem met de pure depthwise-separable: een depthwise conv heeft een **lage capaciteit** (ze mengt niets, werkt op smalle channels). MobileNetV2 lost dat op met een **inverted bottleneck** — letterlijk de *omgekeerde* volgorde van ResNet. Waar ResNet eerst *knijpt*, gaat MobileNetV2 eerst *uitzetten*:
 
@@ -266,11 +266,11 @@ Probleem met de pure depthwise-separable: een depthwise conv heeft een **lage ca
 
 > 📝 **jouw notitie:** in plaats van eerst te reduceren zoals ResNet: **MobileNetV2 = 1×1 expand → 3×3 depthwise conv → 1×1 project.**
 
-![MobileNetV2 MACs](samenvatting_img_h7/slide-036.png)
+<img src="samenvatting_img_h7/slide-036.png" alt="MobileNetV2 MACs" width="82.5%">
 
 Met N = 160 (expansion ×6 → 960): expand `160·960·1`, depthwise `960·9`, project `160·960·1` → totaal `960·329`, t.o.v. een gewone conv die `960·240` zou kosten → verhouding **1 : 1.37**. Met andere woorden: dit blok is iets *duurder* dan één enkele gewone conv, maar levert veel meer representatiekracht en is veel goedkoper dan een volle dichte bottleneck.
 
-![MobileNetV2 niet memory-efficient](samenvatting_img_h7/slide-038.png)
+<img src="samenvatting_img_h7/slide-038.png" alt="MobileNetV2 niet memory-efficient" width="82.5%">
 
 **De keerzijde — en dit is een belangrijk examenpunt.** Door tijdelijk naar N·6 channels te **expanden**, ontstaan **grote activation tensors** middenin het blok. Activations zijn de tussenliggende feature maps die je in het geheugen moet bijhouden (zeker tijdens training, want je hebt ze nodig voor de backward pass).
 
@@ -280,7 +280,7 @@ De grafieken bevestigen het onderscheid: MobileNetV2 heeft veel minder **paramet
 
 ### Voorbeeld: scaling factor van een inverted bottleneck
 
-![Voorbeeld scaling factor inverted bottlenext](samenvatting_img_h7/slide-039.png)
+<img src="samenvatting_img_h7/slide-039.png" alt="Voorbeeld scaling factor inverted bottlenext" width="82.5%">
 
 Met N = 120 en een variant met twee depthwise-stappen: de blok-som is `720·258` t.o.v. een gewone conv `720·60` → **1 : 4.3**. Dit blok is dus 4.3× duurder dan één gewone conv — illustreert dat je niet eindeloos kunt expanden zonder kost.
 
@@ -288,7 +288,7 @@ Met N = 120 en een variant met twee depthwise-stappen: de blok-som is `720·258`
 
 ## 3.5 ShuffleNet: 1×1 group convolution & channel shuffle
 
-![ShuffleNet channel shuffle](samenvatting_img_h7/slide-040.png)
+<img src="samenvatting_img_h7/slide-040.png" alt="ShuffleNet channel shuffle" width="82.5%">
 
 In MobileNetV2 zijn de 1×1 convs (de channel-mixers) intussen het *duurste* deel geworden. ShuffleNet maakt ze goedkoper door ook de **1×1 conv te vervangen door een 1×1 group conv** (deel door `g`).
 
@@ -306,17 +306,17 @@ Het zijn precies deze blokken en hun knoppen (kernel size, expansion ratio, #gro
 
 ## 4.1 Van handmatig ontwerp naar automatisch ontwerp
 
-![Manually-designed networks](samenvatting_img_h7/slide-042.png)
+<img src="samenvatting_img_h7/slide-042.png" alt="Manually-designed networks" width="82.5%">
 
 Deze bubble-grafiek zet de handmatig ontworpen netwerken (MobileNet, ShuffleNet, ResNet, DenseNet, Inception, Xception…) uit als **accuracy (y) vs. MACs (x)** op ImageNet; de bubbelgrootte = aantal parameters. Je ziet een typische trade-off-curve: meer rekenwerk koopt meer accuracy, met afnemende meeropbrengst.
 
-![Van manual naar automatic design](samenvatting_img_h7/slide-043.png)
+<img src="samenvatting_img_h7/slide-043.png" alt="Van manual naar automatic design" width="82.5%">
 
 Dezelfde grafiek, nu met de **automatisch ontworpen** netwerken erbij (NASNet-A, AmoebaNet, PNASNet, DARTS, ProxylessNAS, EfficientNet, MobileNetV3, **Once-for-All**). Die zitten **links-boven**: **hogere accuracy bij minder MACs**. De boodschap: de design space is gigantisch en **handmatig ontwerp is niet schaalbaar** — automatisch zoeken vindt betere punten dan menselijke intuïtie, en kan dat bovendien herhalen voor elk apparaat.
 
 ## 4.2 Wat is NAS? Componenten en doel
 
-![Illustration of NAS](samenvatting_img_h7/slide-044.png)
+<img src="samenvatting_img_h7/slide-044.png" alt="Illustration of NAS" width="82.5%">
 
 > 📝 **jouw notitie:** NAS = **automatisch zoeken naar goeie neural-netwerk-architecturen in een vooraf gedefinieerde search space.**
 
@@ -337,7 +337,7 @@ De search strategy kiest een kandidaat-architectuur uit de search space, de perf
 
 ## 4.3 Search space
 
-![Search space cell vs network level](samenvatting_img_h7/slide-045.png)
+<img src="samenvatting_img_h7/slide-045.png" alt="Search space cell vs network level" width="82.5%">
 
 De **search space** is de verzameling van alle architecturen die de zoekmachine *mag* voorstellen. De keuze van deze ruimte is cruciaal: te klein → je mist goede netwerken; te groot → ondoorzoekbaar. Er zijn twee niveaus om hem te definiëren:
 
@@ -347,13 +347,13 @@ De **search space** is de verzameling van alle architecturen die de zoekmachine 
 
 ### Cell-level search space
 
-![Cell-level search space](samenvatting_img_h7/slide-046.png)
+<img src="samenvatting_img_h7/slide-046.png" alt="Cell-level search space" width="82.5%">
 
 Hier zoek je niet het hele netwerk, maar één klein, herbruikbaar **blok (cel)**. Dat blok stapel je daarna **N keer** in een vast skelet (NASNet-stijl: afwisselend "Normal Cells" die de resolutie behouden en "Reduction Cells" die downsamplen). Voordeel: de zoekruimte is veel kleiner (je zoekt één cel i.p.v. honderden lagen) én het resultaat is schaalbaar — meer cellen stapelen = groter netwerk.
 
 > 📝 **jouw notitie:** een cel = klein blok met operaties zoals convolution / pooling / identity / add / concat; deze dan meerdere keren stapelen.
 
-![Cell-level RNN controller](samenvatting_img_h7/slide-047.png)
+<img src="samenvatting_img_h7/slide-047.png" alt="Cell-level RNN controller" width="82.5%">
 
 Hoe wordt zo'n cel concreet gegenereerd? Een **RNN-controller** bouwt ze stap voor stap op, en herhaalt B keer: (1) kies twee inputs (eerdere hidden states), (2) kies voor elk een transformatie-operatie (conv / pooling / identity), (3) kies hoe je de twee resultaten combineert (bv. add). De controller wordt getraind met reinforcement learning (zie §6.3) zodat hij steeds betere cellen voorstelt.
 
@@ -363,7 +363,7 @@ In plaats van (of naast) cellen kun je op **netwerkniveau** verschillende **dime
 
 **Depth (aantal blokken per stage)**
 
-![Network-level depth](samenvatting_img_h7/slide-048.png)
+<img src="samenvatting_img_h7/slide-048.png" alt="Network-level depth" width="82.5%">
 
 Hoeveel blokken stapel je in elke stage? Dieper = meer capaciteit maar trager. In het voorbeeld: stage 1 ∈ [1,2,3], stage 2 ∈ [2,3,4], stage 3 ∈ [3,5,7,9] blokken.
 
@@ -371,7 +371,7 @@ Hoeveel blokken stapel je in elke stage? Dieper = meer capaciteit maar trager. I
 
 **Resolution (input grootte)**
 
-![Network-level resolution](samenvatting_img_h7/slide-049.png)
+<img src="samenvatting_img_h7/slide-049.png" alt="Network-level resolution" width="82.5%">
 
 Hoe groot is het inputbeeld? Bv. `[(3,128,128); (3,160,160); (3,192,192); (3,224,224); (3,256,256)]`. Grotere resolutie = meer detail/accuracy, maar de rekenkost groeit **kwadratisch** (`h_o · w_o`!).
 
@@ -379,7 +379,7 @@ Hoe groot is het inputbeeld? Bv. `[(3,128,128); (3,160,160); (3,192,192); (3,224
 
 **Width (aantal channels per stage)**
 
-![Network-level width](samenvatting_img_h7/slide-050.png)
+<img src="samenvatting_img_h7/slide-050.png" alt="Network-level width" width="82.5%">
 
 Hoe "breed" is elke stage, d.w.z. hoeveel channels? Bv. per stage `[48,64,96]`, `[192,256,384]`, `[384,512,768]`, … Breder = meer capaciteit, maar de kost groeit **kwadratisch** in de breedte (de `c_o · cᵢ`-factor).
 
@@ -387,7 +387,7 @@ Hoe "breed" is elke stage, d.w.z. hoeveel channels? Bv. per stage `[48,64,96]`, 
 
 **Kernel size**
 
-![Network-level kernel size](samenvatting_img_h7/slide-051.png)
+<img src="samenvatting_img_h7/slide-051.png" alt="Network-level kernel size" width="82.5%">
 
 Voor modellen met depthwise conv kun je per laag de kernel-grootte kiezen (7×7 / 5×5 / 3×3). Grotere kernel = grotere receptieve buurt (ziet meer ruimtelijke context), maar duurder (`k_h · k_w`).
 
@@ -395,7 +395,7 @@ Voor modellen met depthwise conv kun je per laag de kernel-grootte kiezen (7×7 
 
 **Topology / connecties**
 
-![Network-level topology](samenvatting_img_h7/slide-052.png)
+<img src="samenvatting_img_h7/slide-052.png" alt="Network-level topology" width="82.5%">
 
 Niet alleen *wat* de lagen zijn, maar *hoe ze verbonden zijn*: waar downsample/upsample je, welke skip connections, welke resolutiepaden. In AutoDeepLab is elk pad door de blauwe nodes één architectuur — en bekende handontwerpen (DeepLabV3, U-Net, Stacked Hourglass) blijken gewoon specifieke paden in deze ruimte.
 
@@ -407,7 +407,7 @@ Niet alleen *wat* de lagen zijn, maar *hoe ze verbonden zijn*: waar downsample/u
 
 ## 5.1 TinyNAS
 
-![Design search space TinyML](samenvatting_img_h7/slide-054.png)
+<img src="samenvatting_img_h7/slide-054.png" alt="Design search space TinyML" width="82.5%">
 
 Tot nu namen we de search space als gegeven. Maar **het ontwerp van de search space is zelf cruciaal voor de NAS-prestatie** — een slecht gekozen ruimte bevat domweg geen goede modellen, hoe goed je ook zoekt. TinyNAS (uit MCUNet) pakt dit in twee fasen aan:
 1. **Automated search space optimization** — eerst automatisch *afbakenen* welk deel van de gigantische network space de moeite waard is voor jouw constraint.
@@ -417,11 +417,11 @@ Je optimaliseert dus eerst *waar* je zoekt, en dan *wat* je kiest.
 
 ## 5.2 Geheugen is dé constraint voor TinyML
 
-![Memory is important for TinyML](samenvatting_img_h7/slide-055.png)
+<img src="samenvatting_img_h7/slide-055.png" alt="Memory is important for TinyML" width="82.5%">
 
 Waarom is TinyML anders dan Mobile AI? Op een telefoon let je vooral op **latency** en **energy**. Op een microcontroller komt er een derde, *harde* constraint bij: **memory**. Het geheugen is zó klein dat een model er domweg niet in past — dat is een ja/nee-grens, geen trade-off.
 
-![Cloud/Mobile/Tiny AI memory tabel](samenvatting_img_h7/slide-056.png)
+<img src="samenvatting_img_h7/slide-056.png" alt="Cloud/Mobile/Tiny AI memory tabel" width="82.5%">
 
 De kloof is gigantisch en het is goed om de ordes van grootte te kennen:
 - **Geheugen (SRAM):** 16 GB (cloud, NVIDIA V100) → 4 GB (iPhone 11) → **320 kB** (STM32F746). Dat is ~3100× kleiner dan mobiel.
@@ -431,13 +431,13 @@ Ter vergelijking: ResNet-50 heeft 7.2 MB activations / 102 MB params — dat pas
 
 ## 5.3 De juiste FLOPs-verdeling kiezen
 
-![FLOPs distribution](samenvatting_img_h7/slide-057.png)
+<img src="samenvatting_img_h7/slide-057.png" alt="FLOPs distribution" width="82.5%">
 
 Hoe weet TinyNAS of een afgebakende search space "goed" is? Het kijkt naar de **FLOPs-verdeling** van alle modellen in die ruimte die de memory-constraint halen. De redenering: **meer FLOPs → meer capaciteit → waarschijnlijk hogere accuracy** — máár alleen onder de geheugengrens.
 
 In de grafiek (cumulatieve waarschijnlijkheid vs. FLOPs): een **goede design space** (rood, `w0.5-r144`) bereikt met 80% kans hoge FLOPs (50.3M) terwijl ze nog in het geheugen past; een **slechte design space** (zwart) blijft hangen rond 32.3M FLOPs. Je wil dus de configuratie kiezen waarvan de curve het verst naar rechts ligt — die bevat de "rijkste" modellen die nog passen.
 
-![Better search space better accuracy](samenvatting_img_h7/slide-058.png)
+<img src="samenvatting_img_h7/slide-058.png" alt="Better search space better accuracy" width="82.5%">
 
 Het effect is meetbaar (Table 5): de geoptimaliseerde space haalt **78.7%**, vs. een willekeurig gekozen space 74.7% en een veel te grote space 77.0%. De conclusie die je moet onthouden: **betere search space → betere finale accuracy** — nog vóór je begint te zoeken.
 
@@ -445,13 +445,13 @@ Het effect is meetbaar (Table 5): de geoptimaliseerde space haalt **78.7%**, vs.
 
 # DEEL 6 — Search strategy
 
-![Illustration NAS search strategies](samenvatting_img_h7/slide-060.png)
+<img src="samenvatting_img_h7/slide-060.png" alt="Illustration NAS search strategies" width="82.5%">
 
 Gegeven een search space: *hoe* doorzoek je hem? Er zijn vijf hoofdstrategieën, oplopend in slimheid: **grid search, random search, reinforcement learning, gradient descent, evolutionary search.** Elk maakt een andere afweging tussen "grondig" en "haalbaar".
 
 ## 6.1 Grid search
 
-![Grid search](samenvatting_img_h7/slide-061.png)
+<img src="samenvatting_img_h7/slide-061.png" alt="Grid search" width="82.5%">
 
 De bruteforce-aanpak: leg een rooster over de keuzes en test **alle** combinaties.
 
@@ -459,7 +459,7 @@ De bruteforce-aanpak: leg een rooster over de keuzes en test **alle** combinatie
 
 Het probleem is **combinatorische explosie**: met d dimensies en k waarden elk heb je `kᵈ` combinaties. Voor een paar knoppen oké, maar voor een echte NAS-ruimte (miljarden opties) onbruikbaar.
 
-![EfficientNet compound scaling](samenvatting_img_h7/slide-062.png)
+<img src="samenvatting_img_h7/slide-062.png" alt="EfficientNet compound scaling" width="82.5%">
 
 **EfficientNet** maakt grid search wél bruikbaar door het probleem te verkleinen tot enkele **schaalfactoren**.
 
@@ -469,7 +469,7 @@ Het probleem is **combinatorische explosie**: met d dimensies en k waarden elk h
 
 ## 6.2 Random search
 
-![Random search](samenvatting_img_h7/slide-063.png)
+<img src="samenvatting_img_h7/slide-063.png" alt="Random search" width="82.5%">
 
 > 📝 **jouw notitie:** random kandidaten kiezen uit de search space. (Verrassend sterke baseline.)
 
@@ -477,7 +477,7 @@ Klinkt naïef, maar in een goed ontworpen search space (DEEL 5!) zijn er zóveel
 
 ## 6.3 Reinforcement learning
 
-![Reinforcement learning](samenvatting_img_h7/slide-064.png)
+<img src="samenvatting_img_h7/slide-064.png" alt="Reinforcement learning" width="82.5%">
 
 > 📝 **jouw notitie:** architectuurontwerp = reeks beslissingen; een **RNN-controller** kiest stap voor stap de architectuur en krijgt **rewards** op basis van performance.
 
@@ -485,39 +485,39 @@ Het idee: zie het bouwen van een architectuur als een **reeks beslissingen** (ee
 
 ## 6.4 Gradient descent (DARTS)
 
-![Gradient descent DARTS](samenvatting_img_h7/slide-065.png)
+<img src="samenvatting_img_h7/slide-065.png" alt="Gradient descent DARTS" width="82.5%">
 
 > 📝 **jouw notitie:** maakt de architectuurkeuze **differentieerbaar**, ofwel vervangt discrete keuzes tijdelijk door **continue gewichten** (zodat je via gradient descent kunt optimaliseren).
 
 **Het probleem dat DARTS oplost:** "welke operatie kies ik?" is normaal een **discrete** keuze (conv óf pool óf identity), en discrete keuzes kun je niet afleiden/differentiëren — dus geen gradient descent. DARTS' truc: vervang de harde keuze door een **gewogen mix** van alle opties, met continue gewichten α (een soort "softmax over operaties"). Nu is alles differentieerbaar en kun je α gewoon meetrainen met gradient descent. Op het einde kies je per plek de operatie met het hoogste gewicht. Veel sneller dan RL, want je traint één keer i.p.v. duizenden netwerken — maar het geheugen-/rekengebruik tijdens de search is hoog (alle opties tegelijk actief).
 
-![Gradient descent latency-aware](samenvatting_img_h7/slide-066.png)
+<img src="samenvatting_img_h7/slide-066.png" alt="Gradient descent latency-aware" width="82.5%">
 
 Deze gradient-aanpak kan ook **latency-aware** gemaakt worden: voeg een latency-term toe aan de loss zodat de search niet alleen op accuracy, maar ook op snelheid optimaliseert (dit is precies wat ProxylessNAS doet, zie DEEL 7).
 
 ## 6.5 Evolutionary search
 
-![Evolutionary search](samenvatting_img_h7/slide-067.png)
+<img src="samenvatting_img_h7/slide-067.png" alt="Evolutionary search" width="82.5%">
 
 Geïnspireerd op natuurlijke selectie: houd een **populatie** van architecturen bij, beoordeel ze, gooi de slechte weg en maak nieuwe varianten van de goede. Herhaal generatie na generatie.
 
-![Fitness function](samenvatting_img_h7/slide-068.png)
+<img src="samenvatting_img_h7/slide-068.png" alt="Fitness function" width="82.5%">
 
 > 📝 **jouw notitie:** de **fitness function** combineert accuracy + efficiency/latency + constraints.
 
 De **fitness function** bepaalt wie "fit" is en dus mag voortplanten. Door er naast accuracy ook latency en constraints in te stoppen, stuur je de evolutie meteen richting efficiënte modellen.
 
-![Mutation depth](samenvatting_img_h7/slide-069.png)
+<img src="samenvatting_img_h7/slide-069.png" alt="Mutation depth" width="82.5%">
 
 > 📝 **jouw notitie:** mutation door **depth** te veranderen: stage 1 krijgt minder blocks, stage 2 meer → **mutation = kleine wijziging aan een bestaande architectuur.**
 
-![Mutation operator](samenvatting_img_h7/slide-070.png)
+<img src="samenvatting_img_h7/slide-070.png" alt="Mutation operator" width="82.5%">
 
 > 📝 **jouw notitie:** een MB6 3×3 wordt MB6 5×5 → ook de **expansion ratio / kernel size** kan muteren.
 
 **Mutation** = een kleine, willekeurige wijziging aan één bestaande architectuur (een stage dieper/ondieper, een kernel 3×3→5×5, een andere expansion ratio). Het zorgt voor lokale variatie.
 
-![Crossover](samenvatting_img_h7/slide-071.png)
+<img src="samenvatting_img_h7/slide-071.png" alt="Crossover" width="82.5%">
 
 > 📝 **jouw notitie:** **crossover** combineert 2 parent-architecturen: voor elke laag kies je willekeurig de operator van parent 1 of parent 2.
 
@@ -529,19 +529,19 @@ De **fitness function** bepaalt wie "fit" is en dus mag voortplanten. Door er na
 
 ## 7.1 Van algemeen model naar gespecialiseerde modellen
 
-![From general to specialized models](samenvatting_img_h7/slide-073.png)
+<img src="samenvatting_img_h7/slide-073.png" alt="From general to specialized models" width="82.5%">
 
 De ambitie verschuift hier: niet één "universeel" model dat overal redelijk draait, maar **per target (taak + specifieke hardware) een gespecialiseerd model**. Een model dat optimaal is voor een GPU is dat namelijk niet voor een microcontroller — en omgekeerd. De rest van DEEL 7 gaat over hoe je dat efficiënt voor elkaar krijgt.
 
 ## 7.2 Waarom MACs niet volstaan
 
-![Proxy task sub-optimal](samenvatting_img_h7/slide-074.png)
+<img src="samenvatting_img_h7/slide-074.png" alt="Proxy task sub-optimal" width="82.5%">
 
 > 📝 **jouw notitie:** vroegere NAS was duur → men gebruikte **proxy tasks** (bv. CIFAR-10, of kleinere netwerken). Maar wat goed is op de proxy is niet altijd goed voor de echte target task/hardware.
 
 Omdat zoeken zo duur is, deed men het vroeger op een goedkopere **proxy task** (een kleinere dataset zoals CIFAR-10, of een ingekort netwerk) en hoopte dat het resultaat overdraagt. Het probleem: **een winnaar op de proxy is niet noodzakelijk een winnaar op de echte taak/hardware**.
 
-![ProxylessNAS](samenvatting_img_h7/slide-075.png)
+<img src="samenvatting_img_h7/slide-075.png" alt="ProxylessNAS" width="82.5%">
 
 > 📝 **jouw notitie:** **ProxylessNAS** vermijdt proxy tasks en zoekt direct voor de echte deployment-setting.
 
@@ -549,7 +549,7 @@ Omdat zoeken zo duur is, deed men het vroeger op een goedkopere **proxy task** (
 
 **Extra context — hoe maakt ProxylessNAS dat betaalbaar?** Het bouwt voort op de DARTS-aanpak (alle operaties tegelijk), maar **binariseert** de paden: per stap is er telkens maar één pad actief in plaats van alle. Daardoor zakt het geheugengebruik van O(N) (alle N opties tegelijk) naar O(1) (één tegelijk). Zo kun je tóch direct op de volledige, echte taak zoeken zonder dat het geheugen ontploft.
 
-![MACs != real hardware efficiency](samenvatting_img_h7/slide-078.png)
+<img src="samenvatting_img_h7/slide-078.png" alt="MACs != real hardware efficiency" width="82.5%">
 
 **Het kernpunt van dit hele deel: *MACs ≠ echte hardware-efficiëntie.*** MACs tellen alleen vermenigvuldigingen, maar de echte latency hangt ook af van geheugentoegang, parallellisme, hoe goed een operatie op de chip "mapt", enz. Concreet:
 - Conventionele NAS-netwerken (NASNet-A, AmoebaNet-A) hebben **gelijkaardige MACs als MobileNetV2 maar veel hogere latency** ("fewer MACs, but higher latency!").
@@ -557,8 +557,8 @@ Omdat zoeken zo duur is, deed men het vroeger op een goedkopere **proxy task** (
 
 
 
-![Hardware-specifiek gedrag](samenvatting_img_h7/slide-079.png)
-![Hardware-specifiek gedrag](samenvatting_img_h7/slide-080.png)
+<img src="samenvatting_img_h7/slide-079.png" alt="Hardware-specifiek gedrag" width="82.5%">
+<img src="samenvatting_img_h7/slide-080.png" alt="Hardware-specifiek gedrag" width="82.5%">
 
 En het gedrag verschilt **per hardware**: hidden-dimension opschalen maakt een Raspberry Pi (ARM CPU) veel trager, terwijl een Nvidia GPU er nauwelijks last van heeft (de GPU heeft genoeg parallellisme om het te verbergen). Daarom moet je per hardware apart optimaliseren — een algemene MAC- of FLOP-telling liegt.
 
@@ -568,12 +568,12 @@ En het gedrag verschilt **per hardware**: hidden-dimension opschalen maakt een R
 
 Als MACs liegen, moet de **echte latency** in de zoeklus. Maar hoe meet je die zonder de boel onbetaalbaar te maken?
 
-![Measure latency: slow](samenvatting_img_h7/slide-081.png)
-![Measure latency: expensive](samenvatting_img_h7/slide-082.png)
+<img src="samenvatting_img_h7/slide-081.png" alt="Measure latency: slow" width="82.5%">
+<img src="samenvatting_img_h7/slide-082.png" alt="Measure latency: expensive" width="82.5%">
 
 **Optie 1 — meten op het device.** Dit geeft de waarheid, maar is **traag** (elke kandidaat moet je echt timen) en **duur** (je hebt veel fysieke devices nodig en moet duizenden architecturen meten). Onhaalbaar in een zoeklus met miljoenen kandidaten.
 
-![Latency prediction](samenvatting_img_h7/slide-083.png)
+<img src="samenvatting_img_h7/slide-083.png" alt="Latency prediction" width="82.5%">
 
 **Optie 2 — latency *voorspellen*.** Snel en goedkoop.
 
@@ -581,11 +581,11 @@ Als MACs liegen, moet de **echte latency** in de zoeklus. Maar hoe meet je die z
 
 Het recept: meet *één keer* een hoop architecturen op het echte device → dat is je **latency-dataset** → train daarmee een goedkoop model dat latency voorspelt. In de NAS-lus gebruik je voortaan die **voorspelde** latency. Twee manieren om dit te doen:
 
-![Layer-wise latency profiling](samenvatting_img_h7/slide-086.png)
+<img src="samenvatting_img_h7/slide-086.png" alt="Layer-wise latency profiling" width="82.5%">
 
 **(a) Layer-wise → latency lookup table.** Meet de latency van elke individuele operatie en zet ze in een tabel `{Op1: latency, Op2: latency, …}`. De latency van een hele architectuur ≈ de **som** van de latencies van haar lagen. Simpel en snel op te zoeken.
 
-![Latency lookup table klopt](samenvatting_img_h7/slide-088.png)
+<img src="samenvatting_img_h7/slide-088.png" alt="Latency lookup table klopt" width="82.5%">
 
 En het werkt: de voorspelde vs. echte latency (ms) liggen netjes op de **y = x**-lijn — de optelling van laag-latencies benadert de echte latency verrassend goed.
 
@@ -593,23 +593,23 @@ En het werkt: de voorspelde vs. echte latency (ms) liggen netjes op de **y = x**
 
 > 📝 **jouw notitie:** in plaats van losse lagen te meten, train je een model dat de **volledige architectuurlatency** voorspelt.
 
-![Latency prediction model NN](samenvatting_img_h7/slide-089.png)
+<img src="samenvatting_img_h7/slide-089.png" alt="Latency prediction model NN" width="82.5%">
 
 Hier is de voorspeller zelf een klein netwerkje: het neemt architectuur-kenmerken als input (kernel size, width, resolution, …) en geeft direct de **predicted latency** terug. Voordeel t.o.v. de lookup table: het kan ook niet-additieve effecten (overhead, geheugengedrag) leren.
 
 ## 7.4 Gespecialiseerde modellen per hardware
 
-![Specialized models accuracy](samenvatting_img_h7/slide-090.png)
+<img src="samenvatting_img_h7/slide-090.png" alt="Specialized models accuracy" width="82.5%">
 
 Resultaat van direct + latency-aware zoeken (ProxylessNAS): het gespecialiseerde model is **1.83× sneller** dan de niet-gespecialiseerde tegenhanger op mobile (op GPU is de winst nog groter). Proxyless (GPU) haalt **75.1% top-1 bij slechts 5.1 ms** GPU-latency — beter én sneller dan MobileNetV2, NASNet-A en MnasNet. Let op NASNet-A in de tabel: 38.3 ms, terwijl het qua accuracy vergelijkbaar is — precies het "MACs ≠ latency"-effect.
 
-![Specialized models per hardware](samenvatting_img_h7/slide-091.png)
+<img src="samenvatting_img_h7/slide-091.png" alt="Specialized models per hardware" width="82.5%">
 
 En de clou: hetzelfde "Proxyless" recept, apart geoptimaliseerd voor **GPU / CPU / mobile**, geeft elk een **ander** netwerk. In de tabel zie je dat het GPU-model traag is op CPU (204.9 ms!) en het mobile-model traag op GPU. **Geen enkel model is optimaal op alle hardware** → specialiseer per target. Dat motiveert meteen de volgende vraag: moet je dan voor élk apparaat opnieuw een dure search + training doen? Nee — daarvoor is Once-for-All.
 
 ## 7.5 Once-for-All (OFA) Network
 
-![Hardware-aware NAS met OFA](samenvatting_img_h7/slide-092.png)
+<img src="samenvatting_img_h7/slide-092.png" alt="Hardware-aware NAS met OFA" width="82.5%">
 
 **Het probleem:** als je per hardware een model wil, en je evalueert kandidaten door ze vanaf nul te trainen (≈1 dag/model, ×1000 kandidaten), is dat onbetaalbaar én slecht voor het milieu. De OFA-aanpak vergelijkt twee workflows:
 
@@ -619,14 +619,14 @@ En de clou: hetzelfde "Proxyless" recept, apart geoptimaliseerd voor **GPU / CPU
   2. **Sample** er een sub-netwerk uit en meet accuracy + latency — dit duurt **seconden**, want het is al getraind.
   3. Herhaal stap 2 en kies het beste. Geen hertrainen nodig.
 
-![Once-for-All network](samenvatting_img_h7/slide-093.png)
+<img src="samenvatting_img_h7/slide-093.png" alt="Once-for-All network" width="82.5%">
 
 > 📝 **jouw notitie:** OFA (once-for-all) bevat **veel child networks die weights delen**; dit vermijdt dat elke architectuur opnieuw vanaf 0 getraind moet worden.
 
 De kerngedachte — **train once, get many · reduce design cost · fit diverse hardware constraints**: het OFA-netwerk bevat heel veel kleinere **child networks** die **dezelfde gewichten delen**. Door ze samen (joint) te trainen, "amortiseer" je de trainingskost over allemaal: één dure training, daarna gratis kandidaten.
 
-![OFA diverse hardware](samenvatting_img_h7/slide-094.png)
-![OFA microcontrollers](samenvatting_img_h7/slide-095.png)
+<img src="samenvatting_img_h7/slide-094.png" alt="OFA diverse hardware" width="82.5%">
+<img src="samenvatting_img_h7/slide-095.png" alt="OFA microcontrollers" width="82.5%">
 
 Uit datzelfde getrainde OFA-netwerk haal je dan **gespecialiseerde sub-netwerken** voor totaal verschillende doelen, **zonder hertrainen**:
 - GPU's van verschillend formaat: H100 / RTX 4090 / Jetson Orin.
@@ -634,19 +634,19 @@ Uit datzelfde getrainde OFA-netwerk haal je dan **gespecialiseerde sub-netwerken
 - Verschillende telefoons (Samsung S22/S21/S20).
 - Zelfs verschillende **batterijtoestanden** van hetzelfde toestel (full / low / battery-saving) → je kunt *runtime* een kleiner sub-netwerk kiezen als de batterij leeg raakt.
 
-![OFA train 10^19 networks](samenvatting_img_h7/slide-098.png)
+<img src="samenvatting_img_h7/slide-098.png" alt="OFA train 10^19 networks" width="82.5%">
 
 De schaal is enorm: één OFA-netwerk bevat in de praktijk **~10¹⁹ child networks tegelijk**. Ze delen de gewichten, worden joint getraind, en amortiseren zo zowel de trainingskost als de **CO₂-footprint** (MIT News maakte er een artikel over).
 
 ## 7.6 OFA: hoe train je één netwerk waar al die sub-netwerken in zitten?
 
-![Progressive shrinking](samenvatting_img_h7/slide-099.png)
+<img src="samenvatting_img_h7/slide-099.png" alt="Progressive shrinking" width="82.5%">
 
 > 📝 **jouw notitie:** OFA traint eerst een **groot** netwerk en laat daarna kleinere varianten toe — progressief **shrinken** op kernel size / depth / width.
 
 De techniek heet **progressive shrinking**. Naïef alle sub-netwerken tegelijk trainen werkt slecht: de grote en kleine varianten "vechten" om dezelfde gewichten. Daarom train OFA eerst het **volledige, grootste** netwerk goed, en staat het *daarna geleidelijk* steeds kleinere varianten toe — telkens vertrekkend van de al-getrainde grote.
 
-![Elastic resolution/kernel/depth/width](samenvatting_img_h7/slide-100.png)
+<img src="samenvatting_img_h7/slide-100.png" alt="Elastic resolution/kernel/depth/width" width="82.5%">
 
 De volgorde is **Elastic Resolution → Elastic Kernel Size → Elastic Depth → Elastic Width** (telkens van "Full" naar "Partial").
 
@@ -656,29 +656,29 @@ Hieronder per dimensie *hoe* een kleinere variant de gewichten van de grote herg
 
 **Elastic kernel size**
 
-![Elastic kernel size transform matrix](samenvatting_img_h7/slide-108.png)
+<img src="samenvatting_img_h7/slide-108.png" alt="Elastic kernel size transform matrix" width="82.5%">
 
 Start met de volle kernel (7×7). Een kleinere kernel (5×5, dan 3×3) neemt de **gecentreerde gewichten** van de grote over, maar via een geleerde **transformatie-matrix** (25×25, dan 9×9). Die matrix herweegt de centrale gewichten zodat ze ook als kleine kernel goed werken — anders zou je gewoon de buitenrand wegknippen en kwaliteit verliezen.
 
 **Elastic depth**
 
-![Elastic depth shrink](samenvatting_img_h7/slide-115.png)
+<img src="samenvatting_img_h7/slide-115.png" alt="Elastic depth shrink" width="82.5%">
 
 Train eerst met volle diepte; sta dan toe dat de **laatste lagen van elke unit worden overgeslagen** om de diepte te verlagen. Zo deelt het ondiepe sub-netwerk de eerste lagen met het diepe.
 
 **Elastic width**
 
-![Elastic width channel sorting](samenvatting_img_h7/slide-119.png)
+<img src="samenvatting_img_h7/slide-119.png" alt="Elastic width channel sorting" width="82.5%">
 
 Train met volle breedte; krimp dan geleidelijk en **behoud de belangrijkste channels** via **channel sorting**: bereken een channel-importance score, sorteer/reorganiseer de channels van belangrijk naar onbelangrijk, en houd bij het krimpen telkens de bovenste (belangrijkste) over. Zo verlies je zo weinig mogelijk bij het versmallen.
 
 ## 7.7 OFA: resultaten
 
-![OFA roofline analysis](samenvatting_img_h7/slide-124.png)
+<img src="samenvatting_img_h7/slide-124.png" alt="OFA roofline analysis" width="82.5%">
 
 **Roofline-analyse — "computation is cheap; memory is expensive".** Een roofline-plot zet performance (GOPS/s) uit tegen **arithmetic intensity** (Ops/Byte = hoeveel rekenwerk je doet per byte geheugentoegang). Modellen links zijn *memory-bound* (geheugen is de flessenhals), rechts *compute-bound*. Het OFA-model heeft een **hogere arithmetic intensity** → het is minder memory-bound → het haalt **hogere utilization en performance op exact dezelfde hardware** (zonder de RTL te wijzigen). Concreet op een Xilinx ZU3EG FPGA: 76 vs. 48 GOPS/s voor MobileNetV2.
 
-![OFA op diverse hardware](samenvatting_img_h7/slide-125.png)
+<img src="samenvatting_img_h7/slide-125.png" alt="OFA op diverse hardware" width="82.5%">
 
 En het generaliseert: op **alle** geteste platforms (Samsung S7 Edge, Google Pixel2, LG G8, NVIDIA 1080Ti, Intel Xeon CPU, Xilinx FPGA) ligt de **OFA accuracy-vs-latency-curve boven die van MobileNetV3 en MobileNetV2**. Bij gelijke latency haalt OFA dus telkens een hogere ImageNet-accuracy — het bewijs dat per-hardware specialiseren uit één getraind netwerk écht werkt.
 

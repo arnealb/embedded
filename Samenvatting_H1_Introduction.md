@@ -14,13 +14,13 @@ Het vak zit op het kruispunt van **Algorithm ↔ System** en **Computer Science 
 - **Part A — Efficient Inference:** pruning, quantization, neural architecture search (NAS), knowledge distillation.
 - **Part B — Efficient Training:** distributed training, on-device training, federated learning.
 
-![Course overview](samenvatting_img/slide-06.png)
+<img src="samenvatting_img/slide-06.png" alt="Course overview" width="82.5%">
 
 ### Lesplan en evaluatie
 
 De theorielessen wisselen af met labsessies. Pruning/quantization en het lab op de **Arduino Nano 33 BLE** zijn kern-onderdelen.
 
-![Lecture plan](samenvatting_img/slide-07.png)
+<img src="samenvatting_img/slide-07.png" alt="Lecture plan" width="82.5%">
 
 **Weging:** Theorie **75%**, Labs **25%**. Het wordt sterk aangeraden om zowel lessen (er worden oefeningen in de les gemaakt) als labs (sommige labo-oefeningen zijn direct examenstof) te volgen. De regels voor het labwerk worden uitgelegd in Lecture 5 (13 maart).
 
@@ -32,15 +32,15 @@ De **modelgrootte groeit exponentieel** (van Transformer 0.05B → GPT-3 175B �
 
 ➡️ **Model compression overbrugt die kloof** tussen vraag en aanbod van AI-rekenkracht.
 
-![Supply/demand gap](samenvatting_img/slide-09.png)
+<img src="samenvatting_img/slide-09.png" alt="Supply/demand gap" width="82.5%">
 
 Concreet voeg je tussen **training** en **inference** een extra stap toe: **model compression** (pruning, sparsity, quantization, …). Je traint één keer een groot model en comprimeert het dan tot iets dat efficiënt kan inferen.
 
-![Training → Compression → Inference](samenvatting_img/slide-10.png)
+<img src="samenvatting_img/slide-10.png" alt="Training → Compression → Inference" width="82.5%">
 
 **Waarom nu?** Het aantal publicaties over pruning en sparse neural networks explodeert sinds ~2015. Mijlpalen: *Optimal Brain Damage* (1989), *Deep Compression* en *EIE* (2015–2016). Dit heeft zelfs het hardware-ontwerp beïnvloed (bv. de **NVIDIA Ampere Sparse Tensor Core**, 2× effectieve versnelling).
 
-![Pruning publications trend](samenvatting_img/slide-11.png)
+<img src="samenvatting_img/slide-11.png" alt="Pruning publications trend" width="82.5%">
 
 ---
 
@@ -52,15 +52,15 @@ De rode draad in de rest van het hoofdstuk: voor élk toepassingsdomein (vision,
 
 DNN's halen **bovenmenselijke** nauwkeurigheid op ImageNet. De top-5 foutgraad daalde van 28.2% (2010) naar 2.3% (SENet, 2017), terwijl de mens op ~5.1% zit. De grote sprong begon in 2012 met **AlexNet** (deep learning).
 
-![ImageNet error rate](samenvatting_img/slide-14.png)
+<img src="samenvatting_img/slide-14.png" alt="ImageNet error rate" width="82.5%">
 
 Maar: **hogere nauwkeurigheid kost meer rekenwerk** (MACs) en grotere modellen. **Neural Architecture Search** (bv. *Once-for-All*, EfficientNet) vindt architecturen die dezelfde nauwkeurigheid halen met **tot 14× minder rekenwerk**. In de grafiek: linksboven = weinig MACs + hoge accuracy = beste.
 
-![Efficient image classification via NAS](samenvatting_img/slide-16.png)
+<img src="samenvatting_img/slide-16.png" alt="Efficient image classification via NAS" width="82.5%">
 
 Beeldherkenning draait intussen niet enkel in de cloud, maar ook **on-device**: foto-tags en mensenherkenning op iPhone, on-device pose estimation (MediaPipe BlazePose), en zelfs **beeldclassificatie op een microcontroller** (XIAO ESP32S3 Sense: Xtensa LX7 dual-core @240 MHz, 8 MB RAM/flash — herkent appel/banaan/aardappel in ~300 ms).
 
-![Image recognition on MCU](samenvatting_img/slide-19.png)
+<img src="samenvatting_img/slide-19.png" alt="Image recognition on MCU" width="82.5%">
 
 ### 3.2 On-device training op de edge
 
@@ -69,27 +69,27 @@ Niet alleen inference, ook **trainen op het toestel zelf** is belangrijk. Reden:
 - **Voordelen on-device learning:** betere privacy, lagere kost, personalisatie, life-long learning.
 - **Uitdaging:** training is véél duurder dan inference en past moeilijk op edge hardware (beperkt geheugen). Bv. on-device training onder **256 KB geheugen** (MCUNet-backbone) is mogelijk met de juiste optimalisaties (quantization-aware scaling).
 
-![On-device training on edge](samenvatting_img/slide-20.png)
+<img src="samenvatting_img/slide-20.png" alt="On-device training on edge" width="82.5%">
 
 ### 3.3 Segmentatie — efficiëntie maakt het bruikbaar
 
 Het **Segment Anything Model (SAM)** doet promptbare zero-shot segmentatie, maar draait op slechts **12 beelden/s** (zware ViT-Huge). **EfficientViT** versnelt SAM **~70×** tot **842 beelden/s** — pas dan wordt het praktisch realtime bruikbaar.
 
-![Efficient prompt segmentation](samenvatting_img/slide-24.png)
+<img src="samenvatting_img/slide-24.png" alt="Efficient prompt segmentation" width="82.5%">
 
 ### 3.4 Van discriminatieve naar generatieve modellen
 
 Generatie (diffusion models maken realistische beelden uit tekst) is nóg duurder: **Stable Diffusion trainen kost ~$600.000** (256 A100's, 150k uur).
 
-![Generative cost](samenvatting_img/slide-26.png)
+<img src="samenvatting_img/slide-26.png" alt="Generative cost" width="82.5%">
 
 **Hoe werken diffusion models?** (1) Schone trainingsdata → (2) **forward diffusion**: stapsgewijs ruis toevoegen → (3) een NN leert elke ruis-stap **terug te draaien** → (4) **reverse diffusion**: nieuwe beelden genereren vanuit ruis → (5) output is een synthetisch beeld dat de trainingsverdeling volgt.
 
-![Diffusion models](samenvatting_img/slide-27.png)
+<img src="samenvatting_img/slide-27.png" alt="Diffusion models" width="82.5%">
 
 Efficiëntie-technieken voor generatie: **GAN Compression** verlaagt het rekenwerk **9–21×** via pruning (bv. CycleGAN horse→zebra), AnycostGAN (interactief editen op laptop), SIGE (>4× sneller via spatial sparsity), FastComposer (tuning-free multi-subject generatie).
 
-![GAN compression](samenvatting_img/slide-28.png)
+<img src="samenvatting_img/slide-28.png" alt="GAN compression" width="82.5%">
 
 > Ook **3D-objectgeneratie** (DreamFusion) en **videogeneratie** (Imagen Video, "performance nog niet verzadigd bij 5.6B parameters") vallen onder dezelfde "krachtig maar duur"-boodschap. In **3D-perceptie** (zelfrijdende auto's) draait Waymo nog op een hele kofferbak vol workstations; **Fast-LiDARNet** (47 fps, realtime) en **BEVFusion** tonen hoe algorithm/system co-design dit efficiënt maakt.
 
@@ -107,11 +107,11 @@ Efficiëntie-technieken voor generatie: **GAN Compression** verlaagt het rekenwe
 
 **Lite Transformer** verkleint het model via pruning + quantization: tot onder de "mobile constraint" (<10M params), met een totale **18.2× modelreductie** en sterk lagere CO₂-uitstoot, terwijl de BLEU-score (vertaalkwaliteit) nagenoeg gelijk blijft.
 
-![Efficient NMT — Lite Transformer](samenvatting_img/slide-44.png)
+<img src="samenvatting_img/slide-44.png" alt="Efficient NMT — Lite Transformer" width="82.5%">
 
 De **Transformer** ("Attention Is All You Need", Vaswani et al. 2017) is de basisarchitectuur. Hij bestaat uit een **encoder** en een **decoder**, elk met **multi-head attention** + **feed-forward** lagen (en residual "Add & Norm"). Recurrence/convolutie zijn volledig vervangen door **attention**.
 
-![Transformer architecture](samenvatting_img/slide-45.png)
+<img src="samenvatting_img/slide-45.png" alt="Transformer architecture" width="82.5%">
 
 **Het input-blok** van een Transformer kent drie stappen — handig om visueel te onthouden:
 
@@ -119,21 +119,21 @@ De **Transformer** ("Attention Is All You Need", Vaswani et al. 2017) is de basi
 2. **Text vectorization (Embedding)** — elk token wordt een vector (bv. 512-dim).
 3. **Positional Encoding** — positie-informatie wordt opgeteld bij de embedding (want attention is volgorde-blind).
 
-![Transformer input block](samenvatting_img/slide-47.png)
+<img src="samenvatting_img/slide-47.png" alt="Transformer input block" width="82.5%">
 
 ### 4.3 Large Language Models: gedrag & kost
 
 LLM's vertonen **emergent gedrag**: **zero-shot / one-shot / few-shot learning** — ze lossen een taak op met enkel een beschrijving (zero), één voorbeeld (one) of enkele voorbeelden (few), **zonder** gewichtsupdates.
 
-![Zero / one / few-shot](samenvatting_img/slide-48.png)
+<img src="samenvatting_img/slide-48.png" alt="Zero / one / few-shot" width="82.5%">
 
 **Chain-of-Thought prompting**: door het model te laten "stap voor stap redeneren" stijgt de juistheid bij redeneertaken sterk (rechts goed, standaard-prompting links fout). Dit werkt vooral bij **grote** modellen.
 
-![Chain-of-Thought](samenvatting_img/slide-50.png)
+<img src="samenvatting_img/slide-50.png" alt="Chain-of-Thought" width="82.5%">
 
 Maar dit alles **kost een exponentieel groeiende modelgrootte** — en het GPU-geheugen volgt niet (dezelfde gap als in deel 2). Vandaar de nood aan **Efficient LLMs** (bv. **SpAtten**: redundante tokens wegsnoeien; **AWQ**: 4-bit quantization). LLM's op de edge draaien is belangrijk voor copilot-diensten, lage latentie, offline werking en **dataprivacy**.
 
-![LLM model size growing](samenvatting_img/slide-52.png)
+<img src="samenvatting_img/slide-52.png" alt="LLM model size growing" width="82.5%">
 
 ---
 
@@ -143,13 +143,13 @@ Maar dit alles **kost een exponentieel groeiende modelgrootte** — en het GPU-g
 
 **LLaVA** combineert beeld + taal voor algemene visuele/talige understanding (gebruikt een 13B LLaMA). **AWQ** quantiseert zulke modellen naar **4 bit** met behoud van kwaliteit.
 
-![Vision-language model (LLaVA)](samenvatting_img/slide-56.png)
+<img src="samenvatting_img/slide-56.png" alt="Vision-language model (LLaVA)" width="82.5%">
 
 ### 5.2 Vision-Language-Action Models
 
 **Robotics transformers (RT-1)** sturen robots aan op basis van taalinstructies ("Bring me the rice chips from the drawer"). Probleem: draait op slechts **3 Hz** door hoge rekenkost + netwerklatentie → opnieuw een efficiëntie-uitdaging.
 
-![Vision-language-action (RT-1)](samenvatting_img/slide-58.png)
+<img src="samenvatting_img/slide-58.png" alt="Vision-language-action (RT-1)" width="82.5%">
 
 ---
 
@@ -158,8 +158,8 @@ Maar dit alles **kost een exponentieel groeiende modelgrootte** — en het GPU-g
 - **AlphaGo** (Nature 2016) verslaat Lee Sedol (4-1) met DNN's + tree search — maar met **1920 CPU's + 280 GPU's** en **~$3000 elektriciteit per spel**.
 - **AlphaFold** (Nature 2021) voorspelt eiwitstructuren — maar met **16 TPUv3's (128 cores) gedurende weken**.
 
-![AlphaGo](samenvatting_img/slide-59.png)
-![AlphaFold](samenvatting_img/slide-60.png)
+<img src="samenvatting_img/slide-59.png" alt="AlphaGo" width="82.5%">
+<img src="samenvatting_img/slide-60.png" alt="AlphaFold" width="82.5%">
 
 > Boodschap: telkens indrukwekkende doorbraken, telkens enorme rekenkost → efficiëntie is geen luxe.
 
@@ -169,18 +169,18 @@ Maar dit alles **kost een exponentieel groeiende modelgrootte** — en het GPU-g
 
 Deep learning rust op drie pijlers: **Algorithm** (bv. AlexNet-paper), **Hardware** (bv. RTX 3090), **Data** (bv. ImageNet). Vooruitgang in alle drie samen maakte de huidige AI mogelijk.
 
-![Three pillars](samenvatting_img/slide-61.png)
+<img src="samenvatting_img/slide-61.png" alt="Three pillars" width="82.5%">
 
 **Hardware-ondersteuning** voor quantization/pruning (**FP32 → FP16 → Int8; dense → sparse**) levert enorme winst: single-chip inference-prestatie **317× in 8 jaar** (K20X → A100 met structured sparsity).
 
-![Architectural support for quantization/pruning](samenvatting_img/slide-62.png)
+<img src="samenvatting_img/slide-62.png" alt="Architectural support for quantization/pruning" width="82.5%">
 
 ### Hardware-landschap
 
 - **Cloud AI** (NVIDIA P100 → B100): performance, geheugenbandbreedte, vermogen en geheugen groeien sterk per generatie.
 - **Edge AI**: Qualcomm Hexagon DSP, Apple Neural Engine (ANE), NVIDIA Jetson (SoM), Google Edge TPU (ASIC), FPGA-accelerators, en **microcontrollers (MCU)**.
 
-![Cloud AI hardware (NVIDIA)](samenvatting_img/slide-64.png)
+<img src="samenvatting_img/slide-64.png" alt="Cloud AI hardware (NVIDIA)" width="82.5%">
 
 **De kloof tussen cloud en edge blijft enorm** — dit is precies waarom efficiënte modellen nodig zijn:
 
@@ -189,7 +189,7 @@ Deep learning rust op drie pijlers: **Algorithm** (bv. AlexNet-paper), **Hardwar
 | **Geheugen (activatie)** | 80 GB | 4 GB | **320 kB** |
 | **Opslag (gewichten)** | ~TB/PB | 256 GB | **1 MB** |
 
-![Edge AI gap: cloud / mobile / tiny](samenvatting_img/slide-71.png)
+<img src="samenvatting_img/slide-71.png" alt="Edge AI gap: cloud / mobile / tiny" width="82.5%">
 
 ---
 
@@ -197,11 +197,11 @@ Deep learning rust op drie pijlers: **Algorithm** (bv. AlexNet-paper), **Hardwar
 
 **Huidig landschap:** deep learning vraagt **veel rekenkracht (veel CO₂), veel engineers en veel data**.
 
-![Current landscape](samenvatting_img/slide-73.png)
+<img src="samenvatting_img/slide-73.png" alt="Current landscape" width="82.5%">
 
 **Doel van het vak — Tiny Deep Learning (TinyML):** hetzelfde bereiken met **minder rekenkracht (minder CO₂), minder engineers en minder data**.
 
-![Tiny deep learning](samenvatting_img/slide-74.png)
+<img src="samenvatting_img/slide-74.png" alt="Tiny deep learning" width="82.5%">
 
 ---
 
