@@ -555,6 +555,9 @@ Omdat zoeken zo duur is, deed men het vroeger op een goedkopere **proxy task** (
 - Conventionele NAS-netwerken (NASNet-A, AmoebaNet-A) hebben **gelijkaardige MACs als MobileNetV2 maar veel hogere latency** ("fewer MACs, but higher latency!").
 - Op een GPU bij **gelijke FLOPs**: *layer-number scaling* geeft een totaal andere latency-curve dan *hidden-dimension scaling*.
 
+
+
+![Hardware-specifiek gedrag](samenvatting_img_h7/slide-079.png)
 ![Hardware-specifiek gedrag](samenvatting_img_h7/slide-080.png)
 
 En het gedrag verschilt **per hardware**: hidden-dimension opschalen maakt een Raspberry Pi (ARM CPU) veel trager, terwijl een Nvidia GPU er nauwelijks last van heeft (de GPU heeft genoeg parallellisme om het te verbergen). Daarom moet je per hardware apart optimaliseren — een algemene MAC- of FLOP-telling liegt.
