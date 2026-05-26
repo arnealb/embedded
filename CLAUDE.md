@@ -67,7 +67,7 @@ Neem een bestaande, afgewerkte samenvatting (bv. `Samenvatting_H4_Quantization.m
 | 4 | Lect04 Quantization | ✅ | `samenvatting_img_h4/` |
 | 7 | Lect07 Neural Architecture Search | ✅ | `samenvatting_img_h7/` |
 | 8 | Lect08 Knowledge Distillation | ✅ | `samenvatting_img_h8/` |
-| 9 | Lect09 On-device training & transfer learning | ❌ nog te doen | — |
+| 9 | Lect09 On-device training & transfer learning | ✅ | `samenvatting_img_h9/` |
 
 **Let op bij H7:** de PDF heet `Lect07_…` en de samenvatting `Samenvatting_H7_…` (zo wou de
 student het), maar de **slides zelf zijn gelabeld "Lecture – 06 / Neural Architecture Search"**.

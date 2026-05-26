@@ -17,8 +17,9 @@ notities verwerkt als **📝 jouw notitie**, en eindigt met **Kernpunten**, **Oe
 | H4 | Quantization | [`Samenvatting_H4_Quantization.md`](Samenvatting_H4_Quantization.md) |
 | H7 | Neural Architecture Search | [`Samenvatting_H7_Neural_Architecture_Search.md`](Samenvatting_H7_Neural_Architecture_Search.md) |
 | H8 | Knowledge Distillation | [`Samenvatting_H8_Knowledge_Distillation.md`](Samenvatting_H8_Knowledge_Distillation.md) |
+| H9 | On-device Training & Transfer Learning | [`Samenvatting_H9_On_Device_Training_Transfer_Learning.md`](Samenvatting_H9_On_Device_Training_Transfer_Learning.md) |
 
-> Nog te doen: H9 (On-device training & Transfer Learning) — de PDF staat al in de map.
+> Alle hoofdstukken uit de lesreeks (H1–H4, H7–H9) zijn samengevat.
 
 > Noot bij H7: de PDF heet `Lect07_…`, maar de slides zijn intern gelabeld als
 > "Lecture – 06 / Neural Architecture Search".
@@ -42,6 +43,7 @@ notities verwerkt als **📝 jouw notitie**, en eindigt met **Kernpunten**, **Oe
 ├── samenvatting_img_h4/          # afbeeldingen H4
 ├── samenvatting_img_h7/          # afbeeldingen H7   (slide-NNN.png)
 ├── samenvatting_img_h8/          # afbeeldingen H8   (slide-NN.png)
+├── samenvatting_img_h9/          # afbeeldingen H9   (slide-NN.png)
 ├── CLAUDE.md                     # instructies/conventies voor Claude Code
 └── README.md                     # dit bestand
 ```
