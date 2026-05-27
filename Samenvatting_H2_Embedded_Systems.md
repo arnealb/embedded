@@ -913,3 +913,60 @@ Trend richting TinyML: **minder ondersteunde operatoren**, maar veel **efficiën
 | **TensorFlow / LiteRT / LiteRT Micro** | Train (~1400 ops, 3MB+) → deploy (efficiënt) → inferentie op MCU (~50 ops, ~10KB, geen OS). |
 | **.tflite** | Het LiteRT-modelformaat; wordt omgezet naar een C-array voor de MCU. |
 | **ML lifecycle** | De volledige lus van data → training → deployment, met DATA FIXES/NEEDS-terugkoppeling. |
+
+---
+
+# 📇 Naslag — alle genoemde modellen, hardware, frameworks & datasets (H2)
+
+> Dit is een **overzicht van alle "namen"** die in dit college vallen, met de cijfers die erbij horen. Bedoeld om snel te kunnen beslissen *wat* je vanbuiten moet kennen (zie de inschatting onderaan). De inhoud staat al verspreid in de samenvatting hierboven; dit is enkel een bundeling.
+
+## Embedded boards & chips
+
+| Naam | Wat | Sleutelcijfers / specs |
+|---|---|---|
+| **Arduino Nano 33 BLE Sense** | Het ontwikkelbord van dit vak (labs) | nRF52840 (u-blox NINA-B306), **Cortex-M4 @ 64 MHz**, **1 MB flash / 256 kB RAM**, BLE; sensoren: Mic, IMU, Temp, Humidity, Gesture, Pressure, Proximity, Brightness, Color |
+| **Himax WE-I Plus EVB** | Vergelijkingsbord (gebruikt een **DSP** i.p.v. MCU) | HX6537-A (32-bit EM9D DSP) @ 400 MHz, 2 MB flash / 2 MB RAM, Accelerometer/Mic/Camera, geen radio |
+| **SparkFun Edge 2** | Vergelijkingsbord | ArtemisV1 @ 48 MHz, 1 MB flash / 384 kB RAM, Accelerometer/Mic/Camera, BLE |
+| **Espressif EYE** | Vergelijkingsbord | ESP32-D0WD @ 240 MHz, 4 MB flash / 520 kB RAM, Mic/Camera, WiFi + BLE |
+| **Amazon Echo Dot** | Voorbeeld "echt" embedded systeem (sense/process/actuate) | Ronde PCB met MediaTek 7658CSN (Wi-Fi + **ARM Cortex-R4**); mics / processor / speaker |
+| **STM32H743** | Commerciële MCU waarop MCUNet getest werd | MCUNet haalt er **70.7 % ImageNet top-1** |
+
+**ARM Cortex-families:** **A** = Applications (krachtig, draait OS) · **R** = Real-time (o.a. Cortex-R4 in de Echo) · **M** = Microcontroller (TinyML; M0+/M0/M3/**M4**). De **M4** voegt **DSP (SIMD, Fast MAC) + FPU** toe → ideaal voor NN's.
+
+## Neurale netwerken / modellen
+
+| Model | Rol in H2 | Sleutelcijfers |
+|---|---|---|
+| **Transformer / BERT / GPT-2 / GPT-3** | "AI van vandaag is te groot" (motivatie) | 0.05B → 0.34B → 1.5B → **175B params**; GPT-3: 355 GPU-jaren, ~$4.6M |
+| **AlphaGo** | Idem (kost van grote AI) | 1920 CPU's + 280 GPU's, ~$3000 elektriciteit/spel |
+| **ResNet-50** | Te grote CNN voor MCU (peak SRAM) | **23×** te groot t.o.v. de 320 kB-constraint |
+| **ResNet-18** | Baseline waartegen MCUNet vergelijkt | MCUNet: 6.1× minder params, 3.4× minder peak activation |
+| **MobileNetV2** | Verkleint enkel **model size**, niet de activaties | **22×** te groot (fp), **int8 nog 5×** te groot |
+| **MCUNet** | Verkleint **model én peak activation** → past op MCU | >70 % ImageNet; **70.7 % op STM32H743**, +17 % t.o.v. MobileNetV2+CMSIS-NN |
+| **CMSIS-NN** | ARM's NN-library (baseline) | MobileNetV2 + CMSIS-NN = de baseline die MCUNet verslaat |
+
+## ML-frameworks / inference engines
+
+| | TensorFlow | LiteRT | LiteRT Micro |
+|---|---|---|---|
+| **Rol** | trainen | converteren/deployen | inferentie op MCU |
+| **#Ops** | ~1400 | ~130 | **~50** |
+| **Needs OS** | Yes | Yes | **No** (bare metal) |
+| **Binary** | 3 MB+ | 100 KB | **~10 KB** |
+| **Footprint** | ~5 MB | 300 KB | **20 KB** |
+| **Geoptimaliseerd voor** | x86/TPU/GPU | Cortex-A/x86 | **Cortex-M / DSP / MCU** |
+
+Pijplijn: **TF model → `.tflite` → C-array → MCU.** Andere genoemde software: **mbed OS** & **FreeRTOS** (embedded OS), **Arduino** (programmeerlaag), **CMSIS-Core / HAL** (hardware-abstractie).
+
+## Datasets / applicaties / technieken
+
+- **Datasets:** **ImageNet** (classificatie-benchmark, ~70 % top-1 op MCU), **MVTec** (industriële defecten, anomaliedetectie), surveillancevideo's.
+- **Applicaties:** Tiny Image Classification, **Visual Wake Words (VWW)**, **Keyword Spotting**, **Anomaly Detection**.
+- **Technieken:** **Quantization** (int8 ≈ 4× kleiner; **int4** voor ImageNet-op-MCU), autoencoders + **K-means / GMMs** voor anomaliedetectie.
+- **Geheugenbudgetten:** Cloud 32 GB / ~TB-PB · Mobile 4 GB / 256 GB · **Tiny 320 kB / 1 MB** (→ 13.000× kleiner dan mobile, 100.000× kleiner dan cloud).
+
+## Wat moet je hiervan écht kennen? (inschatting — geen garantie)
+
+- **Kernstof (begrijpen + cijfers):** de **memory-hiërarchie** (Cloud/Mobile/Tiny: 320 kB / 1 MB), waarom **MCUNet** beter is dan **MobileNetV2** (model *én* activatie verkleinen), het **flash vs SRAM (peak)**-onderscheid, de **Cortex-M4 + MAC**-redenering, en de **TF → LiteRT → LiteRT Micro**-keten met de trend (minder ops, geen OS, kleiner).
+- **Waarschijnlijk illustratief** (herkennen, geen specs vanbuiten): de exacte specs van **Himax/SparkFun/Espressif**, de precieze GPT-3/AlphaGo-cijfers, het Echo-Dot-voorbeeld.
+- ⚠️ Dit is een **inschatting** op basis van de nadruk in de slides — het exacte examenformat staat nergens in de PDF's (zie Lect01: theorie 75 % / labs 25 %, en "labo-oefeningen kunnen direct examenstof zijn"). Verifieer bij twijfel bij de lesgever.

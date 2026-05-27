@@ -448,6 +448,35 @@ Reken-voorbeeld over Batch = 2, Channel = 3, feature maps 5×5: APoZ van channel
 
 > **Verschil met magnitude-based:** magnitude kijkt naar de **gewichten** (statisch, data-onafhankelijk); APoZ kijkt naar de **activaties** (data-gedreven — je hebt input-data nodig om het te meten).
 
+## 6.6 De drie criteria naast elkaar (samenvattend)
+
+Deze drie methoden worden snel door elkaar gehaald, want ze beantwoorden allemaal dezelfde vraag — *"welke parameter is het minst belangrijk en mag dus weg?"* — maar ze doen dat op een fundamenteel andere manier. Het verschil zit in **welk onderdeel** van het netwerk je evalueert (de gewichten, een aparte schaalfactor, of de activaties) en in de **granulariteit** waarop je prunet.
+
+### 1. Magnitude-based pruning → kijkt naar de **gewichten**
+Een **heuristiek op de statische waarden van de gewichten (synapsen)** zelf.
+- **Wat wordt gemeten:** de absolute waarde van een gewicht `|W|`. Aanname: gewichten dicht bij nul dragen weinig bij en zijn dus minder belangrijk.
+- **Granulariteit:** flexibel inzetbaar — zowel **fine-grained** (losse gewichten weg) als **structured** (een hele rij/groep weg op basis van de L1- of L2-norm).
+
+### 2. Scaling-based pruning → kijkt naar een aparte **schaalfactor**
+Een criterium specifiek voor **filter/channel pruning** in convolutielagen.
+- **Wat wordt gemeten:** een **trainbare schaalfactor γ** die aan elk filter (output-kanaal) hangt en met de output van dat kanaal vermenigvuldigd wordt. Het netwerk *leert* tijdens het trainen welke kanalen ertoe doen; filters met kleine γ gaan na de training weg.
+- **Belangrijk verschil met magnitude:** je kijkt **niet** naar de individuele gewichten *binnen* het filter, maar naar één aparte parameter die de relevantie van het **hele kanaal** uitdrukt.
+- **Granulariteit:** coarse-grained (filters/kanalen).
+
+### 3. APoZ (Percentage-of-Zero-Based) → kijkt naar de **activaties**
+Waar de eerste twee naar de *parameters* kijken, kijkt APoZ naar de **outputs (activaties)** van neuronen.
+- **Wat wordt gemeten:** de **Average Percentage of Zeros**. ReLU zet veel outputs op 0, dus je meet hoe vaak een neuron/kanaal een nul produceert over de dataset.
+- **Het criterium:** hoe **lager** de APoZ, hoe belangrijker het neuron (het levert vaker een actieve bijdrage). Neuronen die bijna altijd nul zijn, zijn overbodig → prune.
+- **Granulariteit:** neuron pruning (linear layers) of channel pruning (conv layers) — dus coarse-grained.
+
+| Methode | Focus | Wat is "belangrijk"? | Granulariteit |
+| :--- | :--- | :--- | :--- |
+| **Magnitude-based** | statische gewichten (`W`) | grote absolute getalwaarde van het gewicht | fine-grained óf coarse-grained |
+| **Scaling-based** | trainbare schaalfactor γ | een grote aangeleerde γ per filter | coarse-grained (filters/kanalen) |
+| **APoZ** | dynamische activaties | neuronen die zelden een nul-output geven na ReLU | coarse-grained (neuronen/kanalen) |
+
+> **De kern in één zin:** **APoZ** kijkt naar het **gedrag van de data** die door het netwerk stroomt (activaties → data-gedreven), terwijl **magnitude** en **scaling** kijken naar de **parameters** waaruit het model is opgebouwd (gewichten resp. een aangeleerde schaalfactor → statisch).
+
 ---
 
 # DEEL 7 — Pruning ratio: hoeveel sparsity per laag?
@@ -607,8 +636,6 @@ Hoe hoger de APoZ, hoe minder het channel bijdraagt (ReLU zet veel outputs op 0)
 </details>
 
 **V7.** Wat betekent "2:4 sparsity" en waarom is het interessant voor NVIDIA-hardware?
-
-<parameter name="new_string">**V7.** Wat betekent "2:4 sparsity" en waarom is het interessant voor NVIDIA-hardware?
 
 <details><summary>Antwoord</summary>
 
