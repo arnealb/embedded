@@ -89,6 +89,15 @@ $$\text{MAC} = N \times M \qquad\qquad \text{Params} = (N \times M) + M$$
 
 De **`+ M`** bij de parameters is de **bias** (één per output-neuron).
 
+### Softmax- / output-laag
+De **output-laag is gewoon een dense laag** (input N → één output per klasse, `M = #klassen`), dus je gebruikt **exact dezelfde formule**:
+
+$$\text{MAC} = N \times \#klassen \qquad\qquad \text{Params} = (N \times \#klassen) + \#klassen$$
+
+Voorbeeld uit de oefening (N = 256, 10 klassen): `MAC = 256 × 10 = 2 560` en `Params = (256 × 10) + 10 = 2 570`.
+
+> **De softmax-functie zelf telt niet mee.** De *activatiefunctie* softmax (`eᶻⁱ / Σeᶻⁱ`) heeft **geen geleerde gewichten** (→ 0 extra params) en wordt — net als elke activatie — **niet als MACs geteld**. Alle MACs/params van de "softmax-laag" zitten dus in de onderliggende **dense** bewerking die de logits berekent.
+
 ### Convolutielaag
 Eerst de **output-dimensie** (hoogte/breedte) via:
 
@@ -112,11 +121,7 @@ met `C_out` = aantal filters, `C_in` = aantal input-channels, `k` = kernel-groot
 
 **Netwerk:** Input 128×128×1 → **Conv** (64 filters, 3×3, stride 1, padding 0) → Dense 512 → Dense 256 → Softmax 10.
 
-<img src="samenvatting_img_h3/slide-21.png" alt="Eenvoudig MAC-voorbeeld (enkel dense lagen)" width="82.5%">
-
-<img src="samenvatting_img_h3/slide-23.png" alt="MAC-berekening met conv-laag" width="82.5%">
-
-<img src="samenvatting_img_h3/slide-24.png" alt="Parameter-berekening met conv-laag" width="82.5%">
+<img src="samenvatting_img_h3/slide-21.png" alt="Opgave-slide MAC/params-oefening" width="82.5%">
 
 ### Stap voor stap — MACs
 
@@ -141,10 +146,6 @@ $$\text{MAC}_{totaal} = 9\,144\,576 + 520\,224\,768 + 131\,072 + 2\,560 \approx 
 **⑤ Output:** `(256 × 10) + 10 = 2 570`
 
 $$\text{Params}_{totaal} = 640 + 520\,225\,280 + 131\,328 + 2\,570 = \mathbf{520\,359\,818}$$
-
-### 📝 Jouw handgeschreven uitwerking (van papier)
-
-<img src="samenvatting_img_h3/slide-023.png" alt="Handgeschreven oplossing van de MAC-berekening (529,5M MACs)" width="82.5%">
 
 > **Observatie uit de oefening:** **Dense 1** domineert volledig — `520M` van de `529.5M` MACs én `520M` van de `520M` parameters zitten daar. Dat is precies omdat je een grote conv-output (126×126×64 ≈ 1M waarden) **plat slaat** en volledig verbindt met 512 neuronen. Dit illustreert §3: dense lagen = veel parameters; en hier ook veel MACs door de enorme platgeslagen input.
 
@@ -216,51 +217,62 @@ De hamvraag wordt dan: **hoe meet je "belangrijkheid"?** Daarvoor zijn er drie m
 
 ## 8. Hoe kies je het criterium? — Magnitude / Scaling / APoZ
 
-Er zijn **drie manieren** om te bepalen wat "belangrijk" is. Het volledige overzicht — met de samenvattende tabel en de kernzin — staat in **§6.6 van `Samenvatting_H3_Pruning_Sparsity.md`** ("De drie criteria naast elkaar"). Heel kort:
+Er zijn **drie manieren** om te bepalen wat "belangrijk" is. Ze beantwoorden allemaal dezelfde vraag — *"welke parameter is het minst belangrijk en mag dus weg?"* — maar verschillen in **welk onderdeel** van het netwerk je evalueert (de gewichten, een aparte schaalfactor, of de activaties) en in de **granulariteit** waarop je prunet.
 
-| Methode | Kijkt naar | "Belangrijk" = | Statisch of data-gedreven |
-|---|---|---|---|
-| **Magnitude-based** | de **gewichten** `\|W\|` | grote absolute waarde | **statisch** (geen data nodig) |
-| **Scaling-based** | een **trainbare γ** per filter | grote aangeleerde γ | aangeleerd tijdens training |
-| **APoZ** | de **activaties** (outputs) | weinig nul-outputs na ReLU | **data-gedreven** (data nodig) |
+#### 1. Magnitude-based pruning → kijkt naar de **gewichten**
+Een **heuristiek op de statische waarden van de gewichten (synapsen)** zelf.
+- **Wat wordt gemeten:** de absolute waarde van een gewicht `|W|`. Aanname: gewichten dicht bij nul dragen weinig bij en zijn dus minder belangrijk.
+- **Granulariteit:** flexibel inzetbaar — zowel **fine-grained** (losse gewichten weg) als **structured** (een hele rij/groep weg op basis van de L1- of L2-norm).
 
-➡️ **Zie het overzicht (§6.6) in de samenvatting voor de volledige uitleg.** Hieronder per methode nog een **verdiepende examenvraag**.
+#### 2. Scaling-based pruning → kijkt naar een aparte **schaalfactor**
+Een criterium specifiek voor **filter/channel pruning** in convolutielagen.
+- **Wat wordt gemeten:** een **trainbare schaalfactor γ** die aan elk filter (output-kanaal) hangt en met de output van dat kanaal vermenigvuldigd wordt. Het netwerk *leert* tijdens het trainen welke kanalen ertoe doen; filters met kleine γ gaan na de training weg.
+- **Belangrijk verschil met magnitude:** je kijkt **niet** naar de individuele gewichten *binnen* het filter, maar naar één aparte parameter die de relevantie van het **hele kanaal** uitdrukt.
+- **Granulariteit:** coarse-grained (filters/kanalen).
+
+#### 3. APoZ (Percentage-of-Zero-Based) → kijkt naar de **activaties**
+Waar de eerste twee naar de *parameters* kijken, kijkt APoZ naar de **outputs (activaties)** van neuronen.
+- **Wat wordt gemeten:** de **Average Percentage of Zeros**. ReLU zet veel outputs op 0, dus je meet hoe vaak een neuron/kanaal een nul produceert over de dataset.
+- **Het criterium:** hoe **lager** de APoZ, hoe belangrijker het neuron (het levert vaker een actieve bijdrage). Neuronen die bijna altijd nul zijn, zijn overbodig → prune.
+- **Granulariteit:** neuron pruning (linear layers) of channel pruning (conv layers) — dus coarse-grained.
+
+| Methode | Focus | Wat is "belangrijk"? | Granulariteit |
+| :--- | :--- | :--- | :--- |
+| **Magnitude-based** | statische gewichten (`W`) | grote absolute getalwaarde van het gewicht | fine-grained óf coarse-grained |
+| **Scaling-based** | trainbare schaalfactor γ | een grote aangeleerde γ per filter | coarse-grained (filters/kanalen) |
+| **APoZ** | dynamische activaties | neuronen die zelden een nul-output geven na ReLU | coarse-grained (neuronen/kanalen) |
+
+> **De kern in één zin:** **APoZ** kijkt naar het **gedrag van de data** die door het netwerk stroomt (activaties → data-gedreven), terwijl **magnitude** en **scaling** kijken naar de **parameters** waaruit het model is opgebouwd (gewichten resp. een aangeleerde schaalfactor → statisch).
+
+Hieronder per methode nog een **verdiepende examenvraag**.
 
 ### 8a. Magnitude-based — verdiepend
 
 **Vraag:** Gegeven gewichtsmatrix `W = [[4, −1], [−3, 2]]`. Welke **rij** gaat eruit bij row-wise pruning met (a) de L1-norm en (b) de L2-norm? Wat leert dit je over het verschil tussen L1 en L2?
 
-<details><summary>Antwoord</summary>
-
+**Antwoord:**
 - **(a) L1** (`Σ|wᵢ|`): rij 0 = |4|+|−1| = **5**; rij 1 = |−3|+|2| = **5** → **gelijk** → geen voorkeur.
 - **(b) L2** (`√Σ|wᵢ|²`): rij 0 = √(16+1) = √17 ≈ **4.12**; rij 1 = √(9+4) = √13 ≈ **3.61** → rij 1 heeft de **kleinste** importance → **rij 1 wordt gepruned**.
 
 **De les:** L1 en L2 kunnen **verschillende keuzes** maken. L2 weegt **grote gewichten zwaarder** door (door het kwadraat), waardoor een rij met één groot gewicht (hier de 4) als belangrijker telt. Beide blijven heuristieken: snel en goedkoop, maar niet gegarandeerd optimaal.
-</details>
 
 ### 8b. Scaling-based — verdiepend
 
 **Vraag:** Waar komt de schaalfactor γ vandaan, en wat is het concrete verschil met magnitude-based pruning?
 
-<details><summary>Antwoord</summary>
-
-De γ-factoren zijn **trainbare parameters** die aan elk filter (output-channel) hangen en met de output van dat kanaal worden vermenigvuldigd vóór het naar de volgende laag gaat. Ze komen vaak **gratis uit de Batch-Normalization-laag**. Tijdens het trainen **leert** het netwerk welke kanalen ertoe doen; filters met een **kleine γ** worden na de training weggesnoeid (bv. γ=0.10 en γ=0.29 eruit, γ=1.17 en γ=0.82 blijven). Dit is **Network Slimming** (Liu et al., ICCV 2017).
+**Antwoord:** De γ-factoren zijn **trainbare parameters** die aan elk filter (output-channel) hangen en met de output van dat kanaal worden vermenigvuldigd vóór het naar de volgende laag gaat. Ze komen vaak **gratis uit de Batch-Normalization-laag**. Tijdens het trainen **leert** het netwerk welke kanalen ertoe doen; filters met een **kleine γ** worden na de training weggesnoeid (bv. γ=0.10 en γ=0.29 eruit, γ=1.17 en γ=0.82 blijven). Dit is **Network Slimming** (Liu et al., ICCV 2017).
 
 **Het verschil met magnitude:** magnitude kijkt naar de **individuele gewichten binnen** het filter; scaling kijkt naar **één aparte, aangeleerde parameter** die de relevantie van het **hele kanaal** uitdrukt. Daarom is scaling-based een natuurlijke keuze voor **filter/channel pruning** in conv-lagen.
-</details>
 
 ### 8c. APoZ — verdiepend
 
 **Vraag:** Een channel geeft over een batch deze output-activaties: 4 nullen op 20 waarden in feature map 1, en 6 nullen op 20 in feature map 2. Bereken de APoZ. Is dit channel een goede prune-kandidaat als de andere channels een APoZ ≈ 0.20 hebben? Waarom kan je dit niet zonder data berekenen?
 
-<details><summary>Antwoord</summary>
-
-`APoZ = totaal aantal nullen / totaal aantal waarden = (4+6)/(20+20) = 10/40 = `**`0.25`**.
+**Antwoord:** `APoZ = totaal aantal nullen / totaal aantal waarden = (4+6)/(20+20) = 10/40 = `**`0.25`**.
 
 Hoe **hoger** de APoZ, hoe **minder** het channel bijdraagt (ReLU zet veel outputs op 0 → het neuron is bijna altijd "uit"). `0.25 > 0.20` → dit channel heeft méér nullen dan de andere → **ja, een betere prune-kandidaat**.
 
 Je kan dit **niet zonder data** berekenen, want APoZ meet de **activaties** (de outputs van neuronen). Je moet dus echte input-data door het netwerk sturen om te tellen hoe vaak een neuron nul produceert. Dat is precies het verschil met magnitude/scaling, die naar de **parameters** kijken (statisch, data-onafhankelijk).
-</details>
 
 ---
 
@@ -328,53 +340,40 @@ Na het prunen **daalt de accuracy** (vooral bij een hoge pruning ratio — je he
 
 **V-A. Wat is pruning eigenlijk, en wat is het verschil tussen synapsen en neuronen prunen?**
 
-<details><summary>Antwoord</summary>
-
-Pruning = het netwerk kleiner maken door onbelangrijke **synapsen (gewichten)** of **neuronen** te verwijderen.
+**Antwoord:** Pruning = het netwerk kleiner maken door onbelangrijke **synapsen (gewichten)** of **neuronen** te verwijderen.
 - **Synapsen prunen:** individuele gewichten worden op **0** gezet → het netwerk behoudt **dezelfde structuur**, maar heeft minder actieve verbindingen (fine-grained).
 - **Neuronen prunen:** volledige neuronen (met al hun verbindingen) worden verwijderd → het netwerk wordt **structureel kleiner** (coarse-grained = een hele rij in de gewichtsmatrix of een heel channel weg).
 
 Biologische analogie: ook het **menselijk brein** snoeit — van ~2500 synapsen/neuron bij de geboorte, een piek rond ~15 000 op 2–4 jaar, naar ~7 000 bij volwassenen. Eerst veel verbindingen bouwen, dan de overbodige weghalen → efficiënter.
-</details>
 
 **V-B. Wat zijn de 5 ontwerpvragen die het hele pruning-college structureren?**
 
-<details><summary>Antwoord</summary>
-
+**Antwoord:**
 1. **Motivatie** — waarom efficiënte ML? (modellen groeien sneller dan hardware; memory is duur)
 2. **Granularity** — *in welk patroon* prunen we? (fine-grained → channel)
 3. **Criterion** — *welke* synapsen/neuronen gooien we weg? (magnitude / scaling / APoZ)
 4. **Pruning ratio** — *hoeveel* sparsity per laag? (sensitivity analysis / AMC)
 5. **Fine-tune** — hoe herstellen we de accuracy na het prunen?
-</details>
 
 **V-C. Waarom is "Today's AI too BIG" en wat is "bridge the gap"?**
 
-<details><summary>Antwoord</summary>
-
-Modellen groeien **exponentieel** (Transformer 0.05B → BERT 0.34B → GPT-2 1.5B → GPT-3 175B → MT-NLG 530B), terwijl het **GPU-geheugen maar lineair** groeit (V100 32GB → A100 80GB). Er ontstaat dus een groeiend **gat** tussen wat modellen nodig hebben en wat de hardware biedt. **"Bridge this gap"** = dat gat dichten met efficiënte technieken zoals **pruning, quantization en distillation**. In de bubble chart (MACs vs accuracy, bubbelgrootte = #params) wil je voor embedded naar de **linkeronderhoek** (weinig MACs, weinig params, toch goede accuracy — zoals MobileNet/ShuffleNet).
-</details>
+**Antwoord:** Modellen groeien **exponentieel** (Transformer 0.05B → BERT 0.34B → GPT-2 1.5B → GPT-3 175B → MT-NLG 530B), terwijl het **GPU-geheugen maar lineair** groeit (V100 32GB → A100 80GB). Er ontstaat dus een groeiend **gat** tussen wat modellen nodig hebben en wat de hardware biedt. **"Bridge this gap"** = dat gat dichten met efficiënte technieken zoals **pruning, quantization en distillation**. In de bubble chart (MACs vs accuracy, bubbelgrootte = #params) wil je voor embedded naar de **linkeronderhoek** (weinig MACs, weinig params, toch goede accuracy — zoals MobileNet/ShuffleNet).
 
 **V-D. Welke hardware-ondersteuning bestaat er voor sparsity?**
 
-<details><summary>Antwoord</summary>
-
+**Antwoord:**
 - **NVIDIA A100 (Ampere):** ondersteunt **2:4 sparsity** in de tensor cores → tot **2× peak performance**, ~1.5× gemeten BERT-speedup.
 - **Custom accelerators** (Han et al.): **EIE, ESE, SpArch, SpAtten** — speciaal ontworpen om sparse netwerken te versnellen (vooral nodig voor fine-grained pruning, dat niet op een gewone GPU versnelt).
 - **AMD/Xilinx Vitis AI Optimizer:** doet automatisch `Prune → Finetune` op een dense FP32-net → reduceert de complexiteit **5× tot 50×** met minimale accuracy-impact.
-</details>
 
 **V-E. Hoe ziet de klassieke pruning-workflow eruit (Han et al., 2015)?**
 
-<details><summary>Antwoord</summary>
-
-Drie stappen: **Train Connectivity → Prune Connections → Train Weights.**
+**Antwoord:** Drie stappen: **Train Connectivity → Prune Connections → Train Weights.**
 1. **Train Connectivity:** train het netwerk eerst volledig. In het gewichts-histogram liggen de meeste gewichten dicht bij 0 (klein), enkele zijn groot (= belangrijk).
 2. **Prune Connections:** gooi de kleine gewichten weg → het histogram krijgt een "gat" rond 0.
 3. **Train Weights (fine-tune):** hertrain de overgebleven gewichten zodat de accuracy herstelt.
 
 En het beste is dit **iteratief** herhalen (geleidelijk meer prunen + telkens fine-tunen).
-</details>
 
 ---
 
