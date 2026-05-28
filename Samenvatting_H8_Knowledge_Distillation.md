@@ -242,6 +242,19 @@ $$\psi(s_1, \dots, s_n) = \big(\lVert s_1 - s_2\rVert_2^2,\ \lVert s_1 - s_3\rVe
 een vector van lengte $n(n-1)/2$. Je berekent $\psi$ voor teacher én student en matcht die. De student leert zo niet de absolute features, maar **hoe de samples zich tot elkaar verhouden** in de feature-ruimte. (Park et al., *Relational Knowledge Distillation*, CVPR 2019.)
 
 ---
+### overzicht: 
+Conventional KD (point-to-point, per sample één grootheid matchen):
+- 3.1 output logits
+- 3.2 intermediate weights (FitNets)
+- 3.3 intermediate features (MMD)
+- 3.4 attention maps
+- 3.5 sparsity patterns
+
+Relational KD (structure-to-structure, relaties matchen):
+- 3.6 relational information — zowel relaties tussen lagen (Gram-matrix, Yim et al.) als relaties tussen samples (pairwise afstanden ψ, Park et al.)
+
+
+---
 
 # DEEL 4 — Self & online distillation
 
