@@ -299,6 +299,43 @@ In MobileNetV2 zijn de 1×1 convs (de channel-mixers) intussen het *duurste* dee
 > gewone conv → ResNet-bottleneck (1×1 reduce) → ResNeXt (grouped) → MobileNet (depthwise-separable) → MobileNetV2 (inverted bottleneck) → ShuffleNet (group 1×1 + shuffle)
 
 Het zijn precies deze blokken en hun knoppen (kernel size, expansion ratio, #groepen, breedte) die NAS straks **automatisch** door elkaar gaat proberen.
+---
+overzicht: 
+## Evolutie van de blocks
+
+1. **Gewone 3×3 conv** — peperduur op brede channels.
+
+2. **Bottleneck (ResNet)**
+   → *Fix:* 1×1 reduce → 3×3 → 1×1 expand. Duur ruimtelijk werk op smal kanaal.
+
+3. **Grouped bottleneck (ResNeXt)**
+   → *Probleem:* middelste 3×3 blijft duurste stuk.
+   → *Fix:* 3×3 wordt grouped conv → nog eens ×g goedkoper.
+
+4. **Depthwise-separable (MobileNet)**
+   → *Probleem:* grouped is half werk, elke groep ziet nog meerdere channels.
+   → *Fix:* trek door tot het extreme — `g = aantal channels` → depthwise (1 filter/channel).
+   → *Maar:* nu geen channel-mixing meer → voeg 1×1 pointwise toe.
+   → *Resultaat:* depthwise = spatial, pointwise = channel mixing.
+
+5. **Inverted bottleneck (MobileNetV2)**
+   → *Probleem:* depthwise zelf heeft lage capaciteit (1 filter/channel op smal kanaal).
+   → *Fix:* eerst expanden (kan, want depthwise-kost is lineair in channels):
+   1×1 expand (N → 6N) → 3×3 depthwise → 1×1 project (6N → N).
+   → *"Inverted"* = omgekeerd van ResNet (eerst breder i.p.v. smaller).
+
+6. **Group 1×1 + channel shuffle (ShuffleNet)**
+   → *Probleem:* na de inverted bottleneck zijn de **1×1 convs** intussen het duurste stuk.
+   → *Fix 1:* maak ook de 1×1 een **group conv** (deel door `g`).
+   → *Maar:* groepen praten nooit met elkaar → informatie blijft in eigen koker.
+   → *Fix 2:* **channel shuffle** tussen de group convs → herschik channels zodat volgende laag inputs uit álle vorige groepen ziet.
+
+**Rode draad:** elke stap fixt het pijnpunt van de vorige.
+
+- bottleneck → grouped: 3×3 nog goedkoper
+- grouped → depthwise-separable: extreem doortrekken + pointwise voor channel-mixing
+- depthwise-separable → inverted bottleneck: capaciteit van depthwise oplossen via expansion
+- inverted bottleneck → ShuffleNet: 1×1 ook groepen + shuffle om mixing tussen groepen te herstellen
 
 ---
 
@@ -466,6 +503,7 @@ Het probleem is **combinatorische explosie**: met d dimensies en k waarden elk h
 > 📝 **jouw notitie:** goeie schaalfactoren vinden voor **depth / width / resolution** door niet één dimensie apart te vergroten, maar **alles samen te schalen** = compound scaling.
 
 **Het inzicht achter compound scaling:** als je een netwerk groter wilt maken, is het verspilling om maar één dimensie (alleen dieper, óf alleen breder, óf alleen hogere resolutie) te maximaliseren — die loopt snel vast. Beter is om depth, width én resolution *in een vaste verhouding samen* op te schalen. EfficientNet zoekt die verhouding één keer met grid search en past hem dan toe op alle modelgroottes.
+- efficientNet: ipv random -> maak het model precies 2x duurder qua FLOPs en vind de beste manier om die extra rekenkracht te verdelen over depth/width/resolution
 
 ## 6.2 Random search
 
@@ -549,6 +587,30 @@ Omdat zoeken zo duur is, deed men het vroeger op een goedkopere **proxy task** (
 
 **Extra context — hoe maakt ProxylessNAS dat betaalbaar?** Het bouwt voort op de DARTS-aanpak (alle operaties tegelijk), maar **binariseert** de paden: per stap is er telkens maar één pad actief in plaats van alle. Daardoor zakt het geheugengebruik van O(N) (alle N opties tegelijk) naar O(1) (één tegelijk). Zo kun je tóch direct op de volledige, echte taak zoeken zonder dat het geheugen ontploft.
 
+**Bij jouw voorbeeld (2 lagen, elk 2 opties):**
+
+**DARTS:** in élke laag staan **beide opties** tegelijk aan. De output van laag 1 is een gewogen som van conv 3×3 én conv 5×5. Dan gaat dat naar laag 2, waar weer beide opties parallel draaien.
+```
+Laag 1:  [conv 3×3] + [conv 5×5]   ← beide in memory
+Laag 2:  [conv 3×3] + [conv 5×5]   ← beide in memory
+Totaal actief: 4
+```
+
+**ProxylessNAS:** in élke laag staat maar **één optie** aan (via binary gate). Welke? Dat wordt gesampled.
+```
+Laag 1:  [conv 3×3] ✓   [conv 5×5] ✗   ← één in memory
+Laag 2:  [conv 3×3] ✗   [conv 5×5] ✓   ← één in memory
+Totaal actief: 2
+```
+
+**Volgende iteratie** kan ProxylessNAS een andere sample maken:
+```
+Laag 1:  [conv 3×3] ✗   [conv 5×5] ✓
+Laag 2:  [conv 3×3] ✓   [conv 5×5] ✗
+```
+
+Dus: **alle lagen draaien altijd, maar per laag is bij ProxylessNAS slechts 1 van de N opties geactiveerd**, terwijl bij DARTS alle N opties per laag tegelijk in memory zitten.
+
 <img src="samenvatting_img_h7/slide-078.png" alt="MACs != real hardware efficiency" width="82.5%">
 
 **Het kernpunt van dit hele deel: *MACs ≠ echte hardware-efficiëntie.*** MACs tellen alleen vermenigvuldigingen, maar de echte latency hangt ook af van geheugentoegang, parallellisme, hoe goed een operatie op de chip "mapt", enz. Concreet:
@@ -624,6 +686,24 @@ En de clou: hetzelfde "Proxyless" recept, apart geoptimaliseerd voor **GPU / CPU
 > 📝 **jouw notitie:** OFA (once-for-all) bevat **veel child networks die weights delen**; dit vermijdt dat elke architectuur opnieuw vanaf 0 getraind moet worden.
 
 De kerngedachte — **train once, get many · reduce design cost · fit diverse hardware constraints**: het OFA-netwerk bevat heel veel kleinere **child networks** die **dezelfde gewichten delen**. Door ze samen (joint) te trainen, "amortiseer" je de trainingskost over allemaal: één dure training, daarna gratis kandidaten.
+
+die `fit diverse hardware constraints`: 
+- **Wat ze trainen:** de **gewichten** van het super-netwerk. Dat is **hardware-agnostisch** — gewichten zijn gewoon getallen, ze "weten" niks van een GPU of MCU.
+- **Wat hardware-specifiek is:** welk **sub-netwerk** je eruit haalt (welke depth, width, kernel sizes). Die keuze hangt af van latency-constraints van de target hardware.
+
+**De flow:**
+
+```
+1. Train OFA-netwerk één keer  ──►  gewichten (hw-agnostisch)
+                                     │
+                                     ├──► sample sub-net A → past op iPhone
+                                     ├──► sample sub-net B → past op Pixel  
+                                     ├──► sample sub-net C → past op MCU
+                                     └──► sample sub-net D → past op GPU
+```
+
+Voor elke nieuwe hardware doe je **alleen stap 2 opnieuw**: zoek het beste sub-netwerk binnen de latency-budget van die hardware. De gewichten zijn al getraind, je hoeft niks te hertrainen.
+
 
 <img src="samenvatting_img_h7/slide-094.png" alt="OFA diverse hardware" width="82.5%">
 <img src="samenvatting_img_h7/slide-095.png" alt="OFA microcontrollers" width="82.5%">
